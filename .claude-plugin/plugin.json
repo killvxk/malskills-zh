@@ -1,0 +1,5 @@
+{
+  "name": "malskills-zh",
+  "description": "Offensive security skills collection for authorized penetration testing, CTF challenges, and security research. Includes tools for reconnaissance, exploitation, C2 frameworks, evasion, reverse engineering, and programming patterns.",
+  "version": "1.0.0"
+}
