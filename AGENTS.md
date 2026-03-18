@@ -30,7 +30,8 @@
 
 - `skills/` — all skills in flat structure; each skill folder contains `SKILL.md` plus optional `assets/`, `references/`, and `scripts/`.
 - `.claude-plugin/` — Claude Code plugin manifest.
-- `AGENTS.md` — root operational guidance for the whole repository.
+- `CLAUDE.md` — Claude Code native project instructions (auto-loaded)
+- `AGENTS.md` — cross-agent operational guidance (GitHub Copilot, Codex, Gemini CLI, etc.)
 
 ## Conventions
 
