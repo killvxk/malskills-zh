@@ -1,0 +1,1274 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-03-19T00:00:00Z",
+  "repository": "https://github.com/killvxk/malskills-zh",
+  "total_skills": 120,
+  "categories": {
+    "bof": {
+      "name": "BOF 开发",
+      "count": 2
+    },
+    "c2": {
+      "name": "C2 框架",
+      "count": 8
+    },
+    "cloud-recon": {
+      "name": "云安全/凭据",
+      "count": 7
+    },
+    "evasion": {
+      "name": "免杀/载荷",
+      "count": 8
+    },
+    "exfiltration": {
+      "name": "数据外泄/隧道",
+      "count": 4
+    },
+    "meta": {
+      "name": "元技能/工具",
+      "count": 4
+    },
+    "network": {
+      "name": "网络/无线",
+      "count": 6
+    },
+    "password": {
+      "name": "密码破解",
+      "count": 7
+    },
+    "post-exploit": {
+      "name": "后渗透",
+      "count": 3
+    },
+    "privesc": {
+      "name": "权限提升",
+      "count": 3
+    },
+    "programming": {
+      "name": "编程模式",
+      "count": 13
+    },
+    "recon": {
+      "name": "侦察/OSINT",
+      "count": 19
+    },
+    "reverse": {
+      "name": "逆向工程",
+      "count": 4
+    },
+    "social-eng": {
+      "name": "社工/钓鱼",
+      "count": 4
+    },
+    "web": {
+      "name": "Web 应用测试",
+      "count": 15
+    },
+    "windows-ad": {
+      "name": "Windows/AD",
+      "count": 13
+    }
+  },
+  "skills": [
+    {
+      "name": "agent-md-creator",
+      "path": "skills/agent-md-creator/SKILL.md",
+      "description": "创建、更新或重构仓库根目录及嵌套目录中供 AI 编码 Agent 使用的 AGENTS.md 文件",
+      "category": "meta",
+      "tags": [
+        "meta",
+        "agent-md-creator"
+      ]
+    },
+    {
+      "name": "aircrack-ng",
+      "path": "skills/aircrack-ng/SKILL.md",
+      "description": "802.11 WEP/WPA/WPA2 审计套件 — 捕获握手包、执行去认证攻击 (deauth attacks) 并破解 Wi-Fi 密码",
+      "category": "network",
+      "tags": [
+        "network",
+        "aircrack-ng"
+      ]
+    },
+    {
+      "name": "amass",
+      "path": "skills/amass/SKILL.md",
+      "description": "OWASP 攻击面测绘工具，结合被动 OSINT 与主动 DNS 枚举进行子域名发现和资产探测",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "amass"
+      ]
+    },
+    {
+      "name": "arjun",
+      "path": "skills/arjun/SKILL.md",
+      "description": "在 Web 端点中发现隐藏的 HTTP 参数",
+      "category": "web",
+      "tags": [
+        "web",
+        "arjun"
+      ]
+    },
+    {
+      "name": "asm-patterns",
+      "path": "skills/asm-patterns/SKILL.md",
+      "description": "x86-64 和 ARM64 汇编语言模式、调用约定及代码结构规范",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "asm-patterns"
+      ]
+    },
+    {
+      "name": "asm-performance",
+      "path": "skills/asm-performance/SKILL.md",
+      "description": "在性能分析确认汇编是瓶颈后使用",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "asm-performance"
+      ]
+    },
+    {
+      "name": "asm-testing",
+      "path": "skills/asm-testing/SKILL.md",
+      "description": "汇编代码测试与验证工作流程：用于单元测试手写函数的 C 测试驱动、GDB/LLDB 寄存器检查、objdump 结构分析、ABI 合规清单及周期精确度量",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "asm-testing"
+      ]
+    },
+    {
+      "name": "beef",
+      "path": "skills/beef/SKILL.md",
+      "description": "浏览器漏洞利用框架 (Browser Exploitation Framework) — 通过 XSS/注入 JS 挂钩浏览器并执行客户端攻击",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "beef"
+      ]
+    },
+    {
+      "name": "bettercap",
+      "path": "skills/bettercap/SKILL.md",
+      "description": "集 WiFi、蓝牙、HID 和以太网网络攻击于一体的多功能工具，包括 ARP 欺骗、中间人攻击、流量嗅探和凭据窃取",
+      "category": "network",
+      "tags": [
+        "network",
+        "bettercap"
+      ]
+    },
+    {
+      "name": "binwalk",
+      "path": "skills/binwalk/SKILL.md",
+      "description": "分析并提取固件镜像，识别嵌入的文件系统、压缩存档和可执行代码",
+      "category": "reverse",
+      "tags": [
+        "reverse",
+        "binwalk"
+      ]
+    },
+    {
+      "name": "bloodhound",
+      "path": "skills/bloodhound/SKILL.md",
+      "description": "利用图论进行 Active Directory 攻击路径可视化，发现权限提升路径、横向移动机会和配置错误",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "bloodhound"
+      ]
+    },
+    {
+      "name": "burpsuite",
+      "path": "skills/burpsuite/SKILL.md",
+      "description": "Burp Suite：集代理、扫描器、Intruder 和 Repeater 于一体的 Web 应用安全测试平台",
+      "category": "web",
+      "tags": [
+        "web",
+        "burpsuite"
+      ]
+    },
+    {
+      "name": "c-bof",
+      "path": "skills/c-bof/SKILL.md",
+      "description": "为 Cobalt Strike 及兼容 C2 框架生成、编译和调试 C 语言的 Beacon 对象文件 (BOF)",
+      "category": "bof",
+      "tags": [
+        "bof",
+        "c-bof"
+      ]
+    },
+    {
+      "name": "c-patterns",
+      "path": "skills/c-patterns/SKILL.md",
+      "description": "C 语言安全编程模式与最佳实践：所有权管理、错误处理、整型安全和 API 设计",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "c-patterns"
+      ]
+    },
+    {
+      "name": "c-testing",
+      "path": "skills/c-testing/SKILL.md",
+      "description": "C 语言测试工作流程，涵盖单元测试和集成测试：测试驱动结构、CTest 集成、失败诊断，以及使用 sanitizer 和模糊测试发现 bug",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "c-testing"
+      ]
+    },
+    {
+      "name": "cain-and-abel",
+      "path": "skills/cain-and-abel/SKILL.md",
+      "description": "Windows 密码恢复工具，支持网络嗅探、 密码破解（字典/暴力破解/密码分析）以及存储凭据解码",
+      "category": "password",
+      "tags": [
+        "password",
+        "cain-and-abel"
+      ]
+    },
+    {
+      "name": "certify",
+      "path": "skills/certify/SKILL.md",
+      "description": "Certify（GhostPack）：AD 证书服务枚举与滥用工具， 用于检测 ESC1-ESC8 模板错误配置",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "certify"
+      ]
+    },
+    {
+      "name": "cloakify",
+      "path": "skills/cloakify/SKILL.md",
+      "description": "通过将数据编码为看似无害的字符串（推文、国际象棋走法、猫的名字） 来实现数据渗出",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "cloakify"
+      ]
+    },
+    {
+      "name": "cobalt-strike",
+      "path": "skills/cobalt-strike/SKILL.md",
+      "description": "Cobalt Strike：商业对手模拟平台， 使用 Beacon 植入物，支持 HTTP/S、DNS、SMB、TCP 以及可塑性 C2 配置文件",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "cobalt-strike"
+      ]
+    },
+    {
+      "name": "coercer",
+      "path": "skills/coercer/SKILL.md",
+      "description": "Coercer 通过滥用 MS-RPRN、MS-EFSR、MS-DFSNM 等 RPC 协议，强制 Windows 服务器向受控主机进行认证， 从而实现 NTLM 中继或哈希捕获",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "coercer"
+      ]
+    },
+    {
+      "name": "commix",
+      "path": "skills/commix/SKILL.md",
+      "description": "自动化 OS 命令注入检测与利用工具， 支持经典、基于时间和基于文件的技术",
+      "category": "web",
+      "tags": [
+        "web",
+        "commix"
+      ]
+    },
+    {
+      "name": "corsy",
+      "path": "skills/corsy/SKILL.md",
+      "description": "CORS 错误配置扫描器，检测可利用的跨域资源共享安全问题",
+      "category": "web",
+      "tags": [
+        "web",
+        "corsy"
+      ]
+    },
+    {
+      "name": "covenant",
+      "path": "skills/covenant/SKILL.md",
+      "description": "协作型 .NET C2 框架，具有 Web 界面、通过 HTTP/S 和 SMB 运行的 Grunt 植入物、内置任务库以及多操作员支持",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "covenant"
+      ]
+    },
+    {
+      "name": "cpp-bof",
+      "path": "skills/cpp-bof/SKILL.md",
+      "description": "为 Cobalt Strike 及兼容 C2 框架生成、编译和调试 C++ 格式的 Beacon Object Files (BOF)",
+      "category": "bof",
+      "tags": [
+        "bof",
+        "cpp-bof"
+      ]
+    },
+    {
+      "name": "cpp-patterns",
+      "path": "skills/cpp-patterns/SKILL.md",
+      "description": "现代 C++ 模式与最佳实践，涵盖可读、安全、可维护的 C++ 代码：RAII、所有权、错误处理、 API 设计、并发基础以及构建/工具链规范",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "cpp-patterns"
+      ]
+    },
+    {
+      "name": "cpp-testing",
+      "path": "skills/cpp-testing/SKILL.md",
+      "description": "C++ 测试工作流，涵盖单元测试和集成测试：GoogleTest/GoogleMock、CMake/CTest 集成、 诊断不稳定测试，以及运行 Sanitizer 和覆盖率以获取正确性信号",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "cpp-testing"
+      ]
+    },
+    {
+      "name": "crackmapexec",
+      "path": "skills/crackmapexec/SKILL.md",
+      "description": "AD 环境的瑞士军刀——通过 SMB/WinRM/LDAP 进行横向移动 (Lateral Movement)、凭据喷射、 共享枚举和远程代码执行",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "crackmapexec"
+      ]
+    },
+    {
+      "name": "cupp",
+      "path": "skills/cupp/SKILL.md",
+      "description": "自定义用户密码画像工具，根据目标的个人信息生成定向字典",
+      "category": "password",
+      "tags": [
+        "password",
+        "cupp"
+      ]
+    },
+    {
+      "name": "deep-research-generic",
+      "path": "skills/deep-research-generic/SKILL.md",
+      "description": "系统性多来源研究，包含引用、冲突分析和置信度评分",
+      "category": "meta",
+      "tags": [
+        "meta",
+        "deep-research-generic"
+      ]
+    },
+    {
+      "name": "deep-research-offensive",
+      "path": "skills/deep-research-offensive/SKILL.md",
+      "description": "攻击性安全研究：CVE 分析、漏洞利用研究、漏洞评估、红队侦察和威胁情报综合",
+      "category": "meta",
+      "tags": [
+        "meta",
+        "deep-research-offensive"
+      ]
+    },
+    {
+      "name": "dirsearch",
+      "path": "skills/dirsearch/SKILL.md",
+      "description": "支持递归扫描和多扩展名的 Web 路径扫描与目录暴力破解工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "dirsearch"
+      ]
+    },
+    {
+      "name": "dnsexfiltrator",
+      "path": "skills/dnsexfiltrator/SKILL.md",
+      "description": "通过 DNS 查询实现隐蔽文件渗出的工具，使用自定义 DNS 服务器接收数据",
+      "category": "exfiltration",
+      "tags": [
+        "exfiltration",
+        "dnsexfiltrator"
+      ]
+    },
+    {
+      "name": "dnsx",
+      "path": "skills/dnsx/SKILL.md",
+      "description": "来自 ProjectDiscovery 的快速 DNS 解析与暴力破解工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "dnsx"
+      ]
+    },
+    {
+      "name": "donut",
+      "path": "skills/donut/SKILL.md",
+      "description": "可将 .NET 程序集、EXE、DLL 和 COM 对象转换为位置无关 shellcode (Position-Independent Shellcode) 的生成器",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "donut"
+      ]
+    },
+    {
+      "name": "dotdotpwn",
+      "path": "skills/dotdotpwn/SKILL.md",
+      "description": "针对 Web 服务器和应用程序的目录遍历漏洞模糊测试工具",
+      "category": "web",
+      "tags": [
+        "web",
+        "dotdotpwn"
+      ]
+    },
+    {
+      "name": "enum4linux",
+      "path": "skills/enum4linux/SKILL.md",
+      "description": "通过空会话或凭据提取用户、共享、组、OS 信息和密码策略的 SMB 与 Windows/Samba 枚举工具",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "enum4linux"
+      ]
+    },
+    {
+      "name": "evil-winrm",
+      "path": "skills/evil-winrm/SKILL.md",
+      "description": "支持哈希传递、票据传递、SSL、文件上传/下载和 PowerShell 脚本的交互式 WinRM shell",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "evil-winrm"
+      ]
+    },
+    {
+      "name": "evilginx2",
+      "path": "skills/evilginx2/SKILL.md",
+      "description": "通过代理真实登录页面捕获会话 Cookie 并绕过 MFA/2FA 的中间人钓鱼代理框架",
+      "category": "social-eng",
+      "tags": [
+        "social-eng",
+        "evilginx2"
+      ]
+    },
+    {
+      "name": "eyewitness",
+      "path": "skills/eyewitness/SKILL.md",
+      "description": "对 Web 服务截图并生成 HTML 报告的工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "eyewitness"
+      ]
+    },
+    {
+      "name": "feroxbuster",
+      "path": "skills/feroxbuster/SKILL.md",
+      "description": "用 Rust 编写的快速递归 Web 内容发现工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "feroxbuster"
+      ]
+    },
+    {
+      "name": "ffuf",
+      "path": "skills/ffuf/SKILL.md",
+      "description": "用于目录/文件发现、参数模糊测试、虚拟主机发现和 POST 数据模糊测试的快速 Web 模糊测试工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "ffuf"
+      ]
+    },
+    {
+      "name": "ghidra",
+      "path": "skills/ghidra/SKILL.md",
+      "description": "NSA 开源逆向工程套件，包含反汇编器、反编译器和脚本功能",
+      "category": "reverse",
+      "tags": [
+        "reverse",
+        "ghidra"
+      ]
+    },
+    {
+      "name": "gitleaks",
+      "path": "skills/gitleaks/SKILL.md",
+      "description": "检测 git 仓库和文件中硬编码密钥（API 密钥、令牌、凭据）的工具",
+      "category": "cloud-recon",
+      "tags": [
+        "cloud-recon",
+        "gitleaks"
+      ]
+    },
+    {
+      "name": "gobuster",
+      "path": "skills/gobuster/SKILL.md",
+      "description": "用 Go 编写的目录、DNS 子域名和虚拟主机暴力破解工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "gobuster"
+      ]
+    },
+    {
+      "name": "golang-patterns",
+      "path": "skills/golang-patterns/SKILL.md",
+      "description": "用于构建健壮、可读、可维护 Go 代码的惯用模式、最佳实践和规范",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "golang-patterns"
+      ]
+    },
+    {
+      "name": "golang-performance",
+      "path": "skills/golang-performance/SKILL.md",
+      "description": "仅在有证据表明 Go 代码是瓶颈时使用",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "golang-performance"
+      ]
+    },
+    {
+      "name": "golang-testing",
+      "path": "skills/golang-testing/SKILL.md",
+      "description": "Go 测试模式：单元测试、表驱动测试、子测试、测试辅助函数、mock/fake、基准测试、模糊测试和覆盖率",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "golang-testing"
+      ]
+    },
+    {
+      "name": "gophish",
+      "path": "skills/gophish/SKILL.md",
+      "description": "开源钓鱼活动框架，提供 Web UI 用于创建凭证收集活动、跟踪点击率和管理目标",
+      "category": "social-eng",
+      "tags": [
+        "social-eng",
+        "gophish"
+      ]
+    },
+    {
+      "name": "hakrawler",
+      "path": "skills/hakrawler/SKILL.md",
+      "description": "快速 Go Web 爬虫，用于发现 URL、端点和 JavaScript 文件",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "hakrawler"
+      ]
+    },
+    {
+      "name": "hashcat",
+      "path": "skills/hashcat/SKILL.md",
+      "description": "支持 300+ 种哈希类型的 GPU 加速离线密码破解工具",
+      "category": "password",
+      "tags": [
+        "password",
+        "hashcat"
+      ]
+    },
+    {
+      "name": "holehe",
+      "path": "skills/holehe/SKILL.md",
+      "description": "在 OSINT 过程中用于枚举目标数字足迹并识别跨平台账号",
+      "category": "cloud-recon",
+      "tags": [
+        "cloud-recon",
+        "holehe"
+      ]
+    },
+    {
+      "name": "httpx",
+      "path": "skills/httpx/SKILL.md",
+      "description": "快速 HTTP 探测工具，支持批量 URL 处理、状态码查询、标题提取、技术检测和 Web 指纹识别",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "httpx"
+      ]
+    },
+    {
+      "name": "hydra",
+      "path": "skills/hydra/SKILL.md",
+      "description": "支持 50+ 协议（SSH、HTTP、FTP、SMB、RDP、WinRM 等）的在线暴力破解和密码喷洒工具",
+      "category": "password",
+      "tags": [
+        "password",
+        "hydra"
+      ]
+    },
+    {
+      "name": "john",
+      "path": "skills/john/SKILL.md",
+      "description": "基于 CPU 的密码破解工具，支持数百种哈希格式，具备字典、规则和递增暴力破解模式",
+      "category": "password",
+      "tags": [
+        "password",
+        "john"
+      ]
+    },
+    {
+      "name": "kerbrute",
+      "path": "skills/kerbrute/SKILL.md",
+      "description": "基于 Kerberos 的 Active Directory 用户枚举和密码喷洒工具",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "kerbrute"
+      ]
+    },
+    {
+      "name": "kismet",
+      "path": "skills/kismet/SKILL.md",
+      "description": "支持 Wi-Fi、Bluetooth、Zigbee 和 SDR 的无线网络探测器和嗅探器",
+      "category": "network",
+      "tags": [
+        "network",
+        "kismet"
+      ]
+    },
+    {
+      "name": "kiterunner",
+      "path": "skills/kiterunner/SKILL.md",
+      "description": "使用真实世界 API schema 字典的上下文感知 API 路由发现和暴力破解工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "kiterunner"
+      ]
+    },
+    {
+      "name": "lazagne",
+      "path": "skills/lazagne/SKILL.md",
+      "description": "后渗透凭证恢复工具，从浏览器、邮件客户端、数据库、Git、WiFi 及其他已安装应用中提取已保存密码",
+      "category": "password",
+      "tags": [
+        "password",
+        "lazagne"
+      ]
+    },
+    {
+      "name": "lfisuite",
+      "path": "skills/lfisuite/SKILL.md",
+      "description": "具备路径遍历和日志投毒功能的自动化本地文件包含 (LFI) 测试与利用工具",
+      "category": "web",
+      "tags": [
+        "web",
+        "lfisuite"
+      ]
+    },
+    {
+      "name": "ligolo-ng",
+      "path": "skills/ligolo-ng/SKILL.md",
+      "description": "反向隧道工具，通过在攻击者机器上创建 TUN 接口，经由被攻陷的中转主机将流量路由到内部网络",
+      "category": "exfiltration",
+      "tags": [
+        "exfiltration",
+        "ligolo-ng"
+      ]
+    },
+    {
+      "name": "linpeas",
+      "path": "skills/linpeas/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"linpeas\"、\"以低权限用户身份在 Linux 或 macOS 上识别提权路径\"、 \"自动化枚举 Linux/macOS 提权向量\" 的问题",
+      "category": "privesc",
+      "tags": [
+        "privesc",
+        "linpeas"
+      ]
+    },
+    {
+      "name": "linux-exploit-suggester",
+      "path": "skills/linux-exploit-suggester/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"linux-exploit-suggester\"、\"根据内核版本和操作系统推荐提权漏洞\"、 \"快速识别可用的本地提权 CVE\" 的问题",
+      "category": "privesc",
+      "tags": [
+        "privesc",
+        "linux-exploit-suggester"
+      ]
+    },
+    {
+      "name": "maltego",
+      "path": "skills/maltego/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"maltego\"、\"在侦察阶段构建实体关系图\"、 \"威胁情报收集\"、\"可视化 OSINT 链接分析\" 的问题",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "maltego"
+      ]
+    },
+    {
+      "name": "masscan",
+      "path": "skills/masscan/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"masscan\"、\"执行大范围网络扫描\"、 \"识别大型 CIDR 范围的开放端口\"、\"在 nmap 服务扫描前作为初步发现步骤\" 的问题",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "masscan"
+      ]
+    },
+    {
+      "name": "massdns",
+      "path": "skills/massdns/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"massdns\"、\"拥有大量子域名列表并需要使用公共解析器快速批量解析\"、 \"高性能 DNS 批量解析\" 的问题",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "massdns"
+      ]
+    },
+    {
+      "name": "merlin",
+      "path": "skills/merlin/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"merlin\"、\"需要基于 Go 的植入物通过非标准加密信道规避网络检测\"、 \"使用 HTTP/2、HTTP/3 或 DNS 传输的跨平台 C2 框架\" 的问题",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "merlin"
+      ]
+    },
+    {
+      "name": "mimikatz",
+      "path": "skills/mimikatz/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"mimikatz\"、\"Windows 后渗透凭据收集\"、 \"基于 Kerberos 的横向移动\"、\"LSASS 转储\"、\"PtH (Pass-the-Hash) 和 PtT (Pass-the-Ticket...",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "mimikatz"
+      ]
+    },
+    {
+      "name": "mimipenguin",
+      "path": "skills/mimipenguin/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"mimipenguin\"、\"在已获得 root 权限的 Linux 目标上从运行进程和内存中提取明文密码\"、 \"Linux 内存凭据转储\" 的问题",
+      "category": "password",
+      "tags": [
+        "password",
+        "mimipenguin"
+      ]
+    },
+    {
+      "name": "mitmproxy",
+      "path": "skills/mitmproxy/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"mitmproxy\"、\"在 Web 应用测试期间代理应用流量并动态修改请求/响应\"、 \"使用 Python 插件脚本化请求拦截\" 的问题",
+      "category": "network",
+      "tags": [
+        "network",
+        "mitmproxy"
+      ]
+    },
+    {
+      "name": "modlishka",
+      "path": "skills/modlishka/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"modlishka\"、\"针对 OTP 进行网络钓鱼活动\"、 \"通过在受害者与真实站点之间充当透明中间人来绕过双因素认证/多因素认证\" 的问题",
+      "category": "social-eng",
+      "tags": [
+        "social-eng",
+        "modlishka"
+      ]
+    },
+    {
+      "name": "nanodump",
+      "path": "skills/nanodump/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"nanodump\"、\"转储 LSASS 内存以提取凭据\"、 \"在不触发 EDR 的情况下创建 LSASS 迷你转储\"、\"从内存提取 NTLM 哈希和 Kerberos 票据\"、 \"在 Windows 主机上...",
+      "category": "post-exploit",
+      "tags": [
+        "post-exploit",
+        "nanodump"
+      ]
+    },
+    {
+      "name": "nikto",
+      "path": "skills/nikto/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"nikto\"、\"在深度手动测试前快速进行 Web 服务器侦察以识别低挂果实、服务器 banner 和默认内容\"、 \"Web 服务器漏洞扫描\" 的问题",
+      "category": "web",
+      "tags": [
+        "web",
+        "nikto"
+      ]
+    },
+    {
+      "name": "nim-shellcode-fluctuation",
+      "path": "skills/nim-shellcode-fluctuation/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"nim-shellcode-fluctuation\"、\"部署需要在 EDR 内存扫描 RWX 区域时隐藏自身的植入物\"、 \"shellcode 内存加密规避\" 的问题",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "nim-shellcode-fluctuation"
+      ]
+    },
+    {
+      "name": "nmap",
+      "path": "skills/nmap/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"nmap\"、\"扫描目标\"、\"发现开放端口\"、\"枚举服务\"、 \"识别操作系统\"、\"运行漏洞脚本\" 的问题",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "nmap"
+      ]
+    },
+    {
+      "name": "nuclei",
+      "path": "skills/nuclei/SKILL.md",
+      "description": "此技能适用于用户询问关于 \"nuclei\"、\"扫描已知 CVE、配置错误、默认凭据、暴露的管理面板\"、 \"对目标 URL 运行基于模板的漏洞评估\" 的问题",
+      "category": "web",
+      "tags": [
+        "web",
+        "nuclei"
+      ]
+    },
+    {
+      "name": "openvas",
+      "path": "skills/openvas/SKILL.md",
+      "description": "OpenVAS (Greenbone Vulnerability Manager)：功能完整的开源漏洞扫描器，内置 60,000+ NVT",
+      "category": "web",
+      "tags": [
+        "web",
+        "openvas"
+      ]
+    },
+    {
+      "name": "pacu",
+      "path": "skills/pacu/SKILL.md",
+      "description": "AWS 利用框架，用于审计和攻击配置错误的 AWS 环境",
+      "category": "cloud-recon",
+      "tags": [
+        "cloud-recon",
+        "pacu"
+      ]
+    },
+    {
+      "name": "phoneinfoga",
+      "path": "skills/phoneinfoga/SKILL.md",
+      "description": "电话号码 OSINT 工具，可收集运营商、位置及在线存在数据",
+      "category": "social-eng",
+      "tags": [
+        "social-eng",
+        "phoneinfoga"
+      ]
+    },
+    {
+      "name": "phpsploit",
+      "path": "skills/phpsploit/SKILL.md",
+      "description": "通过 HTTP 头在 webshell 内隐蔽运行的后渗透框架",
+      "category": "web",
+      "tags": [
+        "web",
+        "phpsploit"
+      ]
+    },
+    {
+      "name": "poshc2",
+      "path": "skills/poshc2/SKILL.md",
+      "description": "支持代理的 Python C2 框架，植入体支持 PowerShell、C#、Python 和 C",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "poshc2"
+      ]
+    },
+    {
+      "name": "privesccheck",
+      "path": "skills/privesccheck/SKILL.md",
+      "description": "纯 PowerShell Windows 权限提升枚举脚本，检查服务、计划任务、注册表、DLL 劫持、COM 劫持及存储的凭据",
+      "category": "privesc",
+      "tags": [
+        "privesc",
+        "privesccheck"
+      ]
+    },
+    {
+      "name": "psexec",
+      "path": "skills/psexec/SKILL.md",
+      "description": "Impacket psexec 通过 SMB 在 Windows 主机上实现远程 SYSTEM 级 shell 执行",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "psexec"
+      ]
+    },
+    {
+      "name": "pupy",
+      "path": "skills/pupy/SKILL.md",
+      "description": "跨平台远程管理和后渗透工具，使用 Python 植入体",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "pupy"
+      ]
+    },
+    {
+      "name": "pyexfil",
+      "path": "skills/pyexfil/SKILL.md",
+      "description": "多通道数据外泄工具，支持 20+ 种隐蔽通道（ICMP、DNS、HTTPS、SMTP、Slack、QUIC）",
+      "category": "exfiltration",
+      "tags": [
+        "exfiltration",
+        "pyexfil"
+      ]
+    },
+    {
+      "name": "python-async-patterns",
+      "path": "skills/python-async-patterns/SKILL.md",
+      "description": "使用 asyncio 和 async/await 构建非阻塞 I/O 的异步 Python 模式：任务编排、取消、超时、背压、限流及 sync/async 边界安全处理",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "python-async-patterns"
+      ]
+    },
+    {
+      "name": "python-patterns",
+      "path": "skills/python-patterns/SKILL.md",
+      "description": "Python 惯用模式与最佳实践：类型注解、错误处理、数据建模、迭代、资源管理、项目布局及工具链",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "python-patterns"
+      ]
+    },
+    {
+      "name": "python-testing",
+      "path": "skills/python-testing/SKILL.md",
+      "description": "使用 pytest 的 Python 测试模式：TDD 循环、fixture、参数化、mock、测试组织、异步测试、覆盖率及 CI 规范",
+      "category": "programming",
+      "tags": [
+        "programming",
+        "python-testing"
+      ]
+    },
+    {
+      "name": "radare2",
+      "path": "skills/radare2/SKILL.md",
+      "description": "CLI 逆向工程框架，支持反汇编、调试、脚本化和二进制修补",
+      "category": "reverse",
+      "tags": [
+        "reverse",
+        "radare2"
+      ]
+    },
+    {
+      "name": "responder",
+      "path": "skills/responder/SKILL.md",
+      "description": "NBT-NS、LLMNR 和 mDNS 毒化工具，可从局域网 Windows 主机捕获 Net-NTLMv2 哈希",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "responder"
+      ]
+    },
+    {
+      "name": "reverse-ssh",
+      "path": "skills/reverse-ssh/SKILL.md",
+      "description": "从受害者向攻击者建立反向 SSH 隧道，实现 NAT/防火墙后的交互式 shell 访问",
+      "category": "exfiltration",
+      "tags": [
+        "exfiltration",
+        "reverse-ssh"
+      ]
+    },
+    {
+      "name": "revshells",
+      "path": "skills/revshells/SKILL.md",
+      "description": "反弹 shell 一行命令生成器（Web UI 和 CLI），支持 50+ 种 shell",
+      "category": "post-exploit",
+      "tags": [
+        "post-exploit",
+        "revshells"
+      ]
+    },
+    {
+      "name": "rubeus",
+      "path": "skills/rubeus/SKILL.md",
+      "description": "Kerberos 攻击工具包，支持 TGT/TGS 请求、AS-REP roasting、Kerberoasting、票据传递、哈希传递以及 S4U 委派滥用",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "rubeus"
+      ]
+    },
+    {
+      "name": "rustscan",
+      "path": "skills/rustscan/SKILL.md",
+      "description": "现代端口扫描器，可在数秒内发现开放端口，并将结果直接传输至 nmap 进行服务/版本探测",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "rustscan"
+      ]
+    },
+    {
+      "name": "scoutsuite",
+      "path": "skills/scoutsuite/SKILL.md",
+      "description": "多云安全审计工具，支持 AWS、Azure、GCP 等平台",
+      "category": "cloud-recon",
+      "tags": [
+        "cloud-recon",
+        "scoutsuite"
+      ]
+    },
+    {
+      "name": "searchsploit",
+      "path": "skills/searchsploit/SKILL.md",
+      "description": "Exploit-DB 的离线 CLI 搜索工具",
+      "category": "cloud-recon",
+      "tags": [
+        "cloud-recon",
+        "searchsploit"
+      ]
+    },
+    {
+      "name": "set",
+      "path": "skills/set/SKILL.md",
+      "description": "Social-Engineer Toolkit (SET) 用于鱼叉式钓鱼、凭据收割以及通过社会工程学向量投递载荷",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "set"
+      ]
+    },
+    {
+      "name": "shellcode-fluctuation",
+      "path": "skills/shellcode-fluctuation/SKILL.md",
+      "description": "C++ Shellcode 波动技术，在 C2 休眠间隔期间对注入的 Shellcode 进行加密，以规避 EDR 内存扫描",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "shellcode-fluctuation"
+      ]
+    },
+    {
+      "name": "shellerator",
+      "path": "skills/shellerator/SKILL.md",
+      "description": "CLI 反弹/绑定 shell 生成器，支持 20+ 种语言及可选编码",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "shellerator"
+      ]
+    },
+    {
+      "name": "shellter",
+      "path": "skills/shellter/SKILL.md",
+      "description": "动态 Shellcode 注入工具，在保留原始功能的同时后门化原生 Windows PE 可执行文件，以规避 AV 检测",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "shellter"
+      ]
+    },
+    {
+      "name": "sherlock",
+      "path": "skills/sherlock/SKILL.md",
+      "description": "在 400+ 个社交网络上搜索用户名",
+      "category": "cloud-recon",
+      "tags": [
+        "cloud-recon",
+        "sherlock"
+      ]
+    },
+    {
+      "name": "shodan",
+      "path": "skills/shodan/SKILL.md",
+      "description": "Shodan CLI 用于被动的互联网范围主机和服务发现",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "shodan"
+      ]
+    },
+    {
+      "name": "silenttrinity",
+      "path": "skills/silenttrinity/SKILL.md",
+      "description": "使用 Boo-lang .NET 植入程序并进行异步通信的后渗透 C2 框架",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "silenttrinity"
+      ]
+    },
+    {
+      "name": "skill-creator",
+      "path": "skills/skill-creator/SKILL.md",
+      "description": "按照开放的 AgentSkills 规范（agentskills.io）设计、创建、更新和打包 Agent Skills",
+      "category": "meta",
+      "tags": [
+        "meta",
+        "skill-creator"
+      ]
+    },
+    {
+      "name": "sliver",
+      "path": "skills/sliver/SKILL.md",
+      "description": "BishopFox 出品的开源对手模拟 C2 框架，支持 mTLS、WireGuard、HTTP/S 和 DNS 传输，具有每二进制文件非对称加密",
+      "category": "c2",
+      "tags": [
+        "c2",
+        "sliver"
+      ]
+    },
+    {
+      "name": "sn1per",
+      "path": "skills/sn1per/SKILL.md",
+      "description": "自动化渗透测试侦察框架，在单次扫描中整合 20+ 种工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "sn1per"
+      ]
+    },
+    {
+      "name": "sqlmap",
+      "path": "skills/sqlmap/SKILL.md",
+      "description": "自动化 SQL 注入检测与利用工具，支持所有主流数据库后端",
+      "category": "web",
+      "tags": [
+        "web",
+        "sqlmap"
+      ]
+    },
+    {
+      "name": "subfinder",
+      "path": "skills/subfinder/SKILL.md",
+      "description": "使用 40+ OSINT 来源的被动子域名枚举工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "subfinder"
+      ]
+    },
+    {
+      "name": "sublist3r",
+      "path": "skills/sublist3r/SKILL.md",
+      "description": "使用 OSINT 来源（Google、Bing、Baidu、DNSDumpster、VirusTotal、ThreatCrowd）进行子域名枚举的工具",
+      "category": "recon",
+      "tags": [
+        "recon",
+        "sublist3r"
+      ]
+    },
+    {
+      "name": "tplmap",
+      "path": "skills/tplmap/SKILL.md",
+      "description": "支持 18+ 模板引擎的自动化服务端模板注入 (Server-Side Template Injection) 检测与利用工具",
+      "category": "web",
+      "tags": [
+        "web",
+        "tplmap"
+      ]
+    },
+    {
+      "name": "trevorspray",
+      "path": "skills/trevorspray/SKILL.md",
+      "description": "针对 Microsoft 365、Azure AD、ADFS 及本地 Active Directory 的多线程密码喷洒工具",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "trevorspray"
+      ]
+    },
+    {
+      "name": "trufflehog",
+      "path": "skills/trufflehog/SKILL.md",
+      "description": "使用熵分析和 700+ 检测器在 git 仓库、S3 存储桶、文件系统及 CI 系统中查找泄露凭据和密钥",
+      "category": "cloud-recon",
+      "tags": [
+        "cloud-recon",
+        "trufflehog"
+      ]
+    },
+    {
+      "name": "veil",
+      "path": "skills/veil/SKILL.md",
+      "description": "能够生成 Metasploit 兼容 payload 的 AV 绕过框架，支持多种语言（Python、Ruby、Go、C#、PowerShell）",
+      "category": "evasion",
+      "tags": [
+        "evasion",
+        "veil"
+      ]
+    },
+    {
+      "name": "weevely3",
+      "path": "skills/weevely3/SKILL.md",
+      "description": "在文件上传或 RFI 漏洞利用成功后使用，可获得带内置后渗透模块的交互式 PHP Shell",
+      "category": "post-exploit",
+      "tags": [
+        "post-exploit",
+        "weevely3"
+      ]
+    },
+    {
+      "name": "wifite",
+      "path": "skills/wifite/SKILL.md",
+      "description": "自动化无线审计工具，只需极少配置即可对 WEP/WPA/WPA2/PMKID 发起攻击",
+      "category": "network",
+      "tags": [
+        "network",
+        "wifite"
+      ]
+    },
+    {
+      "name": "winpeas",
+      "path": "skills/winpeas/SKILL.md",
+      "description": "适合后渗透阶段以低权限用户身份发现提权向量",
+      "category": "windows-ad",
+      "tags": [
+        "windows-ad",
+        "winpeas"
+      ]
+    },
+    {
+      "name": "wireshark",
+      "path": "skills/wireshark/SKILL.md",
+      "description": "用于捕获和检查数据包的网络协议分析工具",
+      "category": "network",
+      "tags": [
+        "network",
+        "wireshark"
+      ]
+    },
+    {
+      "name": "wpscan",
+      "path": "skills/wpscan/SKILL.md",
+      "description": "WordPress 安全扫描器，可枚举用户、插件、主题及已知 CVE",
+      "category": "web",
+      "tags": [
+        "web",
+        "wpscan"
+      ]
+    },
+    {
+      "name": "x64dbg",
+      "path": "skills/x64dbg/SKILL.md",
+      "description": "用于恶意软件分析、脱壳和漏洞研究的 Windows x64/x86 用户态调试器，拥有丰富的插件生态",
+      "category": "reverse",
+      "tags": [
+        "reverse",
+        "x64dbg"
+      ]
+    },
+    {
+      "name": "xsstrike",
+      "path": "skills/xsstrike/SKILL.md",
+      "description": "高级 XSS 检测套件，具备上下文感知的 payload 生成、DOM XSS 分析、站点爬虫及 WAF 绕过模糊测试功能",
+      "category": "web",
+      "tags": [
+        "web",
+        "xsstrike"
+      ]
+    },
+    {
+      "name": "zap",
+      "path": "skills/zap/SKILL.md",
+      "description": "OWASP ZAP：开源 Web 应用扫描器和拦截代理，支持自动化主动/被动漏洞扫描",
+      "category": "web",
+      "tags": [
+        "web",
+        "zap"
+      ]
+    }
+  ]
+}

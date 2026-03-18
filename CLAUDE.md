@@ -22,7 +22,9 @@ for d in skills/*/; do python skills/skill-creator/scripts/quick_validate.py "$d
 
 - `skills/` — 120 skills in flat structure; each folder contains `SKILL.md` plus optional `assets/`, `references/`, `scripts/`
 - `.claude-plugin/plugin.json` — Claude Code plugin manifest
-- `convert.py` / `fix_descriptions.py` — format conversion utilities (from AgentSkills format)
+- `.claude-plugin/marketplace.json` — Marketplace metadata
+- `index.json` — Machine-readable skill index (120 entries, 16 categories)
+- `scripts/convert.py` / `scripts/fix_descriptions.py` — one-time format conversion utilities (from AgentSkills format)
 
 ## Conventions
 

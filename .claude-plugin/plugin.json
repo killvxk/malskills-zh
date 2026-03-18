@@ -1,5 +1,19 @@
 {
   "name": "malskills-zh",
   "description": "Offensive security skills collection for authorized penetration testing, CTF challenges, and security research. Includes tools for reconnaissance, exploitation, C2 frameworks, evasion, reverse engineering, and programming patterns.",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "author": {
+    "name": "killvxk",
+    "email": "killvxk@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/killvxk/malskills-zh",
+  "homepage": "https://github.com/killvxk/malskills-zh",
+  "keywords": [
+    "offensive-security",
+    "penetration-testing",
+    "ctf",
+    "security-research",
+    "reverse-engineering"
+  ]
 }

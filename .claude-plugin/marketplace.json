@@ -1,0 +1,42 @@
+{
+  "name": "malskills-zh",
+  "owner": {
+    "name": "killvxk",
+    "email": "killvxk@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "攻击性安全技能集合（中文版）— 120 个技能覆盖渗透测试、CTF 竞赛和安全研究全流程，包含侦察、Web 测试、Windows/AD、C2 框架、免杀、逆向工程和编程模式等 16 个分类。",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "malskills-zh",
+      "source": "./",
+      "description": "攻击性安全技能集合（中文版）：120 个技能，16 个分类，覆盖侦察/OSINT、Web 应用测试、Windows/AD、C2 框架、密码破解、免杀/载荷、BOF 开发、逆向工程、编程模式、网络/无线、数据外泄、社工/钓鱼、权限提升、云安全、后渗透和元技能。",
+      "version": "1.0.0",
+      "author": {
+        "name": "killvxk"
+      },
+      "license": "MIT",
+      "keywords": [
+        "offensive-security",
+        "penetration-testing",
+        "ctf",
+        "security-research",
+        "reconnaissance",
+        "web-exploitation",
+        "windows-ad",
+        "c2-framework",
+        "evasion",
+        "reverse-engineering",
+        "password-cracking",
+        "privilege-escalation",
+        "post-exploitation",
+        "programming-patterns"
+      ],
+      "category": "security",
+      "homepage": "https://github.com/killvxk/malskills-zh",
+      "repository": "https://github.com/killvxk/malskills-zh"
+    }
+  ]
+}
