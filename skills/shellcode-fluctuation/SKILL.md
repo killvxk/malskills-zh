@@ -1,37 +1,34 @@
 ---
 name: shellcode-fluctuation
 description: >
-  This skill should be used when the user asks about "shellcode-fluctuation",
-  "implants are being detected by memory-scanning EDR products during sleep".
-  C++ shellcode fluctuation technique that encrypts injected shellcode between
-  C2 sleep intervals to evade EDR memory scans.
+  此技能适用于用户询问关于"shellcode-fluctuation"、"植入程序在休眠期间被内存扫描 EDR 产品检测到"。C++ Shellcode 波动技术，在 C2 休眠间隔期间对注入的 Shellcode 进行加密，以规避 EDR 内存扫描。
 ---
 
 # Shellcode Fluctuation
 
-C++ in-memory evasion — XOR-encrypts shellcode in RX pages during C2 sleep to defeat memory scanners.
+C++ 内存规避技术 — 在 C2 休眠期间对 RX 页面中的 Shellcode 进行 XOR 加密，以对抗内存扫描器。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Clone and build with MSVC
+# 使用 MSVC 克隆并构建
 git clone https://github.com/mgeeky/ShellcodeFluctuation
-# Open in Visual Studio, build Release x64
+# 在 Visual Studio 中打开，构建 Release x64
 
-# Or MinGW
+# 或使用 MinGW
 x86_64-w64-mingw32-g++ -O2 -o fluctuator.exe main.cpp -lntdll
 ```
 
-## Core Mechanism
+## 核心机制
 
 ```
-[Shellcode in memory]
-  Awake:  → Decrypt → Execute → Sleep
-  Asleep: → Encrypt (XOR) → change PROT to RW → Scanner sees garbage
-  Wake:   → change PROT to RX → Decrypt → Resume
+[内存中的 Shellcode]
+  唤醒：→ 解密 → 执行 → 休眠
+  休眠：→ 加密（XOR）→ 将内存保护改为 RW → 扫描器看到的是乱码
+  唤醒：→ 将内存保护改回 RX → 解密 → 恢复执行
 ```
 
-## Configuration (main.cpp)
+## 配置项 (main.cpp)
 
 ```cpp
 #define SHELLCODE_FLUCTUATE   true
@@ -39,21 +36,21 @@ x86_64-w64-mingw32-g++ -O2 -o fluctuator.exe main.cpp -lntdll
 #define SLEEP_INTERVAL_MS     5000
 ```
 
-## Common Workflows
+## 常用工作流
 
-**Integrate into Cobalt Strike BOF loader:**
-1. Generate raw shellcode from CS listener
-2. Embed in fluctuator loader source
-3. Call `FluctuateShellcode()` wrapper before Sleep()
+**集成到 Cobalt Strike BOF 加载器：**
+1. 从 CS 监听器生成原始 Shellcode
+2. 嵌入到 fluctuator 加载器源码中
+3. 在 Sleep() 之前调用 `FluctuateShellcode()` 包装器
 
-**Combine with indirect syscalls:**
+**结合间接系统调用 (indirect syscalls)：**
 ```cpp
-// Replace VirtualProtect with direct NtProtectVirtualMemory
-// via syscall stub to avoid API hooks
+// 用直接的 NtProtectVirtualMemory 系统调用存根替换 VirtualProtect
+// 以绕过 API 钩子
 ```
 
-## Resources
+## 资源文件
 
-| File | When to load |
-|------|--------------|
-| `references/` | Hook evasion and memory protection patterns |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 钩子规避与内存保护模式 |

@@ -1,101 +1,97 @@
 ---
 name: ffuf
 description: >
-  This skill should be used when the user asks about "ffuf", "fuzz web
-  endpoints", "discover hidden parameters", "enumerate directories", "test for
-  injection points", "perform any HTTP-level wordlist-based fuzzing". Fast web
-  fuzzer for directory/file discovery, parameter fuzzing, virtual host
-  discovery, and POST data fuzzing.
+  此技能适用于用户询问关于 "ffuf"、"模糊测试 Web 端点"、"发现隐藏参数"、"枚举目录"、"测试注入点"、"执行任意基于字典的 HTTP 层模糊测试" 的场景。用于目录/文件发现、参数模糊测试、虚拟主机发现和 POST 数据模糊测试的快速 Web 模糊测试工具。
 ---
 
 # ffuf
 
-Go-based web fuzzer — FUZZ keyword can be placed anywhere in a request (URL, headers, body, hostname).
+基于 Go 的 Web 模糊测试工具 — FUZZ 关键字可放置在请求的任意位置（URL、请求头、请求体、主机名）。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Directory fuzzing
+# 目录模糊测试
 ffuf -u http://example.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
 
-# With file extension
+# 带文件扩展名
 ffuf -u http://example.com/FUZZ -w common.txt -e .php,.html,.txt
 
-# Subdomain/vhost fuzzing
+# 子域名/虚拟主机模糊测试
 ffuf -u http://FUZZ.example.com -w subdomains.txt -H "Host: FUZZ.example.com"
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-u <url>` | Target URL (use `FUZZ` as placeholder) |
-| `-w <wordlist>` | Wordlist path (`:KEYWORD` for named payloads) |
-| `-e <ext>` | Append extensions to each word |
-| `-t <n>` | Threads (default 40) |
-| `-rate <n>` | Max requests per second |
-| `-H <header>` | Custom header |
-| `-X <method>` | HTTP method (default GET) |
-| `-d <data>` | POST data body |
-| `-b <cookies>` | Cookie string |
-| `-r` | Follow redirects |
-| `-k` | Skip TLS verification |
-| `-x <proxy>` | Proxy URL |
-| `-o <file>` | Output file |
-| `-of <format>` | Output format: `json`, `html`, `csv`, `md`, `all` |
-| `-v` | Verbose (show redirects) |
-| `-s` | Silent mode |
-| `-p <delay>` | Delay between requests (e.g., `0.1` or `0.1-0.5`) |
+| `-u <url>` | 目标 URL（用 `FUZZ` 作为占位符） |
+| `-w <wordlist>` | 字典路径（用 `:KEYWORD` 命名 payload） |
+| `-e <ext>` | 为每个词追加扩展名 |
+| `-t <n>` | 线程数（默认 40） |
+| `-rate <n>` | 每秒最大请求数 |
+| `-H <header>` | 自定义请求头 |
+| `-X <method>` | HTTP 方法（默认 GET） |
+| `-d <data>` | POST 请求体数据 |
+| `-b <cookies>` | Cookie 字符串 |
+| `-r` | 跟随重定向 |
+| `-k` | 跳过 TLS 验证 |
+| `-x <proxy>` | 代理 URL |
+| `-o <file>` | 输出文件 |
+| `-of <format>` | 输出格式：`json`、`html`、`csv`、`md`、`all` |
+| `-v` | 详细模式（显示重定向） |
+| `-s` | 静默模式 |
+| `-p <delay>` | 请求间延迟（如 `0.1` 或 `0.1-0.5`） |
 
-## Filtering & Matching
+## 过滤与匹配
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-mc <codes>` | Match HTTP status codes (default `200,204,301,302,307,401,403,405`) |
-| `-ml <n>` | Match by response lines |
-| `-mw <n>` | Match by word count |
-| `-ms <size>` | Match by response size |
-| `-mr <regex>` | Match by regex in body |
-| `-fc <codes>` | Filter (exclude) status codes |
-| `-fl <n>` | Filter by lines |
-| `-fw <n>` | Filter by words |
-| `-fs <n>` | Filter by size |
-| `-fr <regex>` | Filter by regex |
+| `-mc <codes>` | 匹配 HTTP 状态码（默认 `200,204,301,302,307,401,403,405`） |
+| `-ml <n>` | 按响应行数匹配 |
+| `-mw <n>` | 按词数匹配 |
+| `-ms <size>` | 按响应大小匹配 |
+| `-mr <regex>` | 按响应体正则匹配 |
+| `-fc <codes>` | 过滤（排除）状态码 |
+| `-fl <n>` | 按行数过滤 |
+| `-fw <n>` | 按词数过滤 |
+| `-fs <n>` | 按大小过滤 |
+| `-fr <regex>` | 按正则过滤 |
 
-## Multiple FUZZ Positions
+## 多 FUZZ 位置
 
 ```bash
-# Two wordlists: W1 + W2
+# 两个字典：W1 + W2
 ffuf -u http://target.com/W1/W2 -w list1.txt:W1 -w list2.txt:W2
 
-# Cluster bomb (all combinations)
+# 集束炸弹模式（所有组合）
 ffuf -u http://target.com/W1?param=W2 -w list1.txt:W1 -w list2.txt:W2 -mode clusterbomb
 
-# Pitchfork (paired positions)
+# 音叉模式（配对位置）
 ffuf -u http://target.com/W1?user=W2 -w paths.txt:W1 -w users.txt:W2 -mode pitchfork
 ```
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Standard dir fuzz with noise filtering
+# 标准目录模糊测试，带噪声过滤
 ffuf -u https://target.com/FUZZ -w raft-medium.txt -fc 404 -o dirs.json -of json
 
-# POST login brute-force
+# POST 登录暴力破解
 ffuf -u https://target.com/login -X POST -d "user=admin&pass=FUZZ" -w passwords.txt -fc 401
 
-# Parameter discovery (GET)
+# 参数发现（GET）
 ffuf -u "https://target.com/page?FUZZ=test" -w params.txt -fw 42
 
-# Vhost discovery
+# 虚拟主机发现
 ffuf -u http://target.com -H "Host: FUZZ.target.com" -w vhosts.txt -fw 42
 
-# API endpoint fuzzing with auth
+# 带认证的 API 端点模糊测试
 ffuf -u https://api.target.com/v1/FUZZ -w api-words.txt -H "Authorization: Bearer TOKEN" -mc 200,201,204
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/filters.md` | All filter/matcher flags, noise reduction strategies, multi-FUZZ patterns |
+| `references/filters.md` | 所有过滤/匹配参数、噪声过滤策略、多 FUZZ 模式 |

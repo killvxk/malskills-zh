@@ -1,18 +1,14 @@
 ---
 name: sliver
 description: >
-  This skill should be used when the user asks about "sliver", "deploying C2
-  implants, generating cross-platform beacons, managing multi-operator
-  engagements", "executing BOFs via the armory". Open-source adversary
-  simulation C2 framework by BishopFox supporting mTLS, WireGuard, HTTP/S, and
-  DNS transports with per-binary asymmetric encryption.
+  此技能适用于用户询问关于"sliver"、"部署 C2 植入程序、生成跨平台 beacon、管理多操作员行动"、"通过 armory 执行 BOF"。BishopFox 出品的开源对手模拟 C2 框架，支持 mTLS、WireGuard、HTTP/S 和 DNS 传输，具有每二进制文件非对称加密。
 ---
 
 # Sliver
 
-Open-source C2: mTLS, WireGuard, HTTP/S, DNS.
+开源 C2 框架：支持 mTLS、WireGuard、HTTP/S、DNS。
 
-## Quick Start
+## 快速开始
 
 ```bash
 ./sliver-server
@@ -23,33 +19,33 @@ https -l 443 -d attacker.com
 use <session-id>
 ```
 
-## Core Commands
+## 核心命令
 
-| Command | Purpose |
-|---------|---------|
-| `generate` | Build new implant |
-| `generate beacon` | Async beacon with check-in interval |
-| `jobs` | List active listeners |
-| `sessions` | List active sessions |
-| `use <id>` | Interact with session |
-| `shell` | Spawn interactive shell |
-| `execute <cmd>` | Run command |
-| `download / upload` | File transfer |
-| `portfwd add` | Port forwarding |
-| `socks5 start` | SOCKS5 proxy via session |
-| `armory` | Install BOF/extension packs |
+| 命令 | 用途 |
+|------|------|
+| `generate` | 构建新植入程序 |
+| `generate beacon` | 带签入间隔的异步 beacon |
+| `jobs` | 列出活跃监听器 |
+| `sessions` | 列出活跃会话 |
+| `use <id>` | 与会话交互 |
+| `shell` | 生成交互式 shell |
+| `execute <cmd>` | 执行命令 |
+| `download / upload` | 文件传输 |
+| `portfwd add` | 端口转发 |
+| `socks5 start` | 通过会话建立 SOCKS5 代理 |
+| `armory` | 安装 BOF/扩展包 |
 
-## Transport Options
+## 传输选项
 
-| Transport | Flag |
-|-----------|------|
+| 传输方式 | 参数 |
+|---------|------|
 | mTLS | `--mtls <host>:<port>` |
 | HTTP/S | `--http <url>` |
 | WireGuard | `--wg <host>:<port>` |
 | DNS | `--dns <domain>` |
 
-## Resources
+## 资源文件
 
-| File | When to load |
-|------|--------------|
-| `references/` | BOF execution, multiplayer setup, OPSEC notes |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | BOF 执行、多人协作配置、OPSEC 说明 |

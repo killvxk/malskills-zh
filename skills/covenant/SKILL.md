@@ -1,18 +1,16 @@
 ---
 name: covenant
 description: >
-  This skill should be used when the user asks about "covenant", "running
-  .NET-native red team operations, leveraging the task library for
-  post-exploitation", "training teams on visualized collaborative C2".
-  Collaborative .NET C2 framework with web UI, Grunt implants over HTTP/S and
-  SMB, built-in task library, and multi-operator support.
+  此技能适用于用户询问关于"covenant"、"运行 .NET 原生红队行动"、"利用任务库进行后渗透利用"、
+  "训练团队使用可视化协作 C2"等问题。协作型 .NET C2 框架，具有 Web 界面、通过 HTTP/S 和 SMB
+  运行的 Grunt 植入物、内置任务库以及多操作员支持。
 ---
 
 # Covenant
 
-Collaborative .NET C2 with web interface and Grunt implants.
+具有 Web 界面和 Grunt 植入物的协作型 .NET C2 框架。
 
-## Quick Start
+## 快速开始
 
 ```bash
 docker run -it -p 7443:7443 ghcr.io/cobbr/covenant
@@ -20,29 +18,29 @@ docker run -it -p 7443:7443 ghcr.io/cobbr/covenant
 # Access: https://localhost:7443
 ```
 
-## Core Concepts
+## 核心概念
 
-| Term | Meaning |
+| 术语 | 含义 |
 |------|---------|
-| Grunt | Implant agent |
-| Listener | HTTP/HTTPS/SMB endpoint |
-| Launcher | Payload generator (binary, script, etc.) |
-| Task | Post-exploitation action |
+| Grunt | 植入物 Agent |
+| Listener | HTTP/HTTPS/SMB 监听端点 |
+| Launcher | 有效载荷生成器（二进制、脚本等） |
+| Task | 后渗透操作 |
 
-## Common Tasks
+## 常用任务
 
-| Task | Purpose |
+| 任务 | 用途 |
 |------|---------|
-| `Shell` | Run shell command |
-| `Assembly` | Execute .NET assembly in memory |
-| `PowerShell` | Run PowerShell block |
-| `SharpHound` | Built-in BloodHound collection |
-| `Mimikatz` | Credential dump |
-| `PortScan` | Internal port scan |
-| `Download / Upload` | File transfer |
+| `Shell` | 运行 Shell 命令 |
+| `Assembly` | 在内存中执行 .NET 程序集 |
+| `PowerShell` | 运行 PowerShell 代码块 |
+| `SharpHound` | 内置 BloodHound 数据收集 |
+| `Mimikatz` | 凭据提取 (Credential Extraction) |
+| `PortScan` | 内网端口扫描 |
+| `Download / Upload` | 文件传输 |
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | REST API usage, custom task creation, SMB chaining |
+| `references/` | REST API 用法、自定义任务创建、SMB 链接 |

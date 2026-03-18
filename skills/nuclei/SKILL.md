@@ -1,60 +1,57 @@
 ---
 name: nuclei
 description: >
-  This skill should be used when the user asks about "nuclei", "scan for known
-  CVEs, misconfigurations, default credentials, exposed panels", "run a
-  template-based vulnerability assessment against a target URL".
-  Template-based vulnerability scanner for web apps, networks, and
-  infrastructure.
+  此技能适用于用户询问关于 "nuclei"、"扫描已知 CVE、配置错误、默认凭据、暴露的管理面板"、
+  "对目标 URL 运行基于模板的漏洞评估" 的问题。
 ---
 
 # Nuclei
 
-Template-based vulnerability scanner — 10,000+ community templates covering CVEs, misconfigs, and exposures.
+基于模板的漏洞扫描器 — 超过 10,000 个社区模板，覆盖 CVE、配置错误和信息暴露。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Scan a URL with auto-updated templates
+# 使用自动更新的模板扫描 URL
 nuclei -u https://example.com
 
-# Scan from a list of URLs
+# 从 URL 列表扫描
 nuclei -l urls.txt
 
-# Run specific template category
+# 运行特定模板类别
 nuclei -u https://example.com -t technologies/
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-u <url>` | Single target URL |
-| `-l <file>` | File with list of URLs |
-| `-t <path>` | Template file/directory/URL |
-| `-tags <tags>` | Run templates by tag (e.g., `cve,rce,lfi`) |
-| `-severity <s>` | Filter by severity: `info,low,medium,high,critical` |
-| `-et <path>` | Exclude template path |
-| `-etags <tags>` | Exclude tags |
-| `-es <severity>` | Exclude severity |
-| `-H <header>` | Custom HTTP header |
-| `-V <var=val>` | Template variable override |
-| `-o <file>` | Output file (default stdout) |
-| `-json` | JSON output |
-| `-jsonl` | JSON Lines output |
-| `-c <n>` | Concurrent templates (default 25) |
-| `-rate-limit <n>` | Max requests/second |
-| `-timeout <n>` | HTTP timeout (default 5s) |
-| `-retries <n>` | Retries on timeout |
-| `-rl <n>` | Rate limit per host |
-| `-proxy <url>` | HTTP/SOCKS5 proxy |
-| `-update-templates` | Update community templates |
-| `-nt` | New templates only (since last update) |
-| `-silent` | Print findings only |
-| `-v` | Verbose |
-| `-stats` | Display scan statistics |
+| `-u <url>` | 单个目标 URL |
+| `-l <file>` | 包含 URL 列表的文件 |
+| `-t <path>` | 模板文件/目录/URL |
+| `-tags <tags>` | 按标签运行模板（如 `cve,rce,lfi`） |
+| `-severity <s>` | 按严重程度过滤：`info,low,medium,high,critical` |
+| `-et <path>` | 排除模板路径 |
+| `-etags <tags>` | 排除标签 |
+| `-es <severity>` | 排除严重程度 |
+| `-H <header>` | 自定义 HTTP 头 |
+| `-V <var=val>` | 模板变量覆盖 |
+| `-o <file>` | 输出文件（默认标准输出） |
+| `-json` | JSON 格式输出 |
+| `-jsonl` | JSON Lines 格式输出 |
+| `-c <n>` | 并发模板数（默认 25） |
+| `-rate-limit <n>` | 最大请求速率（每秒） |
+| `-timeout <n>` | HTTP 超时（默认 5 秒） |
+| `-retries <n>` | 超时重试次数 |
+| `-rl <n>` | 每个主机的速率限制 |
+| `-proxy <url>` | HTTP/SOCKS5 代理 |
+| `-update-templates` | 更新社区模板 |
+| `-nt` | 仅使用新模板（上次更新后新增的） |
+| `-silent` | 仅打印发现结果 |
+| `-v` | 详细输出 |
+| `-stats` | 显示扫描统计信息 |
 
-## Template Categories
+## 模板类别
 
 ```bash
 nuclei -u https://target.com -t cves/              # CVE templates
@@ -65,33 +62,33 @@ nuclei -u https://target.com -t default-logins/    # Default credentials
 nuclei -u https://target.com -t network/           # TCP/UDP templates
 ```
 
-## Common Workflows
+## 常见工作流
 
 ```bash
-# Update templates first
+# 先更新模板
 nuclei -update-templates
 
-# Full web scan (skip info)
+# 全面 Web 扫描（跳过 info 级别）
 nuclei -l urls.txt -es info -o findings.txt
 
-# CVE-focused scan
+# 以 CVE 为重点的扫描
 nuclei -u https://target.com -tags cve -severity medium,high,critical
 
-# Exposed panels and admin interfaces
+# 暴露的面板和管理界面
 nuclei -u https://target.com -tags panel,login,exposure
 
-# Custom template
+# 使用自定义模板
 nuclei -u https://target.com -t /path/to/custom.yaml
 
-# Scan with proxy (Burp)
+# 通过代理扫描（Burp）
 nuclei -u https://target.com -proxy http://127.0.0.1:8080
 
-# Fast recon with tech fingerprint
+# 快速侦察并进行技术指纹识别
 nuclei -l urls.txt -t technologies/ -silent
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/templates.md` | Template syntax, custom template writing, tag reference |
+| `references/templates.md` | 模板语法、自定义模板编写、标签参考 |

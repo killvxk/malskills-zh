@@ -1,18 +1,14 @@
 ---
 name: burpsuite
 description: >
-  This skill should be used when the user asks about "burpsuite",
-  "intercepting HTTP traffic", "fuzzing web endpoints",
-  "exploiting SQLi/XSS/IDOR manually", "running automated active scans".
-  Burp Suite: integrated web application security testing platform with
-  proxy, scanner, intruder, and repeater.
+  此技能适用于用户询问关于 "burpsuite"、"拦截 HTTP 流量"、"模糊测试 Web 端点"、"手工利用 SQLi/XSS/IDOR"、"运行自动化主动扫描" 等内容。Burp Suite：集代理、扫描器、Intruder 和 Repeater 于一体的 Web 应用安全测试平台。
 ---
 
 # Burp Suite
 
-Web application security testing platform.
+Web 应用安全测试平台。
 
-## Quick Start
+## 快速开始
 
 ```bash
 burpsuite
@@ -20,39 +16,39 @@ burpsuite
 # Install CA cert: browse to http://burp while proxied
 ```
 
-## Core Tools
+## 核心工具
 
-| Tool | Use |
+| 工具 | 用途 |
 |------|-----|
-| **Proxy** | Intercept / modify HTTP/S traffic |
-| **Repeater** | Replay and modify single requests |
-| **Intruder** | Automated fuzzing / brute-force |
-| **Scanner** | Active/passive vuln detection (Pro) |
-| **Decoder** | Encode/decode URL, Base64, hex |
-| **Comparer** | Diff two HTTP responses |
-| **Extender** | Load BApp plugins |
+| **Proxy** | 拦截 / 修改 HTTP/S 流量 |
+| **Repeater** | 重放并修改单个请求 |
+| **Intruder** | 自动化模糊测试 / 暴力破解 |
+| **Scanner** | 主动/被动漏洞检测（专业版） |
+| **Decoder** | URL、Base64、十六进制编解码 |
+| **Comparer** | 对比两个 HTTP 响应的差异 |
+| **Extender** | 加载 BApp 插件 |
 
-## Shortcuts
+## 快捷键
 
-| Shortcut | Action |
+| 快捷键 | 操作 |
 |----------|--------|
-| `Ctrl+R` | Send to Repeater |
-| `Ctrl+I` | Send to Intruder |
-| `Ctrl+F` | Forward intercepted request |
-| `Ctrl+Z` | Drop request |
+| `Ctrl+R` | 发送到 Repeater |
+| `Ctrl+I` | 发送到 Intruder |
+| `Ctrl+F` | 转发已拦截的请求 |
+| `Ctrl+Z` | 丢弃请求 |
 
-## Common Workflows
+## 常见工作流程
 
-### SQLi manual detection
-1. Capture request → Repeater (`Ctrl+R`)
-2. Modify parameter value, observe response differences
+### SQLi 手工检测
+1. 捕获请求 → Repeater（`Ctrl+R`）
+2. 修改参数值，观察响应差异
 
-### Intruder brute-force
-1. Capture request → Intruder → mark positions with `§`
-2. Load wordlist → Start Attack
+### Intruder 暴力破解
+1. 捕获请求 → Intruder → 用 `§` 标记插入位置
+2. 加载字典 → 开始攻击
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | BApp recommendations, match-and-replace rules, scan config |
+| `references/` | BApp 推荐、匹配替换规则、扫描配置 |

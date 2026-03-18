@@ -1,56 +1,52 @@
 ---
 name: python-async-patterns
 description: >
-  This skill should be used when the user asks about "python-async-patterns",
-  "implementing concurrent network/DB workflows", "async services". Async
-  Python patterns for building non-blocking I/O with asyncio and async/await:
-  task orchestration, cancellation, timeouts, backpressure, rate limiting, and
-  safe sync/async boundaries.
+  此技能适用于用户询问关于 "python-async-patterns"、"实现并发网络/数据库工作流"、"async 服务" 等内容。使用 asyncio 和 async/await 构建非阻塞 I/O 的异步 Python 模式：任务编排、取消、超时、背压、限流及 sync/async 边界安全处理。
 ---
 
-# Async Python Patterns
+# Async Python 模式
 
-This skill focuses on **practical asyncio patterns** for I/O-bound concurrency.
+本技能聚焦于 **asyncio 实用并发模式**，适用于 I/O 密集型场景。
 
-## When to activate
+## 激活时机
 
-- You’re building an async service/client (HTTP, DB, queues, websockets)
-- You need concurrency with limits (rate limiting, semaphores)
-- You need safe cancellation and timeouts
-- You suspect event loop blocking (sync call inside async path)
+- 正在构建 async 服务/客户端（HTTP、数据库、消息队列、WebSocket）
+- 需要带限制的并发（限流、信号量）
+- 需要安全的取消与超时机制
+- 怀疑存在事件循环阻塞（async 路径中调用了同步代码）
 
-## Rules of engagement
+## 使用原则
 
-- Prefer async only for **I/O-bound** workloads.
-- Never block the event loop (no `time.sleep()`, no sync HTTP/DB in async code).
-- Make cancellation and timeouts explicit.
-- Bound concurrency; unbounded `gather()` can turn memory into a queue.
+- async 仅适用于 **I/O 密集型**工作负载。
+- 永远不要阻塞事件循环（禁用 `time.sleep()`，禁止在 async 代码中调用同步 HTTP/DB）。
+- 显式声明取消和超时。
+- 限制并发数量；无限制的 `gather()` 可能将内存变成队列。
 
-## Quick patterns
+## 常用模式
 
-### Concurrent fan-out with bounds
+### 有限制的并发扇出
 
-- Use `asyncio.TaskGroup` (Python 3.11+) for structured concurrency.
-- Use a semaphore for concurrency limits.
+- 使用 `asyncio.TaskGroup`（Python 3.11+）实现结构化并发。
+- 使用信号量（semaphore）限制并发数。
 
-### Timeouts
+### 超时
 
-- Prefer `asyncio.timeout()` (3.11+) for scoped timeouts.
+- 优先使用 `asyncio.timeout()`（3.11+）设置作用域超时。
 
-### Cancellation
+### 取消
 
-- Catch `asyncio.CancelledError` only to clean up, then re-raise.
+- 捕获 `asyncio.CancelledError` 仅用于清理资源，之后必须重新抛出。
 
-### Sync/async boundary
+### Sync/async 边界
 
-- Offload truly blocking work via `asyncio.to_thread()`.
+- 通过 `asyncio.to_thread()` 将真正阻塞的工作卸载到线程。
 
-## Resources
+## 资源
 
-Load on demand:
+按需加载：
 
-- `references/foundations.md` — event loop, coroutines vs tasks, TaskGroup vs gather
-- `references/cancellation-timeouts.md` — cancellation semantics and timeout patterns
-- `references/backpressure-rate-limit.md` — queues, semaphores, producer/consumer, rate limiting
-- `references/sync-async-interop.md` — to_thread, executors, avoiding hidden blocking
-- `references/testing.md` — testing async code patterns (pytest-asyncio) and flake avoidance
+- `references/foundations.md` —— 事件循环、协程 vs 任务、TaskGroup vs gather
+- `references/cancellation-timeouts.md` —— 取消语义与超时模式
+- `references/backpressure-rate-limit.md` —— 队列、信号量、生产者/消费者、限流
+- `references/sync-async-interop.md` —— to_thread、executor、避免隐藏阻塞
+- `references/testing.md` —— 异步代码测试模式（pytest-asyncio）与不稳定性规避

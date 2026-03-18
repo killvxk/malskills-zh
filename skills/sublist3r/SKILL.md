@@ -1,71 +1,68 @@
 ---
 name: sublist3r
 description: >
-  This skill should be used when the user asks about "sublist3r", "passively
-  enumerating subdomains from public search engines and threat intel
-  platforms". Subdomain enumeration using OSINT sources (Google, Bing, Baidu,
-  DNSDumpster, VirusTotal, ThreatCrowd).
+  此技能适用于用户询问关于 "sublist3r"、"通过公开搜索引擎和威胁情报平台被动枚举子域名"。使用 OSINT 来源（Google、Bing、Baidu、DNSDumpster、VirusTotal、ThreatCrowd）进行子域名枚举的工具。
 ---
 
 # Sublist3r
 
-Passive subdomain enumeration via OSINT — search engines, DNSDumpster, VirusTotal.
+通过 OSINT 进行被动子域名枚举 —— 支持搜索引擎、DNSDumpster、VirusTotal 等来源。
 
-## Quick Start
+## 快速开始
 
 ```bash
 pip install sublist3r
 
-# Basic subdomain enum
+# 基础子域名枚举
 sublist3r -d target.com
 
-# With brute-force
+# 启用暴力破解
 sublist3r -d target.com -b -w wordlist.txt
 
-# Save output
+# 保存输出
 sublist3r -d target.com -o subdomains.txt
 
-# Verbose (show sources)
+# 详细模式（显示来源）
 sublist3r -d target.com -v
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-d DOMAIN` | Target domain |
-| `-b` | Enable brute-force |
-| `-w FILE` | Brute-force wordlist |
-| `-p PORTS` | Check ports on found hosts |
-| `-v` | Verbose (show each source) |
-| `-t N` | Threads (default: 10) |
-| `-o FILE` | Output file |
-| `-e ENGINES` | Comma-separated engines |
+| `-d DOMAIN` | 目标域名 |
+| `-b` | 启用暴力破解 |
+| `-w FILE` | 暴力破解字典文件 |
+| `-p PORTS` | 检测发现主机上的指定端口 |
+| `-v` | 详细模式（显示每个来源） |
+| `-t N` | 线程数（默认 10） |
+| `-o FILE` | 输出文件 |
+| `-e ENGINES` | 以逗号分隔的搜索引擎列表 |
 
-## Sources Used
+## 使用的来源
 
-Google · Bing · Yahoo · Baidu · Ask · Netcraft · DNSDumpster · VirusTotal · ThreatCrowd · SSL certs · PassiveDNS
+Google · Bing · Yahoo · Baidu · Ask · Netcraft · DNSDumpster · VirusTotal · ThreatCrowd · SSL 证书 · PassiveDNS
 
-## Common Workflows
+## 常用工作流
 
-**Passive only (stealthy):**
+**仅被动模式（隐蔽性高）：**
 ```bash
 sublist3r -d target.com -o passive_subs.txt
 ```
 
-**Active brute + passive combined:**
+**主动暴力破解 + 被动枚举组合：**
 ```bash
 sublist3r -d target.com -b -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -o all_subs.txt
 ```
 
-**Pipe to resolver:**
+**通过管道传给解析器：**
 ```bash
 sublist3r -d target.com -o subs.txt
 cat subs.txt | dnsx -silent -a -resp > live.txt
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Engine API keys and wordlist sources |
+| `references/` | 搜索引擎 API 密钥及字典来源 |

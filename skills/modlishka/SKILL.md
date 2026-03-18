@@ -1,17 +1,15 @@
 ---
 name: modlishka
 description: >
-  This skill should be used when the user asks about "modlishka", "conducting
-  phishing campaigns targeting OTP", "push MFA by acting as a transparent MITM
-  between victim and the real site". Flexible reverse proxy phishing framework
-  that captures credentials and session cookies while bypassing 2FA/MFA.
+  此技能适用于用户询问关于 "modlishka"、"针对 OTP 进行网络钓鱼活动"、
+  "通过在受害者与真实站点之间充当透明中间人来绕过双因素认证/多因素认证" 的问题。
 ---
 
 # Modlishka
 
-Reverse-proxy phishing that bypasses 2FA/MFA.
+可绕过双因素认证/多因素认证 (2FA/MFA) 的反向代理钓鱼框架。
 
-## Quick Start
+## 快速开始
 
 ```bash
 git clone https://github.com/drk1wi/Modlishka && cd Modlishka && make
@@ -24,27 +22,27 @@ git clone https://github.com/drk1wi/Modlishka && cd Modlishka && make
 ./Modlishka -config config.json
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-target` | Real site to proxy |
-| `-phishing` | Attacker phishing domain |
-| `-cert / -key` | TLS certificate paths |
-| `-credParams` | Field names to harvest |
-| `-trackingCookie` | Victim tracking cookie name |
-| `-jsRules` | JavaScript inject rules |
-| `-config` | JSON config file path |
+| `-target` | 被代理的真实站点 |
+| `-phishing` | 攻击者的钓鱼域名 |
+| `-cert / -key` | TLS 证书路径 |
+| `-credParams` | 要收割的表单字段名 |
+| `-trackingCookie` | 受害者追踪 Cookie 名称 |
+| `-jsRules` | JavaScript 注入规则 |
+| `-config` | JSON 配置文件路径 |
 
-## Workflow
+## 操作流程
 
-1. Register phishing domain + get TLS cert (Let's Encrypt)
-2. Fill `config.json` with target, domain, TLS paths
-3. Start Modlishka; send victim the phishing URL
-4. Observer panel at `http://127.0.0.1:8888` shows captured credentials + session cookies
+1. 注册钓鱼域名并获取 TLS 证书（Let's Encrypt）
+2. 填写 `config.json`，设置目标站点、域名和 TLS 路径
+3. 启动 Modlishka；将钓鱼 URL 发送给受害者
+4. 在 `http://127.0.0.1:8888` 的监控面板查看已捕获的凭据和会话 Cookie
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Config template, operator panel usage |
+| `references/` | 配置模板、操作面板使用说明 |

@@ -1,58 +1,57 @@
 ---
 name: massdns
 description: >
-  This skill should be used when the user asks about "massdns", "you have a
-  large subdomain list and need to resolve all entries quickly using public
-  resolvers". High-performance DNS resolver for bulk subdomain resolution.
+  此技能适用于用户询问关于 "massdns"、"拥有大量子域名列表并需要使用公共解析器快速批量解析"、
+  "高性能 DNS 批量解析" 的问题。
 ---
 
 # MassDNS
 
-High-speed DNS bulk resolver — resolve millions of subdomains per minute.
+高速批量 DNS 解析器 — 每分钟可解析数百万个子域名。
 
-## Quick Start
+## 快速开始
 
 ```bash
 git clone https://github.com/blechschmidt/massdns
 cd massdns && make
 
-# Resolve subdomain list
+# 解析子域名列表
 ./bin/massdns -r resolvers.txt -t A subdomains.txt -o S -w resolved.txt
 
-# Built-in resolver list
+# 使用内置解析器列表
 ./bin/massdns -r lists/resolvers.txt -t A subdomains.txt -o S > resolved.txt
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-r FILE` | Resolver list file |
-| `-t TYPE` | DNS type (A/AAAA/MX/NS/CNAME) |
-| `-o FORMAT` | Output format (S=simple, J=JSON, L=list) |
-| `-w FILE` | Write output to file |
-| `-s N` | Concurrent resolvers |
-| `--root` | Use root server for NS lookups |
-| `--verify-ip` | Verify A record IPs |
+| `-r FILE` | 解析器列表文件 |
+| `-t TYPE` | DNS 类型（A/AAAA/MX/NS/CNAME） |
+| `-o FORMAT` | 输出格式（S=简单, J=JSON, L=列表） |
+| `-w FILE` | 将输出写入文件 |
+| `-s N` | 并发解析器数量 |
+| `--root` | 使用根服务器进行 NS 查询 |
+| `--verify-ip` | 验证 A 记录 IP |
 
-## Common Workflows
+## 常见工作流
 
-**Subdomain enumeration pipeline:**
+**子域名枚举流水线：**
 ```bash
-# Generate candidates with subfinder
+# 用 subfinder 生成候选列表
 subfinder -d target.com -silent -o subs.txt
 
-# Resolve with massdns
+# 用 massdns 解析
 ./bin/massdns -r lists/resolvers.txt -t A subs.txt -o S | grep -v NXDOMAIN > live.txt
 ```
 
-**Extract live IPs:**
+**提取存活 IP：**
 ```bash
 cat resolved.txt | grep " A " | awk '{print $3}' | sort -u > ips.txt
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Resolver list sources and rate tuning |
+| `references/` | 解析器列表来源和速率调优 |

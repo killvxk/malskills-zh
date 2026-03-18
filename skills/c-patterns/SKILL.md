@@ -1,42 +1,39 @@
 ---
 name: c-patterns
 description: >
-  This skill should be used when the user asks about "c-patterns", "writing",
-  "reviewing C code (C11+) and when designing low-level modules with clear
-  resource lifetimes". C language patterns and best practices for safe,
-  maintainable C: ownership, error handling, integer safety, and API design.
+  此技能适用于用户询问关于 "c-patterns"、"编写"、"审查 C 代码（C11+）以及设计具有明确资源生命周期的底层模块" 等内容。C 语言安全编程模式与最佳实践：所有权管理、错误处理、整型安全和 API 设计。
 ---
 
 # C Patterns
 
-This skill focuses on **safe C**: explicit ownership, explicit errors, and predictable control flow.
+本技能聚焦于**安全 C 编程**：显式所有权、显式错误处理和可预测的控制流。
 
-If you’re writing tests, use `c-testing`.
+如需编写测试，请使用 `c-testing`。
 
-## When to activate
+## 适用场景
 
-- Writing/refactoring C modules and APIs
-- Reviewing for memory safety and integer safety
-- Designing error-handling conventions and cleanup paths
-
----
-
-## Core rules (high signal)
-
-- Make ownership explicit: allocate/free at the same abstraction level.
-- Use a consistent error strategy (return codes, out-params) and document it.
-- Avoid in-band error indicators when possible.
-- Use a single-exit cleanup path for functions managing multiple resources.
-- Treat integer conversions and size calculations as potential bugs.
+- 编写/重构 C 模块和 API
+- 审查内存安全性和整型安全性
+- 设计错误处理约定和资源清理路径
 
 ---
 
-## Resources
+## 核心规则（高价值）
 
-Load on demand:
+- 使所有权显式化：在同一抽象层级进行分配和释放。
+- 使用一致的错误处理策略（返回码、输出参数）并加以文档化。
+- 尽可能避免带内错误指示符 (in-band error indicators)。
+- 对管理多个资源的函数使用单一出口的清理路径。
+- 将整型转换和大小计算视为潜在的 bug。
 
-- `references/error-handling.md` — error policy, return codes, cleanup patterns
-- `references/memory-ownership.md` — allocation/free rules, zero-length alloc, free-null
-- `references/integers.md` — overflow, size_t usage, bounds checking
-- `references/concurrency.md` — pthreads, C11 atomics, Win32 threads, race detection
-- `references/tooling.md` — warnings, sanitizers, static analysis, binary inspection (MinGW/objdump, MSVC/dumpbin, Linux tools)
+---
+
+## 资源
+
+按需加载：
+
+- `references/error-handling.md` — 错误策略、返回码、清理模式
+- `references/memory-ownership.md` — 分配/释放规则、零长度分配、free-null 处理
+- `references/integers.md` — 溢出、size_t 用法、边界检查
+- `references/concurrency.md` — pthreads、C11 原子操作、Win32 线程、竞态检测
+- `references/tooling.md` — 警告、sanitizer、静态分析、二进制检查（MinGW/objdump、MSVC/dumpbin、Linux 工具）

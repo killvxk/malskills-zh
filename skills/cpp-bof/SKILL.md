@@ -1,46 +1,42 @@
 ---
 name: cpp-bof
 description: >
-  This skill should be used when the user asks about "cpp-bof", "create a C++
-  BOF, leverage RAII/templates/classes inside a BOF", "use
-  typedef+GetProcAddress DFR, integrate COM/GDI+", "needs dual-build (BOF+EXE)
-  patterns". Generate, compile, and debug Beacon Object Files (BOF) in C++ for
-  Cobalt Strike and compatible C2 frameworks.
+  此技能适用于用户询问关于"cpp-bof"、"创建 C++ BOF"、"在 BOF 中利用 RAII/模板/类"、
+  "使用 typedef+GetProcAddress DFR"、"集成 COM/GDI+"、"需要双编译（BOF+EXE）模式"等问题。
+  为 Cobalt Strike 及兼容 C2 框架生成、编译和调试 C++ 格式的 Beacon Object Files (BOF)。
 ---
 
-# C++ Beacon Object Files (BOF) Development
+# C++ Beacon Object Files (BOF) 开发
 
-This skill produces production-quality BOFs in C++. C++ offers advantages
-for complex BOFs: RAII for handle management, templates, stronger type safety,
-and COM/GDI+ integration. Patterns are derived from real-world C++ BOFs.
+本技能用于生成生产级 C++ BOF。C++ 为复杂 BOF 提供了优势：用于句柄管理的 RAII、模板、更强的类型安全以及 COM/GDI+ 集成。这些模式源自真实世界的 C++ BOF 实践。
 
-## When to use
+## 使用场景
 
-- User says *"create a C++ BOF"* or *"write a BOF using classes"*
-- Complex Win32/COM/GDI+ logic that benefits from C++ wrappers
-- Need RAII patterns for automatic handle/resource cleanup inside BOFs
-- Converting existing C++ code into a BOF
-- Need dual-build support (`#ifdef BOF` / standalone EXE)
+- 用户说"创建一个 C++ BOF"或"用类写一个 BOF"
+- 需要 C++ 封装的复杂 Win32/COM/GDI+ 逻辑
+- 需要在 BOF 内部用 RAII 模式自动清理句柄/资源
+- 将现有 C++ 代码转换为 BOF
+- 需要双编译支持（`#ifdef BOF` / 独立 EXE）
 
 ---
 
-## Key differences from C BOFs
+## 与 C BOF 的关键区别
 
-| Aspect | C BOF | C++ BOF |
+| 方面 | C BOF | C++ BOF |
 |--------|-------|---------|
-| Compiler | `x86_64-w64-mingw32-gcc` | `x86_64-w64-mingw32-g++` |
-| Entry point | `void go(char*, int)` | `extern "C" void go(char*, int)` |
-| Exceptions | N/A | **Must be disabled** (`-fno-exceptions`) |
-| RTTI | N/A | **Must be disabled** (`-fno-rtti`) |
-| STL | N/A | **Do not use** — no C++ runtime in BOFs |
-| Constructors | N/A | Static/global constructors will **not** run |
+| 编译器 | `x86_64-w64-mingw32-gcc` | `x86_64-w64-mingw32-g++` |
+| 入口点 | `void go(char*, int)` | `extern "C" void go(char*, int)` |
+| 异常 | 不适用 | **必须禁用** (`-fno-exceptions`) |
+| RTTI | 不适用 | **必须禁用** (`-fno-rtti`) |
+| STL | 不适用 | **禁止使用** — BOF 中没有 C++ 运行时 |
+| 构造函数 | 不适用 | 静态/全局构造函数**不会**运行 |
 
-> **Critical rule:** A C++ BOF must not depend on the C++ runtime (`libstdc++`).
-> No `new`/`delete`, no STL containers, no exceptions, no RTTI.
+> **关键规则：** C++ BOF 不得依赖 C++ 运行时（`libstdc++`）。
+> 不能使用 `new`/`delete`、STL 容器、异常或 RTTI。
 
 ---
 
-## Step 1 — File header and structure
+## 第一步——文件头和结构
 
 ```cpp
 /**
@@ -64,9 +60,9 @@ extern "C" {
 
 ---
 
-## Step 2 — DFR strategies
+## 第二步——DFR 策略
 
-### Strategy A: Standard DECLSPEC_IMPORT (recommended for < ~30 imports)
+### 策略 A：标准 DECLSPEC_IMPORT（推荐用于少于约 30 个导入的情况）
 
 ```cpp
 /* ── KERNEL32 ─────────────────────────────────────────── */
@@ -75,10 +71,9 @@ DECLSPEC_IMPORT HMODULE WINAPI KERNEL32$LoadLibraryA(LPCSTR);
 DECLSPEC_IMPORT FARPROC WINAPI KERNEL32$GetProcAddress(HMODULE, LPCSTR);
 ```
 
-### Strategy B: typedef + GetProcAddress (for many imports or non-standard DLLs)
+### 策略 B：typedef + GetProcAddress（适用于大量导入或非标准 DLL）
 
-When you have many API calls (30+), DECLSPEC_IMPORT DFR can hit linker
-limits. Use typedefs and resolve at runtime:
+当有大量 API 调用（30+）时，DECLSPEC_IMPORT DFR 可能触达链接器限制。改用 typedef 并在运行时解析：
 
 ```cpp
 /* ── Typedefs for runtime resolution ──────────────────── */
@@ -104,16 +99,15 @@ static BOOL ResolveAPIs(void) {
 }
 ```
 
-Call `ResolveAPIs()` at the top of `go()` before using any resolved pointer.
+在 `go()` 顶部调用 `ResolveAPIs()`，之后再使用任何已解析的指针。
 
-> **When to use Strategy B:** GDI+, DirectX, COM interfaces, or any DLL not
-> commonly linked (gdiplus.dll, d3d11.dll, wlanapi.dll).
+> **何时使用策略 B：** GDI+、DirectX、COM 接口，或任何不常见链接的 DLL（gdiplus.dll、d3d11.dll、wlanapi.dll）。
 
 ---
 
-## Step 3 — RAII wrappers
+## 第三步——RAII 封装器
 
-C++ shines in BOFs with RAII for automatic cleanup:
+C++ 在 BOF 中通过 RAII 实现自动清理的优势：
 
 ```cpp
 class BofHandle {
@@ -132,32 +126,32 @@ public:
 };
 ```
 
-See `assets/bof_helpers.hpp` for additional wrappers (BofRegKey, BofFormat).
+其他封装器（BofRegKey、BofFormat）见 `assets/bof_helpers.hpp`。
 
 ---
 
-## Step 4 — Compilation
+## 第四步——编译
 
 ```bash
 ./scripts/build_bof.sh mybof.cpp
 ```
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-m64 -c` | Target x64, compile only |
-| `-fno-exceptions` | Disable C++ exceptions (no runtime) |
-| `-fno-rtti` | Disable RTTI (no `typeid`, `dynamic_cast`) |
-| `-fno-asynchronous-unwind-tables` | Reduce `.eh_frame` |
-| `-fpack-struct=8` | Match Beacon struct packing |
-| `-std=c++17` | Modern C++ features |
+| `-m64 -c` | 目标 x64，仅编译 |
+| `-fno-exceptions` | 禁用 C++ 异常（无运行时） |
+| `-fno-rtti` | 禁用 RTTI（无 `typeid`、`dynamic_cast`） |
+| `-fno-asynchronous-unwind-tables` | 减少 `.eh_frame` |
+| `-fpack-struct=8` | 匹配 Beacon 结构体打包 |
+| `-std=c++17` | 现代 C++ 特性 |
 
 ---
 
-## Advanced patterns
+## 高级模式
 
-### Dual-build: BOF + standalone EXE
+### 双编译：BOF + 独立 EXE
 
-Support both BOF and standalone compilation in the same source:
+在同一源码中同时支持 BOF 和独立编译：
 
 ```cpp
 #ifdef BOF
@@ -192,12 +186,12 @@ int main(int argc, char** argv) {
 #endif
 ```
 
-Compile as BOF: `build_bof.sh mybof.cpp` (adds `-DBOF` automatically).
-Compile as EXE: `x86_64-w64-mingw32-g++ -o mybof.exe mybof.cpp`.
+编译为 BOF：`build_bof.sh mybof.cpp`（自动添加 `-DBOF`）。
+编译为 EXE：`x86_64-w64-mingw32-g++ -o mybof.exe mybof.cpp`。
 
-### File download over Beacon channel
+### 通过 Beacon 通道下载文件
 
-Use `CALLBACK_FILE*` constants for chunked file transfer:
+使用 `CALLBACK_FILE*` 常量进行分块文件传输：
 
 ```cpp
 static void downloadFile(const char* fileName, const char* data, int dataLen) {
@@ -224,11 +218,11 @@ static void downloadFile(const char* fileName, const char* data, int dataLen) {
 }
 ```
 
-Also available: `CALLBACK_SCREENSHOT` for screenshot data.
+截图数据也可使用：`CALLBACK_SCREENSHOT`。
 
-### GDI+ / COM integration
+### GDI+ / COM 集成
 
-Load non-standard DLLs dynamically and resolve flat API:
+动态加载非标准 DLL 并解析平坦 API：
 
 ```cpp
 /* GDI+ flat API typedefs */
@@ -253,11 +247,9 @@ static BOOL ResolveGdiPlus(void) {
 }
 ```
 
-> **Pitfall:** Do NOT use `using namespace Gdiplus;` in BOFs — it creates
-> COMDAT section conflicts with the Beacon loader. Use the flat C API
-> (`GdipCreateBitmapFromHBITMAP`, etc.) resolved via GetProcAddress.
+> **注意：** 在 BOF 中不要使用 `using namespace Gdiplus;`——这会导致 COMDAT 节与 Beacon 加载器冲突。请通过 GetProcAddress 解析使用平坦 C API（`GdipCreateBitmapFromHBITMAP` 等）。
 
-### COM / IStream usage
+### COM / IStream 使用
 
 ```cpp
 typedef HRESULT (WINAPI *fnCreateStreamOnHGlobal)(HGLOBAL, BOOL, LPSTREAM*);
@@ -274,20 +266,20 @@ pCreateStreamOnHGlobal(NULL, TRUE, &pStream);
 pStream->Release();
 ```
 
-### What you CAN vs MUST NOT use
+### 可用与禁止对比
 
-| Safe | Unsafe |
+| 可用 | 禁止 |
 |------|--------|
-| Classes / structs (stack) | `new` / `delete` |
-| RAII (destructors) | STL containers |
-| Templates, `constexpr` | `<iostream>`, `<fstream>` |
-| `static_assert`, `enum class` | Exceptions (`throw`/`catch`) |
-| Namespaces, `auto`, references | RTTI (`dynamic_cast`, `typeid`) |
-| Lambda (no capture) | Global objects with constructors |
+| 类 / 结构体（栈上） | `new` / `delete` |
+| RAII（析构函数） | STL 容器 |
+| 模板、`constexpr` | `<iostream>`、`<fstream>` |
+| `static_assert`、`enum class` | 异常（`throw`/`catch`） |
+| 命名空间、`auto`、引用 | RTTI（`dynamic_cast`、`typeid`） |
+| 无捕获 Lambda | 带构造函数的全局对象 |
 
 ---
 
-## Complete example — screenshot.cpp
+## 完整示例——screenshot.cpp
 
 ```cpp
 /**
@@ -386,13 +378,13 @@ extern "C" void go(char* args, int len) {
 
 ---
 
-## Support files
+## 支持文件
 
-| File | Description |
+| 文件 | 描述 |
 |------|-------------|
-| `scripts/bof_template.cpp`         | Production C++ BOF skeleton with RAII + DFR |
-| `scripts/build_bof.sh`             | Compiler wrapper with C++ flags |
-| `references/REFERENCE.md`          | C++ BOF patterns, DFR reference, pitfalls |
-| `assets/beacon.h`                  | Official Cobalt Strike beacon header (CS 4.12) |
-| `assets/beacon_compatibility.h`    | Convenience macros, missing mingw typedefs |
-| `assets/bof_helpers.hpp`           | RAII wrappers and utility templates for C++ BOFs |
+| `scripts/bof_template.cpp`         | 包含 RAII + DFR 的生产级 C++ BOF 骨架 |
+| `scripts/build_bof.sh`             | 带 C++ 参数的编译器封装脚本 |
+| `references/REFERENCE.md`          | C++ BOF 模式、DFR 参考、常见陷阱 |
+| `assets/beacon.h`                  | Cobalt Strike 官方 beacon 头文件（CS 4.12） |
+| `assets/beacon_compatibility.h`    | 便利宏、MinGW 缺失类型定义 |
+| `assets/bof_helpers.hpp`           | C++ BOF 的 RAII 封装器和工具模板 |

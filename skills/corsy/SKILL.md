@@ -1,17 +1,15 @@
 ---
 name: corsy
 description: >
-  This skill should be used when the user asks about "corsy", "testing web
-  apps for CORS vulnerabilities that could allow cross-origin data theft".
-  CORS misconfiguration scanner that detects exploitable cross-origin resource
-  sharing issues.
+  此技能适用于用户询问关于"corsy"、"测试 Web 应用是否存在可能导致跨域数据窃取的 CORS 漏洞"等问题。
+  CORS 错误配置扫描器，检测可利用的跨域资源共享安全问题。
 ---
 
 # Corsy
 
-CORS misconfiguration scanner — detect exploitable cross-origin policy flaws.
+CORS 错误配置扫描器——检测可利用的跨域策略缺陷。
 
-## Quick Start
+## 快速开始
 
 ```bash
 pip install corsy
@@ -29,37 +27,37 @@ corsy -i urls.txt
 corsy -u https://target.com --json > cors.json
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-u URL` | Target URL |
-| `-i FILE` | Input file with URLs |
-| `-H "K:V"` | Custom header |
-| `-t N` | Threads |
-| `-d N` | Delay between requests (ms) |
-| `-q` | Quiet (no banner) |
-| `--json` | JSON output |
+| `-u URL` | 目标 URL |
+| `-i FILE` | 包含 URL 的输入文件 |
+| `-H "K:V"` | 自定义请求头 |
+| `-t N` | 线程数 |
+| `-d N` | 请求间延迟（毫秒） |
+| `-q` | 静默模式（不显示横幅） |
+| `--json` | JSON 格式输出 |
 
-## CORS Misconfig Types Detected
+## 检测的 CORS 错误配置类型
 
-| Type | Condition |
+| 类型 | 触发条件 |
 |------|-----------|
-| Reflected Origin | Any origin reflected back |
-| Trusted Null | `null` origin trusted |
-| Prefix Match | `eviltarget.com` accepted when `target.com` trusted |
-| Suffix Match | `notatarget.com` accepted |
-| Trusted Subdomain | All subdomains trusted |
-| HTTP allowed | HTTP origin trusted on HTTPS endpoint |
+| 反射 Origin（Reflected Origin） | 任意 Origin 被原样反射 |
+| 信任 Null（Trusted Null） | `null` Origin 被信任 |
+| 前缀匹配（Prefix Match） | 当 `target.com` 被信任时 `eviltarget.com` 也被接受 |
+| 后缀匹配（Suffix Match） | `notatarget.com` 被接受 |
+| 信任子域（Trusted Subdomain） | 所有子域均被信任 |
+| 允许 HTTP（HTTP allowed） | HTTPS 端点信任 HTTP 来源 |
 
-## Common Workflows
+## 常见工作流程
 
-**Scan authenticated endpoint:**
+**扫描需认证的端点：**
 ```bash
 corsy -u https://api.target.com/user/profile -H "Cookie: session=abc123"
 ```
 
-**Verify with PoC:**
+**使用 PoC 验证：**
 ```html
 <script>
 fetch('https://api.target.com/user/data', {credentials:'include'})
@@ -67,8 +65,8 @@ fetch('https://api.target.com/user/data', {credentials:'include'})
 </script>
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | CORS exploit PoC templates |
+| `references/` | CORS 利用 PoC 模板 |

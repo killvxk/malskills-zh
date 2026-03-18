@@ -1,18 +1,14 @@
 ---
 name: bloodhound
 description: >
-  This skill should be used when the user asks about "bloodhound", "mapping AD
-  environments", "finding shortest path to Domain Admin, enumerating
-  Kerberoastable accounts, AS-REP roastable users", "ACL abuses". Active
-  Directory attack path visualization using graph theory to find privilege
-  escalation paths, lateral movement opportunities, and misconfigurations.
+  此技能适用于用户询问关于 "bloodhound"、"测绘 AD 环境"、"寻找到达域管理员的最短路径、枚举 Kerberoastable 账户、AS-REP Roastable 用户"、"ACL 滥用" 等内容。利用图论进行 Active Directory 攻击路径可视化，发现权限提升路径、横向移动机会和配置错误。
 ---
 
 # BloodHound
 
-Active Directory attack path mapping.
+Active Directory 攻击路径测绘。
 
-## Quick Start
+## 快速开始
 
 ```
 # Collect — run on domain-joined Windows host
@@ -21,28 +17,28 @@ SharpHound.exe -c All --outputdirectory C:\loot\
 # Import zip into BloodHound GUI (drag & drop), then run queries
 ```
 
-## SharpHound Flags
+## SharpHound 参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-c All` | Collect all data types |
-| `-c DCOnly` | DC data only (stealth) |
-| `--stealth` | Reduced noise collection |
-| `--outputdirectory` | Output path |
-| `--domain` | Target domain FQDN |
-| `--ldapusername / --ldappassword` | Explicit credentials |
+| `-c All` | 收集所有数据类型 |
+| `-c DCOnly` | 仅收集 DC 数据（低噪声） |
+| `--stealth` | 低噪声模式收集 |
+| `--outputdirectory` | 输出路径 |
+| `--domain` | 目标域 FQDN |
+| `--ldapusername / --ldappassword` | 显式指定凭据 |
 
-## Built-in Queries
+## 内置查询
 
-| Query | Purpose |
+| 查询 | 用途 |
 |-------|---------|
-| Shortest Paths to Domain Admins | Primary attack path |
-| All Kerberoastable Accounts | Password cracking targets |
-| AS-REP Roastable Users | No pre-auth needed |
-| Principals with DCSync Rights | Path to cred dump |
-| Computers with Unconstrained Delegation | Ticket theft |
+| Shortest Paths to Domain Admins | 主要攻击路径 |
+| All Kerberoastable Accounts | 密码破解目标 |
+| AS-REP Roastable Users | 无需预认证 |
+| Principals with DCSync Rights | 通往凭据转储的路径 |
+| Computers with Unconstrained Delegation | 票据窃取 |
 
-## Custom Cypher
+## 自定义 Cypher 查询
 
 ```cypher
 -- Non-admin users with local admin on any computer
@@ -52,8 +48,8 @@ MATCH (u:User {admincount:false})-[r:AdminTo]->(c:Computer) RETURN u.name, c.nam
 MATCH p=shortestPath((u:User {owned:true})-[*1..]->(g:Group {name:"DOMAIN ADMINS@DOMAIN.LOCAL"})) RETURN p
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Cypher query library, CE Docker setup |
+| `references/` | Cypher 查询库、CE Docker 部署说明 |

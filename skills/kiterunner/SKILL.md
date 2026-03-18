@@ -1,64 +1,61 @@
 ---
 name: kiterunner
 description: >
-  This skill should be used when the user asks about "kiterunner",
-  "enumerating API endpoints", "discovering hidden routes on REST/gRPC
-  services", "replacing dirbusting for API surfaces". Context-aware API route
-  discovery and brute-forcing using real-world API schema wordlists.
+  此技能适用于用户询问关于"kiterunner"、"枚举 API 端点"、"发现 REST/gRPC 服务上的隐藏路由"、"替代 dirbust 用于 API 表面"。使用真实世界 API schema 字典的上下文感知 API 路由发现和暴力破解工具。
 ---
 
 # Kiterunner
 
-Context-aware API route brute-forcer using real-world API schema wordlists (Assetnote).
+上下文感知 API 路由暴力破解器，使用真实世界 API schema 字典（Assetnote）。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Download binary from https://github.com/assetnote/kiterunner/releases
+# 从 https://github.com/assetnote/kiterunner/releases 下载二进制文件
 
-# Scan with default wordlist
+# 使用默认字典扫描
 kr scan https://target.com -w routes-small.kite
 
-# Scan from file of hosts
+# 从 host 文件扫描
 kr scan hosts.txt -w routes-large.kite -x 20
 
-# Replay a finding with full request detail
+# 重放发现结果并查看完整请求详情
 kr replay -w routes-small.kite "GET   403 [   191,    9,   1] https://target.com/api/v1/user"
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
-|------|---------|
-| `-w FILE` | Kite wordlist (.kite or .txt) |
-| `-x N` | Concurrent requests |
-| `--ignore-length N` | Filter by response length |
-| `-H "K:V"` | Custom header |
-| `-A "bearer:TOKEN"` | Auth header shorthand |
-| `--fail-status-codes` | Codes treated as failures |
-| `--success-status-codes` | Codes treated as hits |
-| `-o json` | JSON output |
-| `--delay N` | Per-request delay (ms) |
+| 参数 | 用途 |
+|------|------|
+| `-w FILE` | Kite 字典文件（.kite 或 .txt） |
+| `-x N` | 并发请求数 |
+| `--ignore-length N` | 按响应长度过滤 |
+| `-H "K:V"` | 自定义请求头 |
+| `-A "bearer:TOKEN"` | 认证头简写 |
+| `--fail-status-codes` | 视为失败的状态码 |
+| `--success-status-codes` | 视为命中的状态码 |
+| `-o json` | JSON 输出 |
+| `--delay N` | 每个请求的延迟（毫秒） |
 
-## Common Workflows
+## 常用工作流
 
-**Authenticated API scan:**
+**已认证 API 扫描：**
 ```bash
 kr scan https://api.target.com -w routes-large.kite -A "bearer:$TOKEN" -x 30
 ```
 
-**Filter noise — ignore typical 404/400 lengths:**
+**过滤噪音 — 忽略典型 404/400 长度：**
 ```bash
 kr scan https://api.target.com -w routes-small.kite --ignore-length 19
 ```
 
-**Replay to inspect full response:**
+**重放以检查完整响应：**
 ```bash
 kr replay -w routes-large.kite "POST  200 [  512,  10,   2] https://api.target.com/api/v2/admin"
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Wordlist sources and API fingerprinting notes |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 字典来源和 API 指纹识别说明 |

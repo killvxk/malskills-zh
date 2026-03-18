@@ -1,49 +1,46 @@
 ---
 name: ghidra
 description: >
-  This skill should be used when the user asks about "ghidra", "statically
-  analyzing malware, firmware", "binaries to understand logic", "find
-  vulnerabilities", "recover algorithms". NSA's open-source reverse
-  engineering suite with disassembler, decompiler, and scripting.
+  此技能适用于用户询问关于 "ghidra"、"静态分析恶意软件或固件"、"分析二进制文件以理解其逻辑"、"查找漏洞"、"还原算法" 的场景。NSA 开源逆向工程套件，包含反汇编器、反编译器和脚本功能。
 ---
 
 # Ghidra
 
-NSA open-source RE suite — disassembler + decompiler + scripting for static analysis.
+NSA 开源逆向工程 (RE) 套件 — 反汇编器 + 反编译器 + 脚本，用于静态分析。
 
-## Quick Start
+## 快速开始
 
-1. Download from ghidra-sre.org
-2. `./ghidraRun` (Linux/macOS) or `ghidraRun.bat` (Windows)
-3. New Project → Import File → target binary
-4. Double-click to open CodeBrowser → Analyze (auto-analysis)
+1. 从 ghidra-sre.org 下载
+2. `./ghidraRun`（Linux/macOS）或 `ghidraRun.bat`（Windows）
+3. 新建项目 → 导入文件 → 目标二进制文件
+4. 双击打开 CodeBrowser → 分析（自动分析）
 
-## Key Windows
+## 关键窗口
 
-| Window | Purpose |
+| 窗口 | 用途 |
 |--------|---------|
-| Symbol Tree | Functions, labels, imports |
-| Decompiler | C pseudocode of selected function |
-| Listing | Assembly view |
-| Data Type Manager | Struct/enum definitions |
-| Program Trees | Segments/sections |
-| References | Cross-references to/from |
+| Symbol Tree | 函数、标签、导入表 |
+| Decompiler | 所选函数的 C 伪代码 |
+| Listing | 汇编视图 |
+| Data Type Manager | 结构体/枚举定义 |
+| Program Trees | 段/节 |
+| References | 交叉引用（到/来自） |
 
-## Common Analysis Tasks
+## 常用分析任务
 
-**Find interesting functions:**
+**查找感兴趣的函数：**
 ```
-Search > For Strings → look for "password", "exec", "http"
-Window > Symbol Tree > Functions → filter by name
-```
-
-**Rename and annotate:**
-```
-Right-click function → Edit Function → rename
-Right-click variable → Rename Variable
+Search > For Strings → 搜索 "password"、"exec"、"http"
+Window > Symbol Tree > Functions → 按名称过滤
 ```
 
-**Scripting (Python/Java):**
+**重命名与注释：**
+```
+右键点击函数 → Edit Function → 重命名
+右键点击变量 → Rename Variable
+```
+
+**脚本（Python/Java）：**
 ```python
 # Script Manager > New Script (Python)
 from ghidra.program.flatapi import FlatProgramAPI
@@ -52,21 +49,21 @@ funcs = list(api.getFunctions(True))
 print([f.getName() for f in funcs[:10]])
 ```
 
-## Common Workflows
+## 常用工作流
 
-**Malware static analysis:**
-1. Import sample → auto-analyze
-2. Symbol Tree → Imports: check suspicious APIs (VirtualAlloc, CreateRemoteThread)
-3. Decompile each suspicious function
+**恶意软件静态分析：**
+1. 导入样本 → 自动分析
+2. Symbol Tree → Imports：检查可疑 API（VirtualAlloc、CreateRemoteThread）
+3. 反编译每个可疑函数
 
-**Find hardcoded credentials:**
+**查找硬编码凭据：**
 ```
 Search > For Strings → password/key/secret
-Double-click result → decompile surrounding function
+双击结果 → 反编译周围函数
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Script examples and struct recovery tips |
+| `references/` | 脚本示例和结构体恢复技巧 |

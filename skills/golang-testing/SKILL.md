@@ -1,53 +1,50 @@
 ---
 name: golang-testing
 description: >
-  This skill should be used when the user asks about "golang-testing",
-  "writing", "reviewing Go tests to improve correctness, stability, and
-  maintainability". Go testing patterns for unit tests, table-driven tests,
-  subtests, test helpers, mocking/fakes, benchmarks, fuzzing, and coverage.
+  此技能适用于用户询问关于"golang-testing"、"编写"、"审查 Go 测试以提升正确性、稳定性和可维护性"。Go 测试模式：单元测试、表驱动测试、子测试、测试辅助函数、mock/fake、基准测试、模糊测试和覆盖率。
 ---
 
-# Go Testing
+# Go 测试 (Go Testing)
 
-This skill is about writing tests that are **reliable**, **readable**, and **useful as documentation**.
+此技能关注编写**可靠**、**可读**且**有文档价值**的测试。
 
-## When to activate
+## 激活时机
 
-- Writing new tests for functions, packages, or APIs
-- Refactoring tests for clarity and reduced flakiness
-- Adding benchmarks or fuzz tests
-- Improving coverage without gaming the metric
+- 为函数、包或 API 编写新测试
+- 重构测试以提高清晰度并减少不稳定性
+- 添加基准测试或模糊测试
+- 在不刷指标的前提下提升覆盖率
 
 ---
 
-## Core rules (high signal)
+## 核心规则（高价值）
 
-- Prefer **table-driven tests** for coverage and readability.
-- Use **t.Helper()** and **t.Cleanup()** to keep failures actionable.
-- Tests should be deterministic: avoid `time.Sleep()` unless unavoidable.
-- Prefer **fakes** (in-memory implementations) over heavy mocks.
-- Use `t.Parallel()` only when the test is truly isolated.
-
----
-
-## Quick checklist for a review
-
-- Setup is outside the assertion loop; minimal shared mutable state
-- Subtests have meaningful names (`t.Run("case", ...)`)
-- Error messages show got/want and context
-- External dependencies are explicit (DBs, network, time)
-- Benchmarks report allocs when relevant (`b.ReportAllocs()`)
+- 优先使用**表驱动测试 (table-driven tests)**，提升覆盖度和可读性。
+- 使用 **t.Helper()** 和 **t.Cleanup()** 使失败信息更具可操作性。
+- 测试应是确定性的：除非不可避免，否则避免使用 `time.Sleep()`。
+- 优先使用 **fake**（内存实现）而非重量级 mock。
+- 仅在测试真正隔离时才使用 `t.Parallel()`。
 
 ---
 
-## Resources
+## 代码审查快速清单
 
-Load on demand:
+- 设置代码在断言循环外；共享可变状态最小化
+- 子测试有有意义的名称（`t.Run("case", ...)`）
+- 错误信息显示 got/want 及上下文
+- 外部依赖是显式的（数据库、网络、时间）
+- 基准测试在相关时报告分配（`b.ReportAllocs()`）
 
-- `references/unit-tests.md` — TDD loop, table tests, subtests, parallel subtests
-- `references/helpers-fixtures.md` — helpers, TempDir, Cleanup, testdata, golden files
-- `references/mocking-fakes.md` — interfaces for dependencies, fakes vs mocks, examples
-- `references/http-testing.md` — httptest patterns and JSON assertions
-- `references/bench-fuzz.md` — benchmarks and fuzzing best practices
-- `references/coverage-ci.md` — cover profiles, coverpkg notes, CI integration cautions
-- `references/commands.md` — go test command recipes (race, timeout, count, patterns)
+---
+
+## 参考资源
+
+按需加载：
+
+- `references/unit-tests.md` — TDD 循环、表测试、子测试、并行子测试
+- `references/helpers-fixtures.md` — 辅助函数、TempDir、Cleanup、testdata、golden files
+- `references/mocking-fakes.md` — 依赖接口、fake vs mock、示例
+- `references/http-testing.md` — httptest 模式和 JSON 断言
+- `references/bench-fuzz.md` — 基准测试和模糊测试最佳实践
+- `references/coverage-ci.md` — 覆盖率 profile、coverpkg 注意事项、CI 集成说明
+- `references/commands.md` — go test 命令示例（race、timeout、count、patterns）

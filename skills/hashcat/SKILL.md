@@ -1,94 +1,90 @@
 ---
 name: hashcat
 description: >
-  This skill should be used when the user asks about "hashcat", "crack
-  password hashes, recover passwords from
-  NTLM/Net-NTLMv2/Kerberos/bcrypt/MD5/SHA hashes", "perform wordlist",
-  "rule-based attacks", "conduct mask brute-force against any captured hash".
-  GPU-accelerated offline password cracking tool supporting 300+ hash types.
+  此技能适用于用户询问关于"hashcat"、"破解密码哈希，从 NTLM/Net-NTLMv2/Kerberos/bcrypt/MD5/SHA 哈希中恢复密码"、"执行字典攻击"、"基于规则的攻击"、"对捕获的哈希进行掩码暴力破解"。支持 300+ 种哈希类型的 GPU 加速离线密码破解工具。
 ---
 
 # Hashcat
 
-GPU-accelerated offline hash cracker — the standard tool for password recovery in offensive ops.
+GPU 加速离线哈希破解器 — 进攻性操作中密码恢复的标准工具。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Wordlist attack on NTLM hashes
+# 对 NTLM 哈希进行字典攻击
 hashcat -a 0 -m 1000 hashes.txt rockyou.txt
 
-# Rule-based wordlist attack
+# 基于规则的字典攻击
 hashcat -a 0 -m 1000 hashes.txt rockyou.txt -r /usr/share/hashcat/rules/best64.rule
 
-# Mask brute-force (8-char, uppercase + digits)
+# 掩码暴力破解（8 位，大写字母 + 数字）
 hashcat -a 3 -m 1000 hashes.txt ?u?u?u?u?d?d?d?d
 ```
 
-## Attack Modes
+## 攻击模式
 
-| Mode | Flag | Description |
-|------|------|-------------|
-| Wordlist | `-a 0` | Dictionary attack |
-| Combination | `-a 1` | Combine two wordlists |
-| Brute-force | `-a 3` | Mask/charset brute-force |
-| Rule-based | `-a 0 -r` | Wordlist + transformation rules |
-| Hybrid | `-a 6/-a 7` | Wordlist + mask or mask + wordlist |
+| 模式 | 参数 | 说明 |
+|------|------|------|
+| 字典攻击 | `-a 0` | Dictionary attack |
+| 组合攻击 | `-a 1` | 合并两个字典 |
+| 暴力破解 | `-a 3` | 掩码/字符集暴力破解 |
+| 规则攻击 | `-a 0 -r` | 字典 + 变换规则 |
+| 混合攻击 | `-a 6/-a 7` | 字典 + 掩码 或 掩码 + 字典 |
 
-## Common Hash Types (`-m`)
+## 常见哈希类型 (`-m`)
 
-| Hash | Mode | Source |
-|------|------|--------|
+| 哈希 | 模式 | 来源 |
+|------|------|------|
 | NTLM | `1000` | Windows SAM / NTDS dump |
-| Net-NTLMv1 | `5500` | Responder capture |
-| Net-NTLMv2 | `5600` | Responder capture |
+| Net-NTLMv1 | `5500` | Responder 捕获 |
+| Net-NTLMv2 | `5600` | Responder 捕获 |
 | Kerberos 5 TGS (RC4) | `13100` | Kerberoasting |
 | Kerberos 5 AS-REP | `18200` | AS-REP roasting |
-| MD5 | `0` | Web app, misc |
-| SHA1 | `100` | Web app, misc |
-| SHA256 | `1400` | General |
+| MD5 | `0` | Web 应用、其他 |
+| SHA1 | `100` | Web 应用、其他 |
+| SHA256 | `1400` | 通用 |
 | bcrypt | `3200` | Linux /etc/shadow |
 | SHA512crypt | `1800` | Linux /etc/shadow |
 | WPA-PMKID | `22000` | WiFi |
 
-## Mask Characters
+## 掩码字符
 
-| Mask | Charset |
-|------|---------|
-| `?l` | lowercase a-z |
-| `?u` | uppercase A-Z |
-| `?d` | digits 0-9 |
-| `?s` | special chars |
-| `?a` | all printable (`?l?u?d?s`) |
-| `?b` | all bytes 0x00-0xFF |
+| 掩码 | 字符集 |
+|------|--------|
+| `?l` | 小写字母 a-z |
+| `?u` | 大写字母 A-Z |
+| `?d` | 数字 0-9 |
+| `?s` | 特殊字符 |
+| `?a` | 所有可打印字符（`?l?u?d?s`） |
+| `?b` | 所有字节 0x00-0xFF |
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
-|------|-------------|
-| `-a <n>` | Attack mode |
-| `-m <n>` | Hash type |
-| `-w <n>` | Workload: 1=low, 2=default, 3=high, 4=insane |
-| `-O` | Optimized kernels (faster, limited pass length) |
-| `--force` | Ignore GPU warnings |
-| `-r <file>` | Rules file |
-| `--increment` | Increment mask length |
-| `--increment-min <n>` | Min mask length |
-| `--increment-max <n>` | Max mask length |
-| `-o <file>` | Output cracked hashes |
-| `--outfmt <n>` | Output format: 2=hash:plain, 3=plain |
-| `--show` | Show cracked hashes from potfile |
-| `--status` | Real-time status |
-| `--restore` | Resume previous session |
-| `-S` | Slow candidates (for rules) |
+| 参数 | 说明 |
+|------|------|
+| `-a <n>` | 攻击模式 |
+| `-m <n>` | 哈希类型 |
+| `-w <n>` | 工作负载：1=低，2=默认，3=高，4=极限 |
+| `-O` | 优化内核（更快，密码长度有限制） |
+| `--force` | 忽略 GPU 警告 |
+| `-r <file>` | 规则文件 |
+| `--increment` | 递增掩码长度 |
+| `--increment-min <n>` | 最小掩码长度 |
+| `--increment-max <n>` | 最大掩码长度 |
+| `-o <file>` | 输出已破解的哈希 |
+| `--outfmt <n>` | 输出格式：2=hash:plain，3=plain |
+| `--show` | 从 potfile 显示已破解哈希 |
+| `--status` | 实时状态 |
+| `--restore` | 恢复上一个会话 |
+| `-S` | 慢速候选（用于规则） |
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# NTLM with rockyou + best64 rules
+# NTLM 配合 rockyou + best64 规则
 hashcat -a 0 -m 1000 ntlm.txt rockyou.txt -r best64.rule -O
 
-# Net-NTLMv2 (Responder capture)
+# Net-NTLMv2（Responder 捕获）
 hashcat -a 0 -m 5600 netntlm.txt rockyou.txt -r best64.rule
 
 # Kerberoasting TGS
@@ -97,20 +93,18 @@ hashcat -a 0 -m 13100 kerberoast.txt rockyou.txt -r one-rule-to-rule-them-all.ru
 # AS-REP roasting
 hashcat -a 0 -m 18200 asrep.txt rockyou.txt
 
-# Mask brute-force: 8-char, any printable
+# 掩码暴力破解：8 位，任意可打印字符
 hashcat -a 3 -m 1000 hashes.txt -1 ?a ?1?1?1?1?1?1?1?1 --increment --increment-min 6
 
-# Combine wordlist + mask (hybrid)
+# 字典 + 掩码组合（混合攻击）
 hashcat -a 6 -m 1000 hashes.txt rockyou.txt ?d?d?d
 
-# Show cracked passwords
+# 显示已破解密码
 hashcat -m 1000 hashes.txt --show
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/rules-and-masks.md` | Rule file reference, mask cookbook, wordlist recommendations, hash extraction commands |
-
-## Structuring This Skill
+| 文件 | 加载时机 |
+|------|----------|
+| `references/rules-and-masks.md` | 规则文件参考、掩码示例、字典推荐、哈希提取命令 |

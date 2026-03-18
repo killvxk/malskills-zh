@@ -1,28 +1,24 @@
 ---
 name: set
 description: >
-  This skill should be used when the user asks about "set", "create
-  spear-phishing emails with payloads, clone websites for credential
-  harvesting", "generate social engineering pretexts", "automate phishing +
-  exploit delivery". Social-Engineer Toolkit (SET) for spear-phishing,
-  credential harvesting, and payload delivery via social engineering vectors.
+  此技能适用于用户询问关于"set"、"创建含载荷的鱼叉式钓鱼邮件、克隆网站用于凭据收割"、"生成社会工程学话术"、"自动化钓鱼和利用载荷投递"。Social-Engineer Toolkit (SET) 用于鱼叉式钓鱼、凭据收割以及通过社会工程学向量投递载荷。
 ---
 
 # SET — Social-Engineer Toolkit
 
-Comprehensive social engineering framework — spear-phishing, credential harvesting, and payload delivery.
+综合社会工程学框架 — 鱼叉式钓鱼、凭据收割与载荷投递。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Start interactive menu
+# 启动交互式菜单
 sudo setoolkit
 
-# Or launch specific attack from CLI
+# 或通过 CLI 启动特定攻击
 sudo python setoolkit
 ```
 
-## Main Menu Structure
+## 主菜单结构
 
 ```
 1) Social-Engineering Attacks
@@ -31,70 +27,70 @@ sudo python setoolkit
 4) Update the Social-Engineer Toolkit
 ```
 
-## Key Attack Vectors
+## 关键攻击向量
 
-### 1. Spear-Phishing Attack Vector
-`1 > 1` — Send phishing emails with embedded payloads:
-- File format exploits (PDF, Office macros)
-- Custom payload attachments
-- Mass email campaign
+### 1. 鱼叉式钓鱼攻击向量 (Spear-Phishing Attack Vector)
+`1 > 1` — 发送含嵌入载荷的钓鱼邮件：
+- 文件格式利用（PDF、Office 宏）
+- 自定义载荷附件
+- 批量邮件活动
 
-### 2. Website Attack Vector
-`1 > 2` — Web-based attacks:
+### 2. 网站攻击向量 (Website Attack Vector)
+`1 > 2` — 基于 Web 的攻击：
 
-| Option | Description |
-|--------|-------------|
-| Java Applet | Signed Java applet dropping payload |
-| Metasploit Browser | Browser exploit delivery |
-| **Credential Harvester** | Clone site + capture creds |
-| Tabnabbing | Replace inactive browser tab |
-| Web Jacking | Redirect via iframe |
-| Multi-Attack | Combine multiple web attacks |
+| 选项 | 说明 |
+|------|------|
+| Java Applet | 已签名的 Java applet 投放载荷 |
+| Metasploit Browser | 浏览器利用载荷投递 |
+| **Credential Harvester** | 克隆网站 + 捕获凭据 |
+| Tabnabbing | 替换不活跃的浏览器标签 |
+| Web Jacking | 通过 iframe 重定向 |
+| Multi-Attack | 组合多种 Web 攻击 |
 
-### 3. Credential Harvester
+### 3. 凭据收割器 (Credential Harvester)
 
 ```
-1 > 2 > 3   # Credential Harvester Attack
-> 2         # Site cloner
-> Enter IP for POST back
-> Enter URL to clone (e.g., https://mail.google.com)
+1 > 2 > 3   # 凭据收割攻击
+> 2         # 网站克隆器
+> 输入回传 IP
+> 输入要克隆的 URL（如 https://mail.google.com）
 ```
 
-SET clones the site and serves it locally. Credentials POSTed to the form are intercepted and logged.
+SET 克隆目标网站并在本地提供服务。提交至表单的凭据将被拦截并记录。
 
-### 4. Mass Mailer Attack
-`1 > 5` — Send mass spear-phishing emails:
-- Single targeted email
-- Mass email from list
-- Requires SMTP credentials
+### 4. 批量邮件攻击 (Mass Mailer Attack)
+`1 > 5` — 发送批量鱼叉式钓鱼邮件：
+- 单个定向邮件
+- 从列表批量发送
+- 需要 SMTP 凭据
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Credential harvester with site clone
+# 凭据收割器配合网站克隆
 sudo setoolkit
 # 1 > 2 > 3 > 2
-# Enter attacker IP: 192.168.1.5
-# URL to clone: https://outlook.office365.com
+# 输入攻击者 IP：192.168.1.5
+# 要克隆的 URL：https://outlook.office365.com
 
-# Captured creds stored in: /var/www/ or SET reports dir
+# 捕获的凭据存储在：/var/www/ 或 SET 报告目录
 cat /root/.set/reports/2024*/
 
-# Java-based payload delivery (legacy but useful for old JRE)
+# 基于 Java 的载荷投递（旧式但对旧 JRE 仍有效）
 # 1 > 2 > 1
 
-# Spear-phish with Office macro payload
-# 1 > 1 > 1 (email to specific address)
+# 带 Office 宏载荷的鱼叉钓鱼
+# 1 > 1 > 1（发送至特定地址）
 ```
 
-## Logs & Reports
+## 日志与报告
 
-- Credentials: `/root/.set/reports/`
-- Email logs: `/root/.set/`
-- Config: `/etc/setoolkit/set.config`
+- 凭据：`/root/.set/reports/`
+- 邮件日志：`/root/.set/`
+- 配置文件：`/etc/setoolkit/set.config`
 
-## Resources
+## 资源文件
 
-| File | When to load |
-|------|--------------|
-| `references/attack-vectors.md` | Full menu tree, payload options, SMTP configuration, evasion tips |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/attack-vectors.md` | 完整菜单树、载荷选项、SMTP 配置及规避技巧 |

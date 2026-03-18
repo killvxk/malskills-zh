@@ -1,84 +1,79 @@
 ---
 name: golang-performance
 description: >
-  This skill should be used when the user asks about "golang-performance", "Go
-  performance workflow: benchmark", "profile (pprof/trace)", "identify
-  hotspots", "reduce allocations/GC", "contention". Go performance workflow:
-  benchmark and profile (pprof/trace), identify hotspots, reduce
-  allocations/GC and contention, and verify improvements with repeatable
-  measurement. Use only after you have evidence the Go code is the bottleneck.
+  此技能适用于用户询问关于"golang-performance"、"Go 性能工作流：基准测试"、"性能分析 (pprof/trace)"、"识别热点"、"减少内存分配/GC"、"竞争问题"。Go 性能工作流：基准测试与性能分析 (pprof/trace)，识别热点，减少内存分配/GC 和竞争问题，并通过可重复的测量验证改进效果。仅在有证据表明 Go 代码是瓶颈时使用。
 ---
 
-# Go Performance
+# Go 性能优化 (Go Performance)
 
-This skill is about **measurement-first optimization** in Go.
+此技能关注 Go 中的**测量优先优化**。
 
-## When to activate
+## 激活时机
 
-Use this skill when you need to:
+在以下情况使用此技能：
 
-- Confirm a performance regression (latency/throughput/CPU/memory)
-- Identify hot paths with pprof (CPU / heap / mutex / block)
-- Reduce allocations and GC pressure in a measured hotspot
-- Fix contention (mutex, scheduler, channel backpressure)
-- Validate improvements with benchmarks and repeatable runs
+- 确认性能回归（延迟/吞吐量/CPU/内存）
+- 使用 pprof 识别热路径（CPU / 堆 / 互斥锁 / 阻塞）
+- 在已测量的热点中减少内存分配和 GC 压力
+- 修复竞争问题（互斥锁、调度器、channel 背压）
+- 通过基准测试和可重复运行验证改进效果
 
-If you need general idioms and patterns (not measurement), use `golang-patterns`.
+如果需要通用惯用法和模式（而非测量），请使用 `golang-patterns`。
 
 ---
 
-## Rules of engagement
+## 工作原则
 
-- **Profile before optimizing.** A fast guess beats a slow change.
-- **Change one thing at a time.** Measure after each change.
-- **Keep a baseline.** Every claim should have “before vs after”.
-- **Don’t optimize the cold path.** Make the hot path boring.
-
----
-
-## Workflow
-
-1. **Make it measurable**
-   - Add a benchmark (or a reproducible load test) for the suspected hotspot.
-   - Run multiple iterations; record mean + variance.
-
-2. **Capture evidence**
-   - CPU profile for time
-   - Heap/allocs profile for memory
-   - Mutex/block profiles for contention
-   - Trace when the scheduler / GC behavior matters
-
-3. **Analyze before changing code**
-   - Identify top offenders (`top`, `top -cum`)
-   - Inspect annotated source (`list`)
-   - Confirm whether you are bound by CPU, allocations, syscalls, or contention
-
-4. **Apply targeted fixes**
-   - Allocation and GC: reduce allocations, reuse buffers, avoid retaining large backing arrays
-   - Data layout: improve locality, avoid interface boxing in hot loops
-   - Concurrency: reduce contention, bound goroutines, add backpressure
-
-5. **Verify and document**
-   - Re-run the benchmark/profile
-   - Ensure correctness isn’t traded away
-   - Record the change and its measured impact
+- **优化前先分析。** 快速猜测胜过缓慢改动。
+- **每次只改一处。** 每次改动后进行测量。
+- **保留基线。** 每项声明都应有"改前 vs 改后"对比。
+- **不要优化冷路径。** 让热路径变得简单可预期。
 
 ---
 
-## Safety note: exposing pprof
+## 工作流程
 
-`net/http/pprof` endpoints can leak sensitive runtime data. Prefer:
-- bind to `localhost`
-- protect with auth / firewall
-- enable only in dev / controlled environments
+1. **使其可测量**
+   - 为疑似热点添加基准测试（或可重现的负载测试）。
+   - 运行多次迭代；记录均值与方差。
+
+2. **收集证据**
+   - CPU profile 用于时间分析
+   - 堆/分配 profile 用于内存分析
+   - 互斥锁/阻塞 profile 用于竞争分析
+   - 当调度器/GC 行为重要时使用 Trace
+
+3. **分析后再修改代码**
+   - 识别主要问题（`top`、`top -cum`）
+   - 检查注释源码（`list`）
+   - 确认是否受 CPU、内存分配、系统调用或竞争约束
+
+4. **应用针对性修复**
+   - 内存分配和 GC：减少分配，复用缓冲区，避免保留大型底层数组
+   - 数据布局：提高局部性，避免在热循环中进行接口装箱
+   - 并发：减少竞争，限制 goroutine 数量，添加背压
+
+5. **验证并记录**
+   - 重新运行基准测试/profile
+   - 确保没有以牺牲正确性为代价
+   - 记录变更及其测量影响
 
 ---
 
-## Resources
+## 安全注意事项：暴露 pprof
 
-Load these references on demand:
+`net/http/pprof` 端点可能泄露敏感运行时数据。建议：
+- 绑定到 `localhost`
+- 使用认证/防火墙保护
+- 仅在开发/受控环境中启用
 
-- `references/profiling.md` — pprof + trace collection and analysis commands
-- `references/benchmarks.md` — stable benchmarks, -benchmem, benchstat, hygiene
-- `references/allocations-gc.md` — allocation patterns, slice retention, sync.Pool guidance
-- `references/contention.md` — mutex/block profiles, contention patterns, backpressure
+---
+
+## 参考资源
+
+按需加载以下参考文件：
+
+- `references/profiling.md` — pprof + trace 采集与分析命令
+- `references/benchmarks.md` — 稳定基准测试、-benchmem、benchstat、卫生规范
+- `references/allocations-gc.md` — 内存分配模式、slice 保留、sync.Pool 指导
+- `references/contention.md` — 互斥锁/阻塞 profile、竞争模式、背压

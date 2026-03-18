@@ -1,59 +1,55 @@
 ---
 name: amass
 description: >
-  This skill should be used when the user asks about "amass", "asked for deep
-  subdomain reconnaissance, attack surface mapping, DNS enumeration", "when
-  subfinder alone is insufficient". OWASP attack surface mapping tool for
-  subdomain enumeration, DNS brute-force, and asset discovery using passive
-  and active techniques.
+  此技能适用于用户询问关于 "amass"、"需要深度子域名侦察 (subdomain reconnaissance)、攻击面测绘 (attack surface mapping)、DNS 枚举"、"subfinder 单独使用不足时" 等内容。OWASP 攻击面测绘工具，结合被动 OSINT 与主动 DNS 枚举进行子域名发现和资产探测。
 ---
 
 # Amass
 
-OWASP Attack Surface Mapper — combines passive OSINT with active DNS enumeration.
+OWASP 攻击面测绘器 — 将被动 OSINT 与主动 DNS 枚举相结合。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Passive enumeration
+# 被动枚举
 amass enum -passive -d example.com
 
-# Active enumeration (DNS brute-force + passive)
+# 主动枚举（DNS 暴力破解 + 被动）
 amass enum -active -d example.com
 
-# Save results to output directory
+# 将结果保存到输出目录
 amass enum -d example.com -o subs.txt -dir amass_out/
 ```
 
-## Sub-commands
+## 子命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `enum` | Subdomain enumeration (main workflow) |
-| `intel` | Gather org/ASN/CIDR intelligence |
-| `viz` | Generate graph visualizations |
-| `track` | Track changes over time |
-| `db` | Manage the Amass graph database |
+| `enum` | 子域名枚举（主要工作流程） |
+| `intel` | 收集组织/ASN/CIDR 情报 |
+| `viz` | 生成图形可视化 |
+| `track` | 跟踪随时间的变化 |
+| `db` | 管理 Amass 图数据库 |
 
-## Enum Flags
+## Enum 参数
 
-| Flag | Description |
+| 参数 | 描述 |
 |------|-------------|
-| `-d <domain>` | Target domain |
-| `-dL <file>` | Domain list file |
-| `-passive` | Passive only (no DNS probing) |
-| `-active` | Active mode (DNS + cert grabbing) |
-| `-brute` | DNS brute-force with wordlist |
-| `-w <wordlist>` | Custom wordlist for brute-force |
-| `-r <resolvers>` | Custom DNS resolvers file |
-| `-o <file>` | Output file |
-| `-dir <path>` | Output directory for all files |
-| `-config <file>` | Config file (API keys, settings) |
-| `-timeout <mins>` | Enum timeout in minutes |
+| `-d <domain>` | 目标域名 |
+| `-dL <file>` | 域名列表文件 |
+| `-passive` | 仅被动模式（不进行 DNS 探测） |
+| `-active` | 主动模式（DNS + 证书抓取） |
+| `-brute` | 使用字典进行 DNS 暴力破解 |
+| `-w <wordlist>` | 暴力破解使用的自定义字典 |
+| `-r <resolvers>` | 自定义 DNS 解析器文件 |
+| `-o <file>` | 输出文件 |
+| `-dir <path>` | 所有文件的输出目录 |
+| `-config <file>` | 配置文件（API 密钥、设置） |
+| `-timeout <mins>` | 枚举超时时间（分钟） |
 
-## Config File (API Keys)
+## 配置文件（API 密钥）
 
-Create `~/.config/amass/config.yaml`:
+创建 `~/.config/amass/config.yaml`：
 
 ```yaml
 scope:
@@ -69,27 +65,27 @@ data_sources:
       secret: YOUR_SECRET
 ```
 
-## Common Workflows
+## 常见工作流程
 
 ```bash
-# Passive recon only
+# 仅被动侦察
 amass enum -passive -d example.com -o passive_subs.txt
 
-# Full active enum with brute-force
+# 完整主动枚举 + 暴力破解
 amass enum -active -brute -w /usr/share/wordlists/subdomains.txt -d example.com
 
-# Org intelligence (find related ASNs/CIDRs)
+# 组织情报（查找相关 ASN/CIDR）
 amass intel -org "Target Corp" -max-dns-queries 2500
 
-# Multiple domains
+# 多域名
 amass enum -passive -dL domains.txt -o all_subs.txt
 
-# Visualization after enum
+# 枚举完成后生成可视化
 amass viz -d3 -dir amass_out/ -d example.com
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/enum-modes.md` | Deep-dive on intel/enum/viz modes, config file syntax, resolver setup |
+| `references/enum-modes.md` | intel/enum/viz 模式深度解析、配置文件语法、解析器设置 |

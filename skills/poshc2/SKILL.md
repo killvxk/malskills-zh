@@ -1,18 +1,14 @@
 ---
 name: poshc2
 description: >
-  This skill should be used when the user asks about "poshc2", "operating in
-  environments with available PowerShell and network proxies", "needing
-  proxy-aware beacons", "performing post-exploitation with built-in credential
-  access and lateral movement modules". Proxy-aware Python C2 framework with
-  implants in PowerShell, C#, Python, and C.
+  此技能适用于用户询问关于 "poshc2"、"在有 PowerShell 和网络代理的环境中操作"、"需要代理感知 beacon"、"使用内置凭据访问和横向移动模块进行后渗透" 等内容。支持代理的 Python C2 框架，植入体支持 PowerShell、C#、Python 和 C。
 ---
 
 # PoshC2
 
-Proxy-aware C2 with PowerShell, C#, Python, C implants.
+支持代理的 C2 框架，植入体涵盖 PowerShell、C#、Python、C。
 
-## Quick Start
+## 快速开始
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/master/Install.sh | bash
@@ -22,21 +18,21 @@ posh
 posh-payloads
 ```
 
-## Handler REPL Commands
+## Handler REPL 命令
 
-| Command | Purpose |
-|---------|---------|
-| `listimplants` | Show active implants |
-| `implant <id>` | Interact with implant |
-| `run <cmd>` | Run system command |
-| `loadmodule <module>` | Load post-ex module |
-| `inject-shellcode` | Inject shellcode into process |
-| `invoke-mimikatz` | Run Mimikatz |
-| `sharphound` | BloodHound collection |
-| `get-system` | Attempt privilege escalation |
+| 命令 | 用途 |
+|------|------|
+| `listimplants` | 显示活跃植入体 |
+| `implant <id>` | 与植入体交互 |
+| `run <cmd>` | 执行系统命令 |
+| `loadmodule <module>` | 加载后渗透模块 |
+| `inject-shellcode` | 向进程注入 shellcode |
+| `invoke-mimikatz` | 运行 Mimikatz |
+| `sharphound` | BloodHound 数据采集 |
+| `get-system` | 尝试权限提升 |
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Module list, proxy config, C implant usage |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 模块列表、代理配置、C 植入体用法 |

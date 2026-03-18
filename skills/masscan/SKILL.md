@@ -1,18 +1,15 @@
 ---
 name: masscan
 description: >
-  This skill should be used when the user asks about "masscan", "performing
-  wide-area network sweeps", "identifying open ports across large CIDR
-  ranges", "as a first-pass discovery step before nmap service scanning".
-  Ultra-fast async TCP SYN port scanner capable of scanning the entire IPv4
-  internet in minutes.
+  此技能适用于用户询问关于 "masscan"、"执行大范围网络扫描"、
+  "识别大型 CIDR 范围的开放端口"、"在 nmap 服务扫描前作为初步发现步骤" 的问题。
 ---
 
 # Masscan
 
-Ultra-fast TCP SYN scanner for large-scale port discovery.
+超高速 TCP SYN 扫描器，用于大规模端口发现。
 
-## Quick Start
+## 快速开始
 
 ```bash
 masscan 10.0.0.0/16 -p445 --rate=10000 -oG out.gnmap
@@ -20,30 +17,30 @@ masscan 10.0.0.0/8 -p0-1023 --rate=50000 -oX out.xml
 masscan -iL targets.txt -p80,443,8080,445 --rate=10000
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-p <ports>` | Port list / range (e.g. `0-65535`, `80,443`) |
-| `--rate <n>` | Packets per second (start low) |
-| `-oG / -oX / -oJ` | Output: grepable / XML / JSON |
-| `-iL <file>` | Read targets from file |
-| `--banners` | Grab service banners |
-| `--excludefile` | Exclude IPs from scan |
-| `--adapter-ip` | Source IP |
-| `--router-mac` | Default gateway MAC |
+| `-p <ports>` | 端口列表/范围（如 `0-65535`、`80,443`） |
+| `--rate <n>` | 每秒发包数（从低速开始） |
+| `-oG / -oX / -oJ` | 输出格式：grepable / XML / JSON |
+| `-iL <file>` | 从文件读取目标 |
+| `--banners` | 抓取服务 banner |
+| `--excludefile` | 排除指定 IP |
+| `--adapter-ip` | 源 IP 地址 |
+| `--router-mac` | 默认网关 MAC 地址 |
 
-## Common Workflows
+## 常见工作流
 
-### Feed results into nmap
+### 将结果导入 nmap
 ```bash
 masscan 10.0.0.0/24 -p1-65535 --rate=5000 -oG masscan.out
 grep "open" masscan.out | awk '{print $4}' | cut -d/ -f1 | sort -u > ports.txt
 nmap -sV -p$(paste -sd, ports.txt) -iL hosts.txt
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Extended options and tuning notes |
+| `references/` | 扩展选项与调优说明 |

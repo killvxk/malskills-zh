@@ -1,18 +1,15 @@
 ---
 name: nikto
 description: >
-  This skill should be used when the user asks about "nikto", "performing
-  quick web server reconnaissance to identify low-hanging fruit, server
-  banners, and default content before deeper manual testing". Open-source web
-  server scanner checking for 6700+ known vulnerabilities, outdated software,
-  misconfigurations, and dangerous CGI/default files.
+  此技能适用于用户询问关于 "nikto"、"在深度手动测试前快速进行 Web 服务器侦察以识别低挂果实、服务器 banner 和默认内容"、
+  "Web 服务器漏洞扫描" 的问题。
 ---
 
 # Nikto
 
-Web server vulnerability and misconfiguration scanner.
+Web 服务器漏洞与配置错误扫描器。
 
-## Quick Start
+## 快速开始
 
 ```bash
 nikto -h http://target.com
@@ -20,32 +17,32 @@ nikto -h https://target.com -ssl
 nikto -h target.com -p 8443 -o nikto.txt -Format txt
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-h <host>` | Target host/URL |
-| `-p <port>` | Port (default 80/443) |
-| `-ssl` | Force SSL |
-| `-id <user:pass>` | HTTP basic auth |
-| `-useproxy <proxy>` | Route through proxy |
-| `-Tuning <n>` | Scan tuning bitmask |
-| `-o <file>` | Output file |
+| `-h <host>` | 目标主机/URL |
+| `-p <port>` | 端口（默认 80/443） |
+| `-ssl` | 强制使用 SSL |
+| `-id <user:pass>` | HTTP 基本认证 |
+| `-useproxy <proxy>` | 通过代理路由流量 |
+| `-Tuning <n>` | 扫描调优位掩码 |
+| `-o <file>` | 输出文件 |
 | `-Format <fmt>` | csv / txt / xml / html |
 
-## Tuning Values
+## 调优值
 
-| Value | Meaning |
+| 值 | 含义 |
 |-------|---------|
-| 1 | Interesting files |
-| 2 | Misconfiguration |
-| 3 | Info disclosure |
-| 4 | XSS injection |
-| 8 | Command execution |
-| 9 | SQL injection |
+| 1 | 有趣的文件 |
+| 2 | 配置错误 |
+| 3 | 信息泄露 |
+| 4 | XSS 注入 |
+| 8 | 命令执行 |
+| 9 | SQL 注入 |
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Plugin list, auth bypass techniques |
+| `references/` | 插件列表、认证绕过技术 |

@@ -1,69 +1,66 @@
 ---
 name: hakrawler
 description: >
-  This skill should be used when the user asks about "hakrawler", "crawling
-  web applications to build a URL inventory before fuzzing", "during OSINT on
-  web infrastructure". Fast Go web crawler for discovering URLs, endpoints,
-  and JavaScript files.
+  此技能适用于用户询问关于"hakrawler"、"爬取 Web 应用以在模糊测试前建立 URL 清单"、"对 Web 基础设施进行 OSINT 时"。快速 Go Web 爬虫，用于发现 URL、端点和 JavaScript 文件。
 ---
 
 # Hakrawler
 
-Fast Go web crawler — discover URLs, JS files, forms, and endpoints.
+快速 Go Web 爬虫 — 发现 URL、JS 文件、表单和端点。
 
-## Quick Start
+## 快速开始
 
 ```bash
 go install github.com/hakluke/hakrawler@latest
 
-# Crawl a domain
+# 爬取一个域名
 echo https://target.com | hakrawler
 
-# Depth 3, include subdomains
+# 深度 3，包含子域名
 echo https://target.com | hakrawler -d 3 -subs
 
-# Output as JSON
+# 输出为 JSON
 echo https://target.com | hakrawler -json
 
-# Pipe multiple domains
+# 管道输入多个域名
 cat domains.txt | hakrawler -d 2
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
-|------|---------|
-| `-d N` | Depth (default: 1) |
-| `-subs` | Include subdomains |
-| `-u` | Unique URLs only |
-| `-insecure` | Skip TLS verification |
-| `-t N` | Threads |
-| `-timeout N` | Timeout per request (s) |
-| `-H "K:V"` | Custom header |
-| `-json` | JSON output |
-| `-scope REGEX` | Limit to URL pattern |
+| 参数 | 用途 |
+|------|------|
+| `-d N` | 深度（默认：1） |
+| `-subs` | 包含子域名 |
+| `-u` | 仅输出唯一 URL |
+| `-insecure` | 跳过 TLS 验证 |
+| `-t N` | 线程数 |
+| `-timeout N` | 每个请求的超时时间（秒） |
+| `-H "K:V"` | 自定义请求头 |
+| `-json` | JSON 输出 |
+| `-scope REGEX` | 限制到匹配 URL 模式 |
 
-## Common Workflows
+## 常用工作流
 
-**Build URL inventory for fuzzing:**
+**为模糊测试建立 URL 清单：**
 ```bash
 echo https://target.com | hakrawler -d 3 -u | tee urls.txt
-# Feed to ffuf
+# 输入给 ffuf
 ffuf -w urls.txt:URL -u URL -mc 200
 ```
 
-**Discover JS files:**
+**发现 JS 文件：**
 ```bash
 echo https://target.com | hakrawler -d 2 | grep "\.js$"
 ```
 
-**Combine with httpx for live check:**
+**结合 httpx 进行存活检测：**
 ```bash
 cat domains.txt | hakrawler | httpx -silent -mc 200
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Scope filtering and JS analysis tips |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 范围过滤和 JS 分析技巧 |

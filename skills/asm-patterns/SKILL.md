@@ -1,24 +1,19 @@
 ---
 name: asm-patterns
 description: >
-  This skill should be used when the user asks about "asm-patterns",
-  "writing", "reviewing", "generating .asm/.s/.S files", "when implementing
-  functions that interoperate with C/system code", "when establishing correct
-  prologues, epilogues, stack management, SIMD loops, syscall stubs". Assembly
-  language patterns, calling conventions, and code structure for x86-64 and
-  ARM64.
+  此技能适用于用户询问关于 "asm-patterns"、"编写"、"审查"、"生成 .asm/.s/.S 文件"、"实现与 C/系统代码互操作的函数"、"建立正确的函数序言/尾声、栈管理、SIMD 循环、系统调用桩" 等内容。x86-64 和 ARM64 汇编语言模式、调用约定及代码结构规范。
 ---
 
 # Assembly Patterns
 
-Canonical patterns and guardrails for x86-64 and ARM64 assembly.
-Apply to all `.asm`, `.s`, `.S` files and any assembly embedded in C/Rust/Go.
+x86-64 和 ARM64 汇编的标准模式与约束规则。
+适用于所有 `.asm`、`.s`、`.S` 文件以及嵌入在 C/Rust/Go 中的汇编代码。
 
 ---
 
-## Architecture Selection
+## 架构选择
 
-Declare the target at the top of every file:
+在每个文件顶部声明目标架构：
 
 ```nasm
 ; x86-64, NASM, Linux/macOS
@@ -26,44 +21,44 @@ Declare the target at the top of every file:
 ; Syntax: Intel (NASM)
 ```
 
-- **x86-64** — Linux/macOS servers, desktops, WSL
-- **ARM64** — Apple Silicon, mobile, embedded Linux
-- Never mix architecture paths without `%ifdef` / `.ifdef` guards
+- **x86-64** — Linux/macOS 服务器、桌面、WSL
+- **ARM64** — Apple Silicon、移动端、嵌入式 Linux
+- 不使用 `%ifdef` / `.ifdef` 守卫时，禁止混合不同架构的代码路径
 
 ---
 
-## Calling Conventions
+## 调用约定
 
-### x86-64 System V ABI (Linux, macOS, BSD)
+### x86-64 System V ABI（Linux、macOS、BSD）
 
-| Role | Registers |
+| 角色 | 寄存器 |
 |---|---|
-| Integer args (1–6) | `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9` |
-| Float args (1–8) | `xmm0`–`xmm7` |
-| Return (int) | `rax` |
-| Return (float) | `xmm0` |
-| Caller-saved | `rax`, `rcx`, `rdx`, `rsi`, `rdi`, `r8`–`r11` |
-| Callee-saved | `rbx`, `rbp`, `r12`–`r15` |
-| Stack alignment | 16-byte aligned **before** `call` |
+| 整型参数（1–6） | `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9` |
+| 浮点参数（1–8） | `xmm0`–`xmm7` |
+| 整型返回值 | `rax` |
+| 浮点返回值 | `xmm0` |
+| 调用者保存 (Caller-saved) | `rax`, `rcx`, `rdx`, `rsi`, `rdi`, `r8`–`r11` |
+| 被调用者保存 (Callee-saved) | `rbx`, `rbp`, `r12`–`r15` |
+| 栈对齐 | `call` 指令**执行前**需 16 字节对齐 |
 
-### ARM64 AAPCS (Linux, macOS)
+### ARM64 AAPCS（Linux、macOS）
 
-| Role | Registers |
+| 角色 | 寄存器 |
 |---|---|
-| Integer args (1–8) | `x0`–`x7` |
-| Float args (1–8) | `d0`–`d7` |
-| Return (int) | `x0` |
-| Return (float) | `d0` |
-| Callee-saved | `x19`–`x28`, `x29` (FP) |
-| Stack alignment | 16-byte aligned at all times |
+| 整型参数（1–8） | `x0`–`x7` |
+| 浮点参数（1–8） | `d0`–`d7` |
+| 整型返回值 | `x0` |
+| 浮点返回值 | `d0` |
+| 被调用者保存 (Callee-saved) | `x19`–`x28`, `x29` (FP) |
+| 栈对齐 | 始终保持 16 字节对齐 |
 
-**Key rule**: in non-leaf functions, save `x29` + `x30` together with `stp` at entry; restore with `ldp` before `ret`.
+**关键规则**：在非叶函数中，入口处使用 `stp` 将 `x29` + `x30` 一起保存；`ret` 前使用 `ldp` 恢复。
 
 ---
 
-## Core Patterns
+## 核心模式
 
-### x86-64 — Non-leaf function
+### x86-64 — 非叶函数
 
 ```nasm
 ; int64_t compute(int64_t x, int64_t y)
@@ -87,7 +82,7 @@ compute:
     ret
 ```
 
-### x86-64 — Leaf function (no calls, red zone)
+### x86-64 — 叶函数（无调用，使用红区）
 
 ```nasm
 ; int64_t add3(int64_t a, int64_t b, int64_t c)
@@ -99,7 +94,7 @@ add3:
     ret
 ```
 
-### ARM64 — Non-leaf function
+### ARM64 — 非叶函数
 
 ```asm
 // int64_t compute(int64_t x, int64_t y)
@@ -121,7 +116,7 @@ compute:
     ret
 ```
 
-### SIMD — SSE2 float loop (x86-64)
+### SIMD — SSE2 浮点循环（x86-64）
 
 ```nasm
 ; void vadd_f32(float *dst, const float *a, const float *b, size_t n)
@@ -144,7 +139,7 @@ vadd_f32:
     ret
 ```
 
-### SIMD — NEON float loop (ARM64)
+### SIMD — NEON 浮点循环（ARM64）
 
 ```asm
 // void vadd_f32(float *dst, const float *a, const float *b, size_t n)
@@ -163,7 +158,7 @@ vadd_f32:
     ret
 ```
 
-### Linux x86-64 Syscall
+### Linux x86-64 系统调用
 
 ```nasm
 ; syscall(number, arg1, arg2, arg3)
@@ -189,7 +184,7 @@ _start:
     syscall
 ```
 
-### Position-Independent Code (PIC)
+### 位置无关代码 (PIC)
 
 ```nasm
 default rel                 ; make ALL memory refs RIP-relative (NASM)
@@ -206,20 +201,20 @@ get_counter:
 
 ---
 
-## Code Style Rules
+## 代码风格规则
 
-1. **File header** — purpose, architecture, syntax, author
-2. **Function header** — C prototype comment, register mapping, return value
-3. **Inline comments** — explain *why*, not *what* (`; pointer alignment check`, not `; compare`)
-4. **Label naming** — `module_function_sublabel` (e.g., `crypto_sha256_loop`)
-5. **Constants** — always `equ` / `.equ` with descriptive names, never magic numbers
-6. **Callee-saved** — always save before use, restore in reverse order
-7. **Stack** — 16-byte aligned before every `call`; never leave dirty in epilogue
-8. **Alignment directives** — `align 16` before hot loops on x86-64; mandatory for SSE/AVX loads
+1. **文件头** — 用途、架构、语法、作者
+2. **函数头** — C 原型注释、寄存器映射、返回值
+3. **行内注释** — 解释*为什么*，而非*是什么*（`; pointer alignment check`，而非 `; compare`）
+4. **标签命名** — `module_function_sublabel`（如 `crypto_sha256_loop`）
+5. **常量** — 始终使用 `equ` / `.equ` 加描述性名称，禁止魔法数字
+6. **被调用者保存寄存器** — 使用前必须保存，以逆序恢复
+7. **栈** — 每次 `call` 前保持 16 字节对齐；尾声中不留脏状态
+8. **对齐指令** — x86-64 热循环前使用 `align 16`；SSE/AVX 加载时为必须项
 
 ---
 
-## Toolchain Quick Reference
+## 工具链快速参考
 
 ```bash
 # NASM → Linux ELF64 (debug info)
@@ -256,9 +251,9 @@ gdb prog
 
 ---
 
-## Resources
+## 资源
 
-Load on demand during development:
+按需加载：
 
-- [references/x86-64.md](references/x86-64.md) — complete register table, instruction selection guide, SSE/AVX patterns, x86-64 ABI edge cases
-- [references/arm64.md](references/arm64.md) — ARM64 register table, NEON/SVE patterns, AAPCS edge cases, Apple Silicon specifics
+- [references/x86-64.md](references/x86-64.md) — 完整寄存器表、指令选择指南、SSE/AVX 模式、x86-64 ABI 边界情况
+- [references/arm64.md](references/arm64.md) — ARM64 寄存器表、NEON/SVE 模式、AAPCS 边界情况、Apple Silicon 特性

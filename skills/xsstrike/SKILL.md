@@ -1,18 +1,14 @@
 ---
 name: xsstrike
 description: >
-  This skill should be used when the user asks about "xsstrike", "testing for
-  reflected, stored", "DOM-based XSS", "identifying injection contexts",
-  "generating payloads tailored to bypass specific filters". Advanced XSS
-  detection suite with context-aware payload generation, DOM XSS analysis,
-  site crawler, and WAF-bypass fuzzer.
+  此技能适用于用户询问关于 "xsstrike"、"测试反射型、存储型"、"DOM 型 XSS"、"识别注入上下文"、"生成针对特定过滤器的绕过 payload"。高级 XSS 检测套件，具备上下文感知的 payload 生成、DOM XSS 分析、站点爬虫及 WAF 绕过模糊测试功能。
 ---
 
 # XSStrike
 
-Context-aware XSS detection and payload generation.
+上下文感知的 XSS 检测与 Payload 生成工具。
 
-## Quick Start
+## 快速开始
 
 ```bash
 python xsstrike.py -u "http://target.com/search?q=test"
@@ -21,22 +17,22 @@ python xsstrike.py -u "http://target.com/feedback" --blind
 python xsstrike.py -u "http://target.com/?q=test" --fuzzer
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-u <url>` | Target URL with parameter |
-| `--crawl` | Crawl and test all discovered links |
-| `--blind` | Blind XSS mode (no reflection check) |
-| `--fuzzer` | Fuzz with payload list |
-| `-l <level>` | Crawl depth |
-| `--data <post>` | POST data |
-| `-p <param>` | Test specific parameter only |
-| `--headers <h>` | Custom headers |
-| `--proxy <proxy>` | Route through proxy |
+| `-u <url>` | 带参数的目标 URL |
+| `--crawl` | 爬取并测试所有发现的链接 |
+| `--blind` | 盲 XSS 模式（不检查响应中的反射） |
+| `--fuzzer` | 使用 payload 列表进行模糊测试 |
+| `-l <level>` | 爬取深度 |
+| `--data <post>` | POST 数据 |
+| `-p <param>` | 仅测试指定参数 |
+| `--headers <h>` | 自定义请求头 |
+| `--proxy <proxy>` | 通过代理路由流量 |
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | DOM XSS testing, WAF bypass techniques |
+| `references/` | DOM XSS 测试、WAF 绕过技术 |

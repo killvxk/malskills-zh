@@ -1,42 +1,37 @@
 ---
 name: asm-testing
 description: >
-  This skill should be used when the user asks about "asm-testing", "verifying
-  correctness of new .asm/.s/.S files", "debugging unexpected behavior in
-  manually written", "hand-optimized assembly". Assembly code testing and
-  verification workflow: C harness for unit testing hand-written functions,
-  GDB/LLDB register inspection, objdump structural analysis, ABI compliance
-  checklist, and cycle-accurate measurement.
+  此技能适用于用户询问关于 "asm-testing"、"验证新 .asm/.s/.S 文件的正确性"、"调试手写或手工优化汇编中的意外行为" 等内容。汇编代码测试与验证工作流程：用于单元测试手写函数的 C 测试驱动、GDB/LLDB 寄存器检查、objdump 结构分析、ABI 合规清单及周期精确度量。
 ---
 
 # asm-testing
 
-Structured workflow for testing and verifying hand-written assembly.
+手写汇编代码的结构化测试与验证工作流程。
 
 ---
 
-## Phase 1 — ABI Compliance Checklist
+## 阶段 1 — ABI 合规清单
 
-Run this before writing a single test. A function that violates the ABI may appear to work until it silently corrupts caller state.
+在编写任何测试之前先完成此清单。违反 ABI 的函数可能看似正常运行，直到它悄无声息地破坏调用者状态。
 
 ### x86-64 System V
 
-- [ ] `rsp` is 16-byte aligned at every `call` site (misalignment triggers SSE crashes)
-- [ ] `rbx`, `r12`–`r15` are restored to their entry values before `ret`
-- [ ] Integer return value in `rax`; float/double in `xmm0`
-- [ ] Stack frame properly deallocated (no net drift)
-- [ ] No writes below `rsp` except within the red zone (leaf functions only)
+- [ ] 每个 `call` 位置 `rsp` 保持 16 字节对齐（未对齐会导致 SSE 崩溃）
+- [ ] `rbx`、`r12`–`r15` 在 `ret` 前已恢复为入口时的值
+- [ ] 整型返回值在 `rax`；浮点/双精度在 `xmm0`
+- [ ] 栈帧已正确释放（无净漂移）
+- [ ] 除红区 (red zone)（仅限叶函数）外，`rsp` 以下无写入
 
 ### ARM64 AAPCS
 
-- [ ] `sp` is 16-byte aligned at all times (hardware enforces this)
-- [ ] `x19`–`x28` and `d8`–`d15` restored before `ret`
-- [ ] `x29` (fp) and `x30` (lr) saved with `stp x29, x30, [sp, #-N]!` if calling out
-- [ ] Integer return in `x0`; float return in `d0`
+- [ ] `sp` 始终保持 16 字节对齐（硬件强制执行）
+- [ ] `ret` 前已恢复 `x19`–`x28` 和 `d8`–`d15`
+- [ ] 如需向外调用，使用 `stp x29, x30, [sp, #-N]!` 保存 `x29`（fp）和 `x30`（lr）
+- [ ] 整型返回值在 `x0`；浮点返回值在 `d0`
 
 ---
 
-## Phase 2 — Structural Analysis (before running)
+## 阶段 2 — 结构分析（运行前）
 
 ```bash
 # Disassemble and check prologue/epilogue
@@ -55,17 +50,17 @@ nm my.o | grep ' T '
 objdump -r my.o
 ```
 
-**What to confirm**:
-- Prologue saves the registers the function uses
-- Epilogue restores exactly those registers in reverse order
-- Stack allocation/deallocation is symmetric
-- No jump to undefined symbols
+**需要确认的内容**：
+- 序言 (Prologue) 保存了函数使用的寄存器
+- 尾声 (Epilogue) 以相反顺序恢复了这些寄存器
+- 栈分配/释放是对称的
+- 无跳转到未定义符号
 
 ---
 
-## Phase 3 — C Harness Unit Test
+## 阶段 3 — C 驱动单元测试
 
-Write a thin C driver that calls the ASM function and asserts results.
+编写一个精简的 C 驱动程序，调用汇编函数并断言结果。
 
 ```c
 /* test_hot_fn.c */
@@ -101,7 +96,7 @@ int main(void) {
 }
 ```
 
-### Build and run
+### 构建并运行
 
 ```bash
 # NASM + C harness
@@ -115,15 +110,15 @@ gcc -g -o test_hot_fn test_hot_fn.c hot_fn.o
 ./test_hot_fn
 ```
 
-> Load `references/c-harness.md` for Makefile patterns and assertion helpers for floats, SIMD output, and memory buffers.
+> 加载 `references/c-harness.md` 查看 Makefile 模式以及浮点、SIMD 输出和内存缓冲区的断言辅助工具。
 
 ---
 
-## Phase 4 — GDB / LLDB Verification
+## 阶段 4 — GDB / LLDB 验证
 
-Use the debugger to step through the function and verify register state at each critical point.
+使用调试器单步执行函数，在每个关键位置验证寄存器状态。
 
-### GDB session
+### GDB 会话
 
 ```bash
 gdb ./test_hot_fn
@@ -137,7 +132,7 @@ gdb ./test_hot_fn
 (gdb) x/8gx $rsp          # examine 8 quadwords at rsp
 ```
 
-### LLDB session
+### LLDB 会话
 
 ```bash
 lldb ./test_hot_fn
@@ -150,20 +145,20 @@ lldb ./test_hot_fn
 (lldb) si                 # step one instruction
 ```
 
-> Load `references/debug-commands.md` for the full command reference including watchpoints, memory inspection, and conditional breakpoints.
+> 加载 `references/debug-commands.md` 查看完整命令参考，包括监视点 (watchpoints)、内存检查和条件断点。
 
-### Checklist during stepping
+### 单步执行清单
 
-- At function entry: note values of `rbx`, `r12`–`r15` (`rsp – offset` saved?)
-- After prologue: stack pointer difference from entry equals declared frame size
-- At every `call`: verify `rsp` is 16-byte aligned (`p/x $rsp % 16` must be 0)
-- At `ret`: `rbx`, `r12`–`r15` match their entry values; `rax` holds the correct result
+- 函数入口处：记录 `rbx`、`r12`–`r15` 的值（是否已保存到 `rsp – offset`？）
+- 序言结束后：栈指针与入口的差值等于声明的帧大小
+- 每个 `call` 处：验证 `rsp` 是 16 字节对齐的（`p/x $rsp % 16` 必须为 0）
+- `ret` 处：`rbx`、`r12`–`r15` 与入口值一致；`rax` 持有正确的返回结果
 
 ---
 
-## Phase 5 — SIMD / Float Output Verification
+## 阶段 5 — SIMD / 浮点输出验证
 
-Standard integer comparison fails for SIMD types. Use `memcmp` for exact bit equality or a tolerance check for floats.
+标准整型比较不适用于 SIMD 类型。对于精确位相等使用 `memcmp`，对浮点数使用容差检查。
 
 ```c
 #include <immintrin.h>
@@ -187,13 +182,13 @@ static void test_vec_add(void) {
 }
 ```
 
-For floating-point functions with rounding: use `fabsf(got - expected) < 1e-6f`.
+对于有舍入的浮点函数：使用 `fabsf(got - expected) < 1e-6f`。
 
 ---
 
-## Phase 6 — Cycle Measurement
+## 阶段 6 — 周期度量
 
-Only after correctness is confirmed.
+仅在正确性确认后进行。
 
 ```c
 /* Portable RDTSC (x86-64) */
@@ -224,11 +219,11 @@ void bench_hot_fn(void) {
 }
 ```
 
-For meaningful results: pin to one CPU core (`taskset -c 0 ./bench`), disable turbo if possible.
+获得有意义的结果需要：将进程绑定到单个 CPU 核心（`taskset -c 0 ./bench`），如有可能则禁用睿频。
 
 ---
 
-## Resources
+## 资源
 
-- `references/debug-commands.md` — full GDB/LLDB/objdump/readelf/strace command reference
-- `references/c-harness.md` — Makefile templates, float comparison helpers, memory buffer tests
+- `references/debug-commands.md` — 完整的 GDB/LLDB/objdump/readelf/strace 命令参考
+- `references/c-harness.md` — Makefile 模板、浮点比较辅助函数、内存缓冲区测试

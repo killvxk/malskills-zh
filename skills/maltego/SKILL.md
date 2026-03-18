@@ -1,60 +1,58 @@
 ---
 name: maltego
 description: >
-  This skill should be used when the user asks about "maltego", "building
-  entity relationship graphs during recon", "threat intelligence gathering".
-  Visual intelligence and link analysis platform for mapping relationships
-  between people, organizations, domains, IPs, and infrastructure.
+  此技能适用于用户询问关于 "maltego"、"在侦察阶段构建实体关系图"、
+  "威胁情报收集"、"可视化 OSINT 链接分析" 的问题。
 ---
 
 # Maltego
 
-Visual OSINT and link analysis — entity graph mapping for people, domains, IPs, orgs.
+可视化 OSINT (开源情报) 与链接分析 — 针对人员、域名、IP、组织的实体图谱映射。
 
-## Quick Start
+## 快速开始
 
-1. Download from maltego.com → register for Community Edition (free)
-2. Launch Maltego → New Graph
-3. Drag entity from palette (e.g., Domain)
-4. Type target domain → Run All Transforms
+1. 从 maltego.com 下载 → 注册社区版（免费）
+2. 启动 Maltego → 新建图谱
+3. 从面板拖入实体（例如 Domain）
+4. 输入目标域名 → 运行全部变换
 
-## Key Entity Types
+## 关键实体类型
 
-| Entity | Transforms |
+| 实体 | 可用变换 |
 |--------|-----------|
-| Domain | DNS, WHOIS, subdomains, MX, NS |
-| IP Address | Geo, reverse DNS, netblock, Shodan |
-| Person | Social accounts, email, phone |
-| Organization | People, domains, certificates |
-| Email | Breaches, social accounts (Holehe) |
-| Website | Tech fingerprint, links |
+| Domain | DNS、WHOIS、子域名、MX、NS |
+| IP Address | 地理位置、反向 DNS、网段、Shodan |
+| Person | 社交账号、邮箱、电话 |
+| Organization | 人员、域名、证书 |
+| Email | 泄露记录、社交账号（Holehe） |
+| Website | 技术指纹、链接 |
 
-## Common Transforms
+## 常用变换
 
-| Transform | Purpose |
+| 变换 | 用途 |
 |-----------|---------|
-| `To DNS Name` | Subdomain enum |
-| `To IP Address` | Resolve domain |
-| `To Website` | Enumerate web presence |
-| `To Email Address` | Find emails |
-| `To Social Accounts` | Map social media |
-| `Shodan Search` | Enumerate open ports |
+| `To DNS Name` | 子域名枚举 |
+| `To IP Address` | 解析域名 |
+| `To Website` | 枚举 Web 存在 |
+| `To Email Address` | 查找邮箱 |
+| `To Social Accounts` | 映射社交媒体 |
+| `Shodan Search` | 枚举开放端口 |
 
-## Common Workflows
+## 常见工作流
 
-**Domain recon:**
-1. Add Domain entity → target.com
-2. Run: `DNS Name – To DNS Name [MX/NS/A]`
-3. Run: `Domain – To Website`
-4. Run: `IP – To Shodan`
+**域名侦察：**
+1. 添加 Domain 实体 → target.com
+2. 运行：`DNS Name – To DNS Name [MX/NS/A]`
+3. 运行：`Domain – To Website`
+4. 运行：`IP – To Shodan`
 
-**Person OSINT:**
-1. Add Person entity → Full Name
-2. Run: `Person – To Email`
-3. Run: `Email – To Social Accounts`
+**人员 OSINT：**
+1. 添加 Person 实体 → 全名
+2. 运行：`Person – To Email`
+3. 运行：`Email – To Social Accounts`
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Custom transform and API integration notes |
+| `references/` | 自定义变换和 API 集成说明 |

@@ -1,68 +1,65 @@
 ---
 name: arjun
 description: >
-  This skill should be used when the user asks about "arjun", "performing API
-  reconnaissance", "fuzzing query/body/header parameters", "finding
-  undocumented inputs in REST/GraphQL endpoints". Discover hidden HTTP
-  parameters in web endpoints.
+  此技能适用于用户询问关于 "arjun"、"执行 API 侦察"、"模糊测试查询/请求体/请求头参数"、"在 REST/GraphQL 端点中发现未文档化的输入参数" 等内容。在 Web 端点中发现隐藏的 HTTP 参数。
 ---
 
 # Arjun
 
-HTTP parameter discovery — finds hidden GET/POST/JSON/XML parameters in web endpoints.
+HTTP 参数发现工具 — 在 Web 端点中找到隐藏的 GET/POST/JSON/XML 参数。
 
-## Quick Start
+## 快速开始
 
 ```bash
 pip install arjun
 
-# Single URL — GET params
+# 单个 URL — GET 参数
 arjun -u https://target.com/api/endpoint
 
-# POST body params
+# POST 请求体参数
 arjun -u https://target.com/api/endpoint -m POST
 
-# JSON body
+# JSON 请求体
 arjun -u https://target.com/api/endpoint -m JSON
 
-# Multiple URLs from file
+# 从文件批量处理多个 URL
 arjun -i urls.txt -o results.json
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-u URL` | Target URL |
-| `-m GET/POST/JSON/XML` | Request method (default: GET) |
-| `-i FILE` | Input file with URLs |
-| `-o FILE` | Output results to JSON |
-| `-t N` | Threads (default: 5) |
-| `-d N` | Request delay (ms) |
-| `--headers "K:V"` | Custom headers |
-| `--stable` | Avoid flakey endpoints (retry on error) |
-| `-q` | Quiet mode |
-| `--include` | Always include params in every request |
+| `-u URL` | 目标 URL |
+| `-m GET/POST/JSON/XML` | 请求方法（默认：GET） |
+| `-i FILE` | 包含 URL 的输入文件 |
+| `-o FILE` | 将结果输出为 JSON |
+| `-t N` | 线程数（默认：5） |
+| `-d N` | 请求延迟（毫秒） |
+| `--headers "K:V"` | 自定义请求头 |
+| `--stable` | 避免不稳定端点（出错时重试） |
+| `-q` | 静默模式 |
+| `--include` | 在每个请求中始终包含指定参数 |
 
-## Common Workflows
+## 常见工作流程
 
-**API recon on authenticated endpoint:**
+**对需认证的端点进行 API 侦察：**
 ```bash
 arjun -u https://api.target.com/v1/user -m GET --headers "Authorization: Bearer TOKEN"
 ```
 
-**Fuzz POST form:**
+**模糊测试 POST 表单：**
 ```bash
 arjun -u https://target.com/login -m POST
 ```
 
-**Batch scan from Burp export:**
+**从 Burp 导出的 URL 批量扫描：**
 ```bash
 cat burp_urls.txt | arjun -i /dev/stdin -o found_params.json
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Extended wordlist and tamper tips |
+| `references/` | 扩展字典与参数篡改技巧 |

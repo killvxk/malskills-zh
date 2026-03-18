@@ -1,63 +1,60 @@
 ---
 name: x64dbg
 description: >
-  This skill should be used when the user asks about "x64dbg", "dynamically
-  analyzing PE malware, unpacking obfuscated executables", "tracing Windows
-  API calls". User-mode debugger for Windows x64/x86 with plugin ecosystem for
-  malware analysis, unpacking, and vulnerability research.
+  此技能适用于用户询问关于 "x64dbg"、"动态分析 PE 恶意软件、脱壳混淆的可执行文件"、"追踪 Windows API 调用"。用于恶意软件分析、脱壳和漏洞研究的 Windows x64/x86 用户态调试器，拥有丰富的插件生态。
 ---
 
 # x64dbg
 
-Windows debugger for dynamic malware analysis, unpacking, and API tracing.
+用于动态恶意软件分析、脱壳和 API 追踪的 Windows 调试器。
 
-## Quick Start
+## 快速开始
 
-1. Download from x64dbg.com → extract → run `x96dbg.exe` (launcher auto-selects x32/x64)
-2. **File > Open** → target executable
-3. Set breakpoint: `F2` on instruction, or `bp CreateRemoteThread`
-4. **Run**: `F9` | **Step over**: `F8` | **Step into**: `F7`
-5. **Plugins**: load ScyllaHide (anti-anti-debug), xAnalyzer
+1. 从 x64dbg.com 下载 → 解压 → 运行 `x96dbg.exe`（启动器自动选择 x32/x64）
+2. **文件 > 打开** → 目标可执行文件
+3. 设置断点：在指令处按 `F2`，或输入 `bp CreateRemoteThread`
+4. **运行**：`F9` | **步过**：`F8` | **步入**：`F7`
+5. **插件**：加载 ScyllaHide（反反调试）、xAnalyzer
 
-## Key Panels
+## 主要面板
 
-| Panel | Purpose |
+| 面板 | 用途 |
 |-------|---------|
-| CPU | Disassembly + registers + stack + hex |
-| Log | API calls, plugin output |
-| Breakpoints | Manage all BPs |
-| Memory Map | Virtual memory regions |
-| References | XREFs to selected |
-| Symbols | Module imports/exports |
+| CPU | 反汇编 + 寄存器 + 栈 + 十六进制视图 |
+| Log | API 调用、插件输出 |
+| Breakpoints | 管理所有断点 |
+| Memory Map | 虚拟内存区域 |
+| References | 选中内容的交叉引用（XREF） |
+| Symbols | 模块导入/导出表 |
 
-## Common Commands
+## 常用命令
 
-| Action | Key / Command |
+| 操作 | 快捷键 / 命令 |
 |--------|--------------|
-| Run / Pause | F9 |
-| Step Over | F8 |
-| Step Into | F7 |
-| Execute till return | Ctrl+F9 |
-| Set breakpoint | F2 |
-| Breakpoint on API | `bp VirtualAlloc` in command bar |
-| Follow in dump | Ctrl+D on address |
-| Search strings | Ctrl+F in disassembly |
+| 运行 / 暂停 | F9 |
+| 步过 | F8 |
+| 步入 | F7 |
+| 执行到返回 | Ctrl+F9 |
+| 设置断点 | F2 |
+| 在 API 处下断点 | 在命令栏输入 `bp VirtualAlloc` |
+| 在转储中跟随 | 在地址处按 Ctrl+D |
+| 搜索字符串 | 在反汇编窗口按 Ctrl+F |
 
-## Common Workflows
+## 常用工作流
 
-**Unpack malware:**
-1. Open sample → run until OEP (watch for `jmp eax/rax` after decryption loop)
-2. Dump process with Scylla plugin → fix imports → save
+**恶意软件脱壳：**
+1. 打开样本 → 运行至 OEP（解密循环结束后关注 `jmp eax/rax`）
+2. 使用 Scylla 插件转储进程 → 修复导入表 → 保存
 
-**Find C2 callback:**
+**定位 C2 回连：**
 ```
 bp WS2_32.connect
 bp WS2_32.send
-F9 → examine stack args
+F9 → 检查栈上的参数
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Plugin list and unpack methodology |
+| `references/` | 插件列表及脱壳方法论 |

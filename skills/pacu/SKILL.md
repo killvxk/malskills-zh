@@ -1,67 +1,64 @@
 ---
 name: pacu
 description: >
-  This skill should be used when the user asks about "pacu", "performing AWS
-  red-team engagements, privilege escalation, data exfiltration", "persistence
-  in AWS accounts". AWS exploitation framework for auditing and attacking
-  misconfigured AWS environments.
+  此技能适用于用户询问关于 "pacu"、"执行 AWS 红队行动、权限提升、数据外泄"、"在 AWS 账号中维持持久化" 等内容。AWS 利用框架，用于审计和攻击配置错误的 AWS 环境。
 ---
 
 # Pacu
 
-AWS exploitation framework — enumerate, escalate, pivot, and persist in AWS.
+AWS 利用框架 —— 在 AWS 中枚举、提权、横向移动并维持持久化。
 
-## Quick Start
+## 快速开始
 
 ```bash
 pip install pacu
 pacu
 
-# Configure AWS creds (or use existing ~/.aws/credentials)
+# 配置 AWS 凭据（或使用现有 ~/.aws/credentials）
 set_keys
-# Enter access key, secret key, session token
+# 输入 access key、secret key、session token
 
-# List modules
+# 列出模块
 ls
-# Run a module
+# 运行模块
 run iam__enum_permissions
 ```
 
-## Key Modules
+## 核心模块
 
-| Module | Purpose |
-|--------|---------|
-| `iam__enum_permissions` | Enumerate IAM permissions |
-| `iam__privesc_scan` | Find privilege escalation paths |
-| `iam__backdoor_users_passwords` | Add backdoor IAM passwords |
-| `ec2__enum` | Enumerate EC2 instances |
-| `s3__download_bucket` | Download S3 bucket contents |
-| `lambda__enum` | Enumerate Lambda functions |
-| `cognito__attack` | Attack Cognito user pools |
-| `cloudtrail__download_event_history` | Download CloudTrail logs |
+| 模块 | 用途 |
+|------|------|
+| `iam__enum_permissions` | 枚举 IAM 权限 |
+| `iam__privesc_scan` | 查找权限提升路径 |
+| `iam__backdoor_users_passwords` | 添加后门 IAM 密码 |
+| `ec2__enum` | 枚举 EC2 实例 |
+| `s3__download_bucket` | 下载 S3 存储桶内容 |
+| `lambda__enum` | 枚举 Lambda 函数 |
+| `cognito__attack` | 攻击 Cognito 用户池 |
+| `cloudtrail__download_event_history` | 下载 CloudTrail 日志 |
 
-## Common Workflows
+## 常用工作流程
 
-**Initial enumeration:**
+**初始枚举：**
 ```
 run iam__enum_permissions
 run ec2__enum
 run s3__enum
 ```
 
-**Privilege escalation:**
+**权限提升：**
 ```
 run iam__privesc_scan
-# Follow recommendations from output
+# 根据输出建议执行后续操作
 ```
 
-**Data exfil:**
+**数据外泄：**
 ```
 run s3__download_bucket --bucket target-bucket
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | AWS privesc techniques and module args |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | AWS 提权技术与模块参数 |

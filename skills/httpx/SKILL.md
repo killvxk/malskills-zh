@@ -1,87 +1,83 @@
 ---
 name: httpx
 description: >
-  This skill should be used when the user asks about "httpx", "probe a list of
-  hosts/URLs for live web servers", "find HTTP services", "check status
-  codes", "extract page titles", "fingerprint web technologies". Fast HTTP
-  probing tool for bulk URL processing, status codes, title extraction, tech
-  detection, and web fingerprinting.
+  此技能适用于用户询问关于"httpx"、"探测一批 host/URL 以查找存活 Web 服务器"、"查找 HTTP 服务"、"检查状态码"、"提取页面标题"、"指纹识别 Web 技术"。快速 HTTP 探测工具，支持批量 URL 处理、状态码查询、标题提取、技术检测和 Web 指纹识别。
 ---
 
 # httpx
 
-Fast HTTP toolkit from ProjectDiscovery — probe and fingerprint web servers at scale.
+ProjectDiscovery 出品的快速 HTTP 工具包 — 大规模探测和指纹识别 Web 服务器。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Probe a list of hosts
+# 探测一批 host
 cat hosts.txt | httpx
 
-# Probe with status + title
+# 探测并显示状态码和标题
 httpx -l hosts.txt -status-code -title
 
-# Silent (URLs only for live hosts)
+# 静默模式（仅输出存活 URL）
 cat subs.txt | httpx -silent
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
-|------|-------------|
-| `-l <file>` | Input file with hosts |
-| `-u <url>` | Single target |
-| `-silent` | Print live URLs only |
-| `-status-code` | Show HTTP status code |
-| `-title` | Extract page title |
-| `-tech-detect` | Detect technologies (Wappalyzer) |
-| `-web-server` | Show web server header |
-| `-content-type` | Show Content-Type header |
-| `-ip` | Resolve and show IP |
-| `-cname` | Show CNAME |
-| `-location` | Show redirect location |
-| `-content-length` | Show response size |
-| `-hash <algo>` | Hash response body (md5,sha1,sha256) |
-| `-favicon` | Extract favicon hash (Shodan mmh3) |
-| `-follow-redirects` | Follow HTTP redirects |
-| `-threads <n>` | Concurrent threads (default 50) |
-| `-rate-limit <n>` | Requests per second |
-| `-timeout <n>` | Timeout in seconds (default 5) |
-| `-retries <n>` | Retry count |
-| `-H <header>` | Custom header |
-| `-proxy <url>` | HTTP/SOCKS5 proxy |
-| `-o <file>` | Output file |
-| `-json` | JSON output |
-| `-csv` | CSV output |
-| `-ports <p>` | Probe specific ports (e.g., `80,443,8080`) |
-| `-tls-probe` | Probe for TLS |
-| `-http2` | Enable HTTP/2 |
-| `-screenshot` | Take screenshots (requires chromium) |
+| 参数 | 说明 |
+|------|------|
+| `-l <file>` | 包含 host 的输入文件 |
+| `-u <url>` | 单个目标 |
+| `-silent` | 仅打印存活 URL |
+| `-status-code` | 显示 HTTP 状态码 |
+| `-title` | 提取页面标题 |
+| `-tech-detect` | 检测技术栈（Wappalyzer） |
+| `-web-server` | 显示 Web 服务器请求头 |
+| `-content-type` | 显示 Content-Type 请求头 |
+| `-ip` | 解析并显示 IP |
+| `-cname` | 显示 CNAME |
+| `-location` | 显示重定向地址 |
+| `-content-length` | 显示响应大小 |
+| `-hash <algo>` | 对响应体计算哈希（md5、sha1、sha256） |
+| `-favicon` | 提取 favicon 哈希（Shodan mmh3） |
+| `-follow-redirects` | 跟随 HTTP 重定向 |
+| `-threads <n>` | 并发线程数（默认 50） |
+| `-rate-limit <n>` | 每秒请求数 |
+| `-timeout <n>` | 超时时间（秒，默认 5） |
+| `-retries <n>` | 重试次数 |
+| `-H <header>` | 自定义请求头 |
+| `-proxy <url>` | HTTP/SOCKS5 代理 |
+| `-o <file>` | 输出文件 |
+| `-json` | JSON 输出 |
+| `-csv` | CSV 输出 |
+| `-ports <p>` | 探测指定端口（如 `80,443,8080`） |
+| `-tls-probe` | 探测 TLS |
+| `-http2` | 启用 HTTP/2 |
+| `-screenshot` | 截图（需要 chromium） |
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Full recon pipeline: subfinder -> httpx
+# 完整侦察流水线：subfinder -> httpx
 subfinder -d target.com -silent | httpx -status-code -title -tech-detect -o live.txt
 
-# Probe list with all metadata
+# 探测列表并获取所有元数据
 httpx -l hosts.txt -status-code -title -tech-detect -web-server -ip -o full.json -json
 
-# Find admin/login panels
+# 查找后台/登录面板
 httpx -l hosts.txt -title -silent | grep -iE "admin|login|portal|dashboard"
 
-# Port-specific probing
+# 指定端口探测
 httpx -l hosts.txt -ports 80,443,8080,8443,3000,8888 -status-code -silent
 
-# Favicon hash (for Shodan pivot)
+# Favicon 哈希（用于 Shodan 关联分析）
 httpx -u https://target.com -favicon
 
-# Screenshot all live hosts
+# 对所有存活 host 截图
 httpx -l hosts.txt -screenshot -output screenshots/
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/output-fields.md` | All output field flags, JSON schema, and filter options |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/output-fields.md` | 所有输出字段参数、JSON 格式和过滤选项 |

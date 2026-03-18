@@ -1,48 +1,45 @@
 ---
 name: subfinder
 description: >
-  This skill should be used when the user asks about "subfinder", "find
-  subdomains", "enumerate attack surface", "discover hidden hosts", "map a
-  target domain's infrastructure passively without touching the target".
-  Passive subdomain enumeration tool using 40+ OSINT sources.
+  此技能适用于用户询问关于 "subfinder"、"查找子域名"、"枚举攻击面"、"发现隐藏主机"、"在不直接接触目标的情况下被动探测目标域名基础设施"。使用 40+ OSINT 来源的被动子域名枚举工具。
 ---
 
 # Subfinder
 
-Fast passive subdomain enumeration — part of the ProjectDiscovery toolkit.
+快速被动子域名枚举工具 —— ProjectDiscovery 工具集的一部分。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Enumerate subdomains for a domain
+# 枚举某域名的子域名
 subfinder -d example.com
 
-# Output to file
+# 输出到文件
 subfinder -d example.com -o subs.txt
 
-# Silent mode (subdomains only, no banner)
+# 静默模式（仅输出子域名，不显示横幅）
 subfinder -d example.com -silent
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-d <domain>` | Target domain |
-| `-dL <file>` | List of domains from file |
-| `-o <file>` | Output file |
-| `-oJ` | JSON output |
-| `-silent` | Print subdomains only |
-| `-t <n>` | Threads (default 10) |
-| `-timeout <n>` | Timeout per source (seconds) |
-| `-all` | Use all sources (slower, more results) |
-| `-recursive` | Enumerate recursively |
-| `-active` | Active DNS verification of results |
-| `-v` | Verbose output |
+| `-d <domain>` | 目标域名 |
+| `-dL <file>` | 从文件读取域名列表 |
+| `-o <file>` | 输出文件 |
+| `-oJ` | JSON 格式输出 |
+| `-silent` | 仅输出子域名 |
+| `-t <n>` | 线程数（默认 10） |
+| `-timeout <n>` | 每个来源的超时时间（秒） |
+| `-all` | 使用所有来源（速度较慢，结果更多） |
+| `-recursive` | 递归枚举 |
+| `-active` | 对结果进行主动 DNS 验证 |
+| `-v` | 详细输出 |
 
-## Provider Configuration
+## API 密钥配置
 
-Configure API keys in `~/.config/subfinder/provider-config.yaml`:
+在 `~/.config/subfinder/provider-config.yaml` 中配置 API 密钥：
 
 ```yaml
 shodan:
@@ -55,29 +52,29 @@ binaryedge:
   - YOUR_KEY
 ```
 
-Without API keys, subfinder still uses free sources (crt.sh, hackertarget, etc.).
+不配置 API 密钥时，subfinder 仍可使用免费来源（crt.sh、hackertarget 等）。
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Enumerate + pipe to httpx for live host check
+# 枚举 + 通过管道传给 httpx 检测存活主机
 subfinder -d example.com -silent | httpx -silent
 
-# Recursive enumeration
+# 递归枚举
 subfinder -d example.com -recursive -silent -o all_subs.txt
 
-# Multiple domains from file
+# 从文件批量处理多个域名
 subfinder -dL domains.txt -silent -o subs.txt
 
-# Use all sources for maximum coverage
+# 使用所有来源以获取最大覆盖率
 subfinder -d example.com -all -silent
 
-# JSON output for automation
+# JSON 输出，便于自动化处理
 subfinder -d example.com -oJ -o subs.json
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/providers.md` | Full list of supported passive sources and API key setup |
+| `references/providers.md` | 支持的被动来源完整列表及 API 密钥配置说明 |

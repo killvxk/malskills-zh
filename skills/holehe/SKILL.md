@@ -1,59 +1,55 @@
 ---
 name: holehe
 description: >
-  This skill should be used when the user asks about "holehe", "target digital
-  presence and identify accounts across platforms". Check if an email address
-  is registered on 120+ websites (Google, Twitter, GitHub, etc.). Use during
-  OSINT to enumerate target digital presence and identify accounts across
-  platforms.
+  此技能适用于用户询问关于"holehe"、"查询目标数字足迹并识别跨平台账号"。检查邮箱地址是否在 120+ 个网站（Google、Twitter、GitHub 等）注册。在 OSINT 过程中用于枚举目标数字足迹并识别跨平台账号。
 ---
 
 # Holehe
 
-Email-to-account mapper — check if an email is registered across 120+ services.
+邮箱账号映射工具 — 检查邮箱是否在 120+ 个服务中注册。
 
-## Quick Start
+## 快速开始
 
 ```bash
 pip install holehe
 
-# Check a single email
+# 检查单个邮箱
 holehe target@gmail.com
 
-# Output only registered sites
+# 仅输出已注册的站点
 holehe target@gmail.com --only-used
 
-# JSON output
+# JSON 输出
 holehe target@gmail.com --only-used --json > results.json
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
-|------|---------|
-| `--only-used` | Show only sites where email is registered |
-| `--no-color` | Disable color output |
-| `--json` | JSON output |
-| `-T N` | Timeout per request |
+| 参数 | 用途 |
+|------|------|
+| `--only-used` | 仅显示邮箱已注册的站点 |
+| `--no-color` | 禁用颜色输出 |
+| `--json` | JSON 输出 |
+| `-T N` | 每个请求的超时时间 |
 
-## Sites Checked (examples)
+## 检查的站点（示例）
 
-`Google` · `Twitter/X` · `GitHub` · `Instagram` · `LinkedIn` · `Reddit` · `Snapchat` · `Spotify` · `Adobe` · `Airbnb` · `Amazon` · `Dropbox` · `Flickr` · `Pinterest` · `Tumblr` + 100 more
+`Google` · `Twitter/X` · `GitHub` · `Instagram` · `LinkedIn` · `Reddit` · `Snapchat` · `Spotify` · `Adobe` · `Airbnb` · `Amazon` · `Dropbox` · `Flickr` · `Pinterest` · `Tumblr` + 100 余个
 
-## Common Workflows
+## 常用工作流
 
-**OSINT on target email:**
+**对目标邮箱进行 OSINT：**
 ```bash
 holehe ceo@targetcompany.com --only-used --json | tee email_presence.json
 ```
 
-**Batch check from file:**
+**从文件批量检查：**
 ```bash
 cat emails.txt | xargs -I {} holehe {} --only-used
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | Interpreting results and account takeover paths |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | 结果解读和账号接管路径 |

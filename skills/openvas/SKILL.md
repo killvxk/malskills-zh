@@ -1,48 +1,44 @@
 ---
 name: openvas
 description: >
-  This skill should be used when the user asks about "openvas", "performing
-  comprehensive vulnerability assessments against internal networks,
-  generating compliance reports", "conducting authenticated scans for known
-  CVEs before an engagement". OpenVAS (Greenbone Vulnerability Manager):
-  full-featured open-source vulnerability scanner with 60,000+ NVTs.
+  此技能适用于用户询问关于 "openvas"、"对内网进行全面漏洞扫描"、"生成合规报告"、"在渗透测试前对已知 CVE 执行认证扫描" 等内容。OpenVAS (Greenbone Vulnerability Manager)：功能完整的开源漏洞扫描器，内置 60,000+ NVT。
 ---
 
 # OpenVAS / Greenbone
 
-Open-source comprehensive vulnerability scanner.
+开源综合漏洞扫描器。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Docker (simplest)
+# Docker（最简方式）
 docker run -d -p 9390:9390 -p 443:443 --name gvm greenbone/community-edition
-# Web UI: https://localhost (admin/admin default)
+# Web 界面：https://localhost（默认账号 admin/admin）
 
-# Kali native
+# Kali 原生安装
 sudo gvm-setup && sudo gvm-start
-# UI: https://127.0.0.1:9392
+# 界面：https://127.0.0.1:9392
 ```
 
-## Common Workflow (GUI)
+## 常用工作流程（GUI）
 
-1. **Configuration → Targets**: Add hosts/CIDR
-2. **Configuration → Scan Configs**: Select "Full and fast"
-3. **Scans → Tasks → New Task**: Assign target + config
-4. Start task, wait for completion
-5. **Reports**: Export as PDF/XML/HTML
+1. **配置 → 目标**：添加主机 / CIDR 网段
+2. **配置 → 扫描配置**：选择"Full and fast"
+3. **扫描 → 任务 → 新建任务**：指定目标与配置
+4. 启动任务，等待完成
+5. **报告**：导出为 PDF / XML / HTML
 
-## Scan Configs
+## 扫描配置
 
-| Config | Use |
-|--------|-----|
-| Full and fast | Comprehensive (default) |
-| Discovery | Network discovery only |
-| System Discovery | Host/service enumeration |
-| Host Discovery | Ping-only sweep |
+| 配置 | 用途 |
+|------|------|
+| Full and fast | 全面扫描（默认） |
+| Discovery | 仅网络发现 |
+| System Discovery | 主机 / 服务枚举 |
+| Host Discovery | 仅 Ping 扫描 |
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | CLI XML API, authenticated scan setup |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | CLI XML API、认证扫描配置 |

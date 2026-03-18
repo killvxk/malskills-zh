@@ -1,74 +1,71 @@
 ---
 name: radare2
 description: >
-  This skill should be used when the user asks about "radare2", "analyzing
-  binaries headlessly, scripting RE tasks, patching executables", "working in
-  resource-constrained environments". CLI reverse engineering framework with
-  disassembly, debugging, scripting, and binary patching.
+  此技能适用于用户询问关于 "radare2"、"无头模式分析二进制文件、脚本化逆向工程任务、修补可执行文件"、"在资源受限环境中工作" 等内容。CLI 逆向工程框架，支持反汇编、调试、脚本化和二进制修补。
 ---
 
 # Radare2
 
-CLI RE framework — disassemble, debug, patch, and script binary analysis.
+CLI 逆向工程框架 —— 反汇编、调试、修补和脚本化二进制分析。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Open binary (read-only)
+# 以只读方式打开二进制文件
 r2 ./binary
 
-# Analyze all (auto-analysis)
+# 全量分析（自动分析）
 > aaa
 
-# List functions
+# 列出函数
 > afl
 
-# Disassemble function
+# 反汇编函数
 > pdf @ main
 
-# Print strings
+# 打印字符串
 > iz
 
-# Quit
+# 退出
 > q
 ```
 
-## Essential Commands
+## 核心命令
 
-| Command | Purpose |
-|---------|---------|
-| `aaa` | Full auto-analysis |
-| `afl` | List all functions |
-| `pdf @ FUNC` | Disassemble function |
-| `s ADDR` | Seek to address |
-| `iz` | Print strings in binary |
-| `iS` | List sections |
-| `ii` | List imports |
-| `px N @ ADDR` | Hex dump N bytes at ADDR |
-| `ood` | Reopen in debug mode |
-| `dc` | Continue execution |
-| `dr` | Show registers |
-| `VV` | Visual graph mode |
-| `/` | Search bytes/strings |
+| 命令 | 用途 |
+|------|------|
+| `aaa` | 完整自动分析 |
+| `afl` | 列出所有函数 |
+| `pdf @ FUNC` | 反汇编函数 |
+| `s ADDR` | 跳转到地址 |
+| `iz` | 打印二进制中的字符串 |
+| `iS` | 列出节区 |
+| `ii` | 列出导入表 |
+| `px N @ ADDR` | 在 ADDR 处 hex dump N 字节 |
+| `ood` | 以调试模式重新打开 |
+| `dc` | 继续执行 |
+| `dr` | 显示寄存器 |
+| `VV` | 可视化图形模式 |
+| `/` | 搜索字节/字符串 |
 
-## Common Workflows
+## 常用工作流程
 
-**Quick static triage:**
+**快速静态分析：**
 ```
 r2 malware.exe
 > aaa; afl; iz; ii
 > pdf @ sym.main
 ```
 
-**Patch a jump:**
+**修补跳转指令：**
 ```
 r2 -w ./binary
-> s 0x401234       # seek to instruction
-> wa jmp 0x401300  # write assembly
+> s 0x401234       # 跳转到指令地址
+> wa jmp 0x401300  # 写入汇编
 > q
 ```
 
-**Script with r2pipe (Python):**
+**通过 r2pipe（Python）编写脚本：**
 ```python
 import r2pipe
 r2 = r2pipe.open('./binary')
@@ -76,8 +73,8 @@ r2.cmd('aaa')
 print(r2.cmd('afl'))
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | r2pipe scripting and debugging shortcuts |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | r2pipe 脚本化与调试快捷键 |

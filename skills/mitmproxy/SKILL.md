@@ -1,46 +1,43 @@
 ---
 name: mitmproxy
 description: >
-  This skill should be used when the user asks about "mitmproxy", "proxying
-  application traffic during web app tests, modifying requests/responses on
-  the fly", "scripting request interception with Python addons". Interactive
-  TLS-capable HTTP/HTTPS proxy for intercepting, inspecting, modifying, and
-  replaying web traffic.
+  此技能适用于用户询问关于 "mitmproxy"、"在 Web 应用测试期间代理应用流量并动态修改请求/响应"、
+  "使用 Python 插件脚本化请求拦截" 的问题。
 ---
 
 # mitmproxy
 
-Interactive HTTP/HTTPS MITM proxy.
+交互式 HTTP/HTTPS 中间人代理 (MITM Proxy)。
 
-## Quick Start
+## 快速开始
 
 ```bash
 mitmproxy -p 8080
 mitmweb -p 8080
 mitmdump -p 8080 -w traffic.dump
 ```
-Install CA cert: browse to `http://mitm.it` while proxy is running.
+安装 CA 证书：代理运行时访问 `http://mitm.it`。
 
-## Modes
+## 工作模式
 
-| Mode | Command | Use case |
+| 模式 | 命令 | 使用场景 |
 |------|---------|----------|
-| Regular proxy | `mitmproxy` | Browser/tool proxying |
-| Transparent | `--mode transparent` | Intercept without proxy config |
-| Reverse | `--mode reverse:http://target` | Reverse proxy |
-| SOCKS5 | `--mode socks5` | SOCKS proxy |
+| 常规代理 | `mitmproxy` | 浏览器/工具代理 |
+| 透明代理 | `--mode transparent` | 无需代理配置即可拦截 |
+| 反向代理 | `--mode reverse:http://target` | 反向代理模式 |
+| SOCKS5 | `--mode socks5` | SOCKS 代理 |
 
-## TUI Keybindings
+## TUI 快捷键
 
-| Key | Action |
+| 按键 | 操作 |
 |-----|--------|
-| `Enter` | Inspect request |
-| `e` | Edit request/response |
-| `r` | Replay request |
-| `f` | Set filter |
-| `i` | Set intercept filter |
+| `Enter` | 检查请求 |
+| `e` | 编辑请求/响应 |
+| `r` | 重放请求 |
+| `f` | 设置过滤器 |
+| `i` | 设置拦截过滤器 |
 
-## Python Addon
+## Python 插件
 
 ```python
 from mitmproxy import http
@@ -53,8 +50,8 @@ def request(flow: http.HTTPFlow):
 mitmproxy -s addon.py
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Addon API reference, transparent proxy setup |
+| `references/` | 插件 API 参考、透明代理配置 |

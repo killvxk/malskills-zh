@@ -1,26 +1,20 @@
 ---
 name: asm-performance
 description: >
-  This skill should be used when the user asks about "asm-performance", "audit
-  for codegen issues (bounds checks", "register spills", "dependency chains",
-  "missed vectorization", "memory traffic". Assembly performance optimization
-  workflow: collect compiler-emitted ASM, audit for codegen issues (bounds
-  checks, register spills, dependency chains, missed vectorization, memory
-  traffic, bad instruction selection), apply one change at a time, measure,
-  and report. Use after profiling confirms ASM is the bottleneck.
+  此技能适用于用户询问关于 "asm-performance"、"审计代码生成问题（边界检查、寄存器溢出、依赖链、未向量化、内存访问）" 等内容。汇编性能优化工作流程：收集编译器生成的汇编代码，审计代码生成问题（边界检查、寄存器溢出、依赖链、未向量化、内存访问、指令选择不当），每次只做一处修改并度量结果。在性能分析确认汇编是瓶颈后使用。
 ---
 
 # asm-performance
 
-Systematic workflow for auditing and improving compiler-emitted assembly.
+编译器生成汇编代码的系统性审计与优化工作流程。
 
-**Prerequisite**: profile first. Identify the hot function before examining ASM.
+**前提条件**：先进行性能分析 (profiling)。在检查汇编代码之前，先确定热点函数。
 
 ---
 
-## Phase 1 — Collect ASM
+## 阶段 1 — 收集汇编代码
 
-### Rust (cargo-show-asm)
+### Rust（cargo-show-asm）
 
 ```bash
 cargo install cargo-show-asm
@@ -35,7 +29,7 @@ cargo asm --release --llvm-ir <crate> <function>
 cargo asm --release <crate> <function> | grep -A30 '<label>:'
 ```
 
-### C/C++ (objdump)
+### C/C++（objdump）
 
 ```bash
 gcc -O2 -g -c hot.c -o hot.o
@@ -45,7 +39,7 @@ objdump -d -S -M intel hot.o > hot.asm
 objdump -d -M intel hot.o | awk '/^[0-9a-f]+ <your_fn>:/,/^$/'
 ```
 
-### Shared library / binary
+### 共享库 / 二进制文件
 
 ```bash
 objdump -d -M intel --demangle target/release/mybinary | grep -A200 '<hot_fn'
@@ -54,24 +48,24 @@ nm -S target/release/mybinary | grep hot_fn   # confirm symbol exists
 
 ---
 
-## Phase 2 — Audit
+## 阶段 2 — 审计
 
-Scan the collected ASM for the 6 issue categories. Mark each instance.
+扫描收集到的汇编代码，检查以下 6 类问题。标记每个发现的实例。
 
-| # | Category | Signal |
+| # | 类别 | 信号 |
 |---|---|---|
-| 1 | **Panic / bounds paths** | `call core::panicking` / `ud2` reachable from hot loop |
-| 2 | **Register spills** | `mov [rsp+N], reg` inside loop body; non-constant stack depth |
-| 3 | **Dependency chains** | Back-to-back instructions reading/writing same register with no ILP |
-| 4 | **Missed SIMD** | Scalar loop over contiguous data; no `xmm`/`ymm` in output |
-| 5 | **Memory traffic** | Redundant loads/stores to same address; no register hoisting |
-| 6 | **Bad instruction selection** | `idiv`/`div` for power-of-2; `imul` for `lea`-friendly constants |
+| 1 | **Panic / 边界检查路径** | `call core::panicking` / `ud2` 可从热循环抵达 |
+| 2 | **寄存器溢出 (Register spills)** | 循环体内有 `mov [rsp+N], reg`；栈深度非常量 |
+| 3 | **依赖链 (Dependency chains)** | 连续指令读写同一寄存器，无指令级并行 (ILP) |
+| 4 | **未向量化 (Missed SIMD)** | 对连续数据的标量循环；输出中无 `xmm`/`ymm` |
+| 5 | **内存访问 (Memory traffic)** | 对同一地址的冗余加载/存储；无寄存器提升 |
+| 6 | **指令选择不当 (Bad instruction selection)** | 对 2 的幂次使用 `idiv`/`div`；对 `lea` 友好的常数使用 `imul` |
 
-> Load `references/codegen-issues.md` for before/after ASM patterns for each category.
+> 加载 `references/codegen-issues.md` 查看每类问题的修改前后汇编对比。
 
-### Audit checklist
+### 审计清单
 
-For each issue found, record:
+对每个发现的问题，记录：
 
 ```
 CATEGORY: [1-6]
@@ -83,9 +77,9 @@ PLAN: specific change (source or inline asm constraint)
 
 ---
 
-## Phase 3 — Forge Loop
+## 阶段 3 — 优化循环
 
-One change per iteration. Never batch.
+每次只做一处修改，绝不批量操作。
 
 ```
 1. Make ONE change (source, hint, attribute, or asm constraint)
@@ -96,7 +90,7 @@ One change per iteration. Never batch.
 6. Repeat
 ```
 
-### Diff workflow
+### Diff 工作流程
 
 ```bash
 # Save baseline
@@ -108,20 +102,20 @@ cargo asm --release <crate> <fn> > asm_after.s
 diff asm_before.s asm_after.s
 ```
 
-### Decision table
+### 决策表
 
-| Observation | Action |
+| 观察结果 | 操作 |
 |---|---|
-| Issue gone, benchmark faster | Accept — commit |
-| Issue gone, benchmark same | Accept for code size; investigate if cycles expected to drop |
-| Issue gone, benchmark **slower** | Revert — compiler knew something you don't |
-| Issue persists | Try next approach (attribute, manual hint, intrinsic) |
-| New issue introduced | Revert — net negative if it adds a different problem |
-| `ud2` / panic path visible | Revert or add explicit bounds check |
+| 问题消除，基准测试加速 | 接受 — 提交 |
+| 问题消除，基准测试持平 | 接受（减少代码体积）；若预期周期数下降则进一步调查 |
+| 问题消除，基准测试**变慢** | 回滚 — 编译器的判断优于你 |
+| 问题依然存在 | 尝试下一种方法（attribute、手动提示、intrinsic） |
+| 引入了新问题 | 回滚 — 引入另一个问题则净效果为负 |
+| 可见 `ud2` / panic 路径 | 回滚或添加显式边界检查 |
 
 ---
 
-## Phase 4 — Measure
+## 阶段 4 — 度量
 
 ### Linux — perf stat
 
@@ -143,7 +137,7 @@ criterion_group!(benches, bench_hot);
 criterion_main!(benches);
 ```
 
-### Cycle-accurate — llvm-mca
+### 周期精确 — llvm-mca
 
 ```bash
 llvm-mca -mcpu=znver3 -iterations=100 < snippet.s
@@ -152,7 +146,7 @@ llvm-mca -mcpu=znver3 -iterations=100 < snippet.s
 
 ---
 
-## Phase 5 — Report
+## 阶段 5 — 报告
 
 ```
 == ASM Optimization Report ==
@@ -175,7 +169,7 @@ Remaining hotspots: <next function to examine>
 
 ---
 
-## Common Source-Level Hints
+## 常见源码级提示
 
 ```rust
 // Rust: disable bounds checks in hot loop
@@ -199,7 +193,7 @@ __builtin_assume_aligned(ptr, 32);
 
 ---
 
-## Resources
+## 资源
 
-- `references/codegen-issues.md` — before/after ASM patterns for all 6 issue categories
-- `references/microarch.md` — ILP, execution units, cache line effects, branch prediction rules
+- `references/codegen-issues.md` — 6 类问题的修改前后汇编模式对比
+- `references/microarch.md` — ILP、执行单元、缓存行效应、分支预测规则

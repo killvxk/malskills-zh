@@ -1,42 +1,39 @@
 ---
 name: deep-research-offensive
 description: >
-  This skill should be used when the user asks about
-  "deep-research-offensive", "researching CVEs and vulnerabilities",
-  "exploit analysis and PoC code", "OSINT for red team targets",
-  "red team planning and threat intelligence". Offensive security research:
-  CVE analysis, exploit research, vulnerability assessment, red team
-  reconnaissance, and threat intelligence synthesis.
+  此技能适用于用户询问关于"deep-research-offensive"、"研究 CVE 和漏洞"、
+  "漏洞利用分析和 PoC 代码"、"红队目标的 OSINT"、"红队规划和威胁情报"等问题。
+  攻击性安全研究：CVE 分析、漏洞利用研究、漏洞评估、红队侦察和威胁情报综合。
 ---
 
-# Deep Research — Offensive Security
+# 深度研究——攻击性安全
 
-Systematic offensive research workflow covering CVE analysis, exploit research, vulnerability assessment, and red team intelligence. Designed for authorized security research contexts.
+系统性攻击性研究工作流，涵盖 CVE 分析、漏洞利用研究、漏洞评估和红队情报。专为授权安全研究场景设计。
 
-> **Scope**: Use only against targets for which you have explicit written authorization.
+> **范围**：仅对拥有明确书面授权的目标使用。
 
 ---
 
-## MCP Tool Reference (verified)
+## MCP 工具参考（已验证）
 
-| Function name | Tool | Use |
+| 函数名 | 工具 | 用途 |
 |---|---|---|
-| `mcp_io_github_tav_tavily_search` | Tavily Search | Keyword search across the web — primary search tool |
-| `mcp_io_github_tav_tavily_map` | Tavily Map | Enumerate URLs of an advisory/doc site before scraping |
-| `mcp_firecrawl_fir_firecrawl_scrape` | Firecrawl Scrape | Full page content from a known URL |
-| `mcp_firecrawl_fir_firecrawl_extract` | Firecrawl Extract | Structured JSON fields from a known URL — fastest for CVSS, CPE |
-| `mcp_firecrawl_fir_firecrawl_crawl` | Firecrawl Crawl | All pages of a multi-page advisory portal |
-| `mcp_microsoft_pla_browser_run_code` | Playwright | JS-rendered pages, DataTables (ExploitDB), login-gated content |
-| xcancel.com via Playwright | X/Twitter Search | No-auth Twitter search proxy — tweets about CVEs, malware, PoCs |
-| `api.fxtwitter.com` via Firecrawl | FxTwitter API | Zero-auth JSON for full post/thread content and user info |
-| `tg.i-c-a.su/json/{channel}` via Firecrawl | Telegram (zero-auth) | Full JSON messages from any public Telegram channel |
-| `t.me/s/{channel}` via Playwright | Telegram preview | Last ~30 posts from public channels, JS-rendered |
+| `mcp_io_github_tav_tavily_search` | Tavily Search | 跨网络关键词搜索——主要搜索工具 |
+| `mcp_io_github_tav_tavily_map` | Tavily Map | 在抓取前枚举公告/文档站点的 URL |
+| `mcp_firecrawl_fir_firecrawl_scrape` | Firecrawl Scrape | 从已知 URL 获取完整页面内容 |
+| `mcp_firecrawl_fir_firecrawl_extract` | Firecrawl Extract | 从已知 URL 提取结构化 JSON 字段——最快获取 CVSS、CPE |
+| `mcp_firecrawl_fir_firecrawl_crawl` | Firecrawl Crawl | 抓取多页公告门户的所有页面 |
+| `mcp_microsoft_pla_browser_run_code` | Playwright | JS 渲染页面、DataTable（ExploitDB）、需登录的内容 |
+| xcancel.com via Playwright | X/Twitter 搜索 | 无需认证的 Twitter 搜索代理——CVE、恶意软件、PoC 推文 |
+| `api.fxtwitter.com` via Firecrawl | FxTwitter API | 零认证 JSON，获取完整帖子/线程内容和用户信息 |
+| `tg.i-c-a.su/json/{channel}` via Firecrawl | Telegram（零认证） | 获取任何公开 Telegram 频道的完整 JSON 消息 |
+| `t.me/s/{channel}` via Playwright | Telegram 预览 | 公开频道最近约 30 条帖子，JS 渲染 |
 
 ---
 
-## Call Optimization
+## 调用优化
 
-Follow this decision tree — **stop at first success** to avoid wasted calls:
+遵循此决策树——**第一次成功即停止**以避免浪费调用：
 
 ```
 1. Need broad search across multiple sites?
@@ -55,59 +52,59 @@ Follow this decision tree — **stop at first success** to avoid wasted calls:
    → Firecrawl crawl  (most expensive — use last, limit ≤ 10)
 ```
 
-**Run independent calls in parallel** — Tavily searches and Firecrawl calls on different URLs are independent.
+**并行运行独立调用**——针对不同 URL 的 Tavily 搜索和 Firecrawl 调用是独立的。
 
 ---
 
-## Tavily: Query Optimization (from official docs)
+## Tavily：查询优化（来自官方文档）
 
-### Query rules
-- **Max 400 characters** per query — treat as a concise web search, not a prompt
-- **One topic per query** — break complex research into focused sub-queries run in parallel
-- **Use `include_domains`** to restrict to trusted sources (max 300 domains; keep the list short)
-- **Use `exclude_domains`** to remove noise (max 150 domains)
-- **Never use `site:` inside the query string** — use the `include_domains` parameter instead
+### 查询规则
+- 每个查询**最多 400 个字符**——视为简洁的网络搜索，而非提示词
+- **每个查询一个主题**——将复杂研究拆分为并行运行的子查询
+- **使用 `include_domains`** 限制到可信来源（最多 300 个域；保持列表简短）
+- **使用 `exclude_domains`** 过滤噪声（最多 150 个域）
+- **不要在查询字符串中使用 `site:`**——改用 `include_domains` 参数
 
-### `search_depth` — choose by use case
+### `search_depth`——按用例选择
 
-| Depth | Credits | Content type | When to use |
+| 深度 | 费用 | 内容类型 | 使用场景 |
 |---|---|---|---|
-| `ultra-fast` | 1 | NLP summary | Real-time, latency-critical |
-| `fast` | 1 | Ranked chunks | Quick targeted snippets |
-| `basic` | 1 | NLP summary | General-purpose (default) |
-| `advanced` | 2 | Ranked chunks | Specific facts, highest precision |
+| `ultra-fast` | 1 | NLP 摘要 | 实时、对延迟敏感 |
+| `fast` | 1 | 排序分块 | 快速定向摘要 |
+| `basic` | 1 | NLP 摘要 | 通用（默认） |
+| `advanced` | 2 | 排序分块 | 特定事实、最高精度 |
 
-- Use `basic` for broad discovery (recon, threat intel sweep)
-- Use `advanced` + `chunks_per_source: 3` when you need the exact field (CVSS vector, affected version)
-- Avoid `auto_parameters: true` — it may silently upgrade to `advanced` (2 credits)
+- 广泛发现（侦察、威胁情报扫描）使用 `basic`
+- 需要确切字段（CVSS 向量、受影响版本）时使用 `advanced` + `chunks_per_source: 3`
+- 避免使用 `auto_parameters: true`——可能静默升级为 `advanced`（2 点费用）
 
-### `topic` parameter
-- `general` — broad web (default)
-- `news` — news sources only; includes `published_date` in results — use for "exploited in the wild" intel
-- `finance` — financial sources
+### `topic` 参数
+- `general` — 广泛网络（默认）
+- `news` — 仅新闻来源；结果包含 `published_date`——用于"在野外被利用"情报
+- `finance` — 金融来源
 
-### Time filtering
-- `time_range`: `day` / `week` / `month` / `year` — filter by recency
-- `start_date` / `end_date`: `YYYY-MM-DD` — precise date range for advisory freshness checks
+### 时间过滤
+- `time_range`: `day` / `week` / `month` / `year`——按时效过滤
+- `start_date` / `end_date`: `YYYY-MM-DD`——精确日期范围用于公告新鲜度检查
 
 ### `max_results`
-- Default: 5 — sufficient for most CVE queries
-- Use 10 only when you need broad coverage (recon sweep)
-- Higher values degrade average result quality and consume more context tokens
+- 默认：5——大多数 CVE 查询足够
+- 仅在需要广泛覆盖时使用 10（侦察扫描）
+- 较高的值会降低平均结果质量并消耗更多上下文 token
 
-### Post-processing results
-- Filter by `score > 0.7` before passing URLs to Firecrawl — discard low-relevance results
-- Use `title` field for quick keyword scan before fetching full content
+### 处理结果后处理
+- 在传递 URL 给 Firecrawl 之前过滤 `score > 0.7`——丢弃低相关性结果
+- 在获取完整内容之前使用 `title` 字段进行快速关键词扫描
 
 ---
 
-## Research Workflows
+## 研究工作流程
 
-### CVE Deep Dive
+### CVE 深度调查
 
-Run steps 1–3 in parallel, then follow up on found URLs:
+并行运行步骤 1–3，然后跟进找到的 URL：
 
-**Step 1 — NVD structured data** (Firecrawl extract — fastest for structured fields)
+**步骤 1——NVD 结构化数据**（Firecrawl extract——获取结构化字段最快）
 ```
 tool: mcp_firecrawl_fir_firecrawl_extract
 urls: ["https://nvd.nist.gov/vuln/detail/CVE-YYYY-NNNNN"]
@@ -120,7 +117,7 @@ schema: {
 }
 ```
 
-**Step 2 — PoC search** (3 Tavily queries in parallel)
+**步骤 2——PoC 搜索**（并行 3 个 Tavily 查询）
 ```
 query 1: "CVE-YYYY-NNNNN" exploit PoC
   include_domains: ["github.com"]
@@ -134,7 +131,7 @@ query 3: CVE-YYYY-NNNNN exploited ransomware APT campaign
   topic: news, time_range: year, max_results: 5
 ```
 
-**Step 3 — ExploitDB** (Playwright — required, JS-rendered DataTable)
+**步骤 3——ExploitDB**（Playwright——必需，JS 渲染的 DataTable）
 ```javascript
 async (page) => {
   await page.goto('https://www.exploit-db.com/search?cve=YYYY-NNNNN',
@@ -147,14 +144,14 @@ async (page) => {
 }
 ```
 
-**Step 4 — GitHub PoC repos** (Firecrawl scrape, for each repo found in step 2)
+**步骤 4——GitHub PoC 仓库**（Firecrawl scrape，对步骤 2 中找到的每个仓库）
 ```
 tool: mcp_firecrawl_fir_firecrawl_scrape
 formats: ["markdown"]
 onlyMainContent: true
 ```
 
-**Step 5 — CISA KEV check + vendor advisory** (parallel)
+**步骤 5——CISA KEV 检查 + 厂商公告**（并行）
 ```
 Firecrawl extract: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-YYYY-NNNNN
   schema: { "in_kev": bool, "due_date": string, "required_action": string }
@@ -165,9 +162,9 @@ Firecrawl scrape: [vendor advisory URL from NVD references]
 
 ---
 
-### Target Reconnaissance
+### 目标侦察
 
-Run all queries in parallel (one topic per query):
+并行运行所有查询（每个查询一个主题）：
 
 ```
 query 1: [product] [version] vulnerability 2025
@@ -186,7 +183,7 @@ query 4: [product] security advisory patch
   time_range: year, search_depth: basic, max_results: 5
 ```
 
-Use Tavily map to enumerate a vendor portal before crawling:
+在爬取前使用 Tavily map 枚举厂商门户：
 ```
 tool: mcp_io_github_tav_tavily_map
 url: https://[vendor.com]/security
@@ -196,7 +193,7 @@ select_paths: ["/advisory", "/security", "/cve", "/vulns"]
 
 ---
 
-### ATT&CK Technique Lookup
+### ATT&CK 技术查询
 
 ```
 tool: mcp_firecrawl_fir_firecrawl_scrape
@@ -210,59 +207,59 @@ search_depth: advanced, chunks_per_source: 3, max_results: 5
 
 ---
 
-## Output Template
+## 输出模板
 
 ```
-## Target Summary
-[Asset, scope, engagement type]
+## Target Summary（目标摘要）
+[资产、范围、参与类型]
 
-## Vulnerability Matrix
+## Vulnerability Matrix（漏洞矩阵）
 | CVE | CVSS | PoC | In CISA KEV | Priority |
 |-----|------|-----|-------------|----------|
 
-## CVE Deep Dives
+## CVE Deep Dives（CVE 深度调查）
 
-### CVE-YYYY-NNNNN — [Short name]
+### CVE-YYYY-NNNNN — [简称]
 - **CVSS**: X.X (CVSS:3.1/AV:.../AC:.../PR:.../UI:.../S:.../C:.../I:.../A:...)
-- **CWE**: CWE-[ID] — [name]
-- **Affected**: [product] [versions from CPE]
-- **PoC**: [URL or "not public"]
-- **Patch / Advisory**: [URL]
-- **CISA KEV**: Yes/No — due date if applicable
-- **Exploited ITW**: Yes/No — [source + date]
-- **Red team notes**: [access conditions, auth required, mitigations to bypass, chaining potential]
+- **CWE**: CWE-[ID] — [名称]
+- **受影响版本**: [产品] [来自 CPE 的版本]
+- **PoC**: [URL 或"未公开"]
+- **补丁 / 公告**: [URL]
+- **CISA KEV**: 是/否——如适用请注明截止日期
+- **在野利用 (Exploited ITW)**: 是/否——[来源 + 日期]
+- **红队备注**: [访问条件、所需权限、需绕过的缓解措施、链式利用潜力]
 
-## Attack Chain
-[Phase → Technique T[ID] → CVE → method]
+## Attack Chain（攻击链）
+[阶段 → 技术 T[ID] → CVE → 方法]
 
-## Mitigations and Detection
-[Patch, config, log source / SIEM rule per phase]
+## Mitigations and Detection（缓解措施与检测）
+[每个阶段的补丁、配置、日志来源 / SIEM 规则]
 
-## Sources
-[1] URL — source — date — score
+## Sources（来源）
+[1] URL — 来源 — 日期 — 评分
 ```
 
 ---
 
-## X/Twitter Intelligence
+## X/Twitter 情报
 
-X/Twitter is a primary real-time source for:
-- CVE PoC drops and 0day disclosures
-- Malware samples, C2 IOCs, ransomware variants
-- Red team tooling releases (new BOFs, evasion techniques)
-- Threat actor activity and campaign announcements
-- Security researcher commentary and advisories
+X/Twitter 是以下内容的主要实时来源：
+- CVE PoC 发布和 0day 披露
+- 恶意软件样本、C2 IOC、勒索软件变种
+- 红队工具发布（新 BOF、免杀技术）
+- 威胁行为者活动和行动公告
+- 安全研究人员评论和建议
 
-### xcancel — zero-auth Twitter search proxy
+### xcancel——零认证 Twitter 搜索代理
 
-xcancel.com proxies Twitter's advanced search without any authentication. Use Playwright (page is JS-rendered).
+xcancel.com 无需任何认证即可代理 Twitter 的高级搜索。使用 Playwright（页面为 JS 渲染）。
 
-**Basic search:**
+**基础搜索：**
 ```
 https://xcancel.com/search?f=tweets&q=CVE-2024-NNNNN+exploit
 ```
 
-**Full options — all parameters:**
+**完整选项——所有参数：**
 ```
 https://xcancel.com/search?f=tweets
   &q=windows+exploit          # URL-encoded search query
@@ -285,12 +282,12 @@ https://xcancel.com/search?f=tweets
   &e-replies=on               # exclude replies (thread noise)
 ```
 
-**Typical offensive research query (no retweets, no replies, date-filtered):**
+**典型攻击性研究查询（无转推、无回复、带日期过滤）：**
 ```
 https://xcancel.com/search?f=tweets&q=CVE-2024-NNNNN+PoC&e-nativeretweets=on&e-replies=on&since=2024-01-01&until=2026-02-18&min_faves=2
 ```
 
-**Playwright recipe for xcancel:**
+**xcancel 的 Playwright 配方：**
 ```javascript
 async (page) => {
   const query = encodeURIComponent('CVE-2024-NNNNN exploit PoC');
@@ -304,21 +301,21 @@ async (page) => {
 }
 ```
 
-### FxTwitter API — zero-auth JSON for post/thread content
+### FxTwitter API——零认证 JSON 获取帖子/线程内容
 
-FxTwitter exposes a public read-only API with no authentication, no rate-limit registration, and clean JSON output. Use Firecrawl scrape to fetch.
+FxTwitter 提供了一个公开只读 API，无需认证、无需注册速率限制，输出干净的 JSON。使用 Firecrawl scrape 获取。
 
-**Fetch a post or thread (includes full text, media, metrics, replies):**
+**获取帖子或线程（包含完整文本、媒体、指标、回复）：**
 ```
 https://api.fxtwitter.com/status/{POST_ID}
 ```
 
-**Fetch user info:**
+**获取用户信息：**
 ```
 https://api.fxtwitter.com/{username}
 ```
 
-**Example — fetch post and extract structured fields:**
+**示例——获取帖子并提取结构化字段：**
 ```
 tool: mcp_firecrawl_fir_firecrawl_extract
 urls: ["https://api.fxtwitter.com/status/1890765432198765432"]
@@ -332,17 +329,17 @@ schema: {
 }
 ```
 
-**Usage pattern — when to use FxTwitter API:**
-1. Tavily or xcancel surfaces an interesting post URL
-2. Extract the post ID from the URL: `twitter.com/user/status/{ID}` or `x.com/user/status/{ID}`
-3. Fetch `https://api.fxtwitter.com/status/{ID}` to get the full thread with metadata
+**使用模式——何时使用 FxTwitter API：**
+1. Tavily 或 xcancel 找到一个有趣的帖子 URL
+2. 从 URL 中提取帖子 ID：`twitter.com/user/status/{ID}` 或 `x.com/user/status/{ID}`
+3. 获取 `https://api.fxtwitter.com/status/{ID}` 以获得完整线程和元数据
 
-### Python option — twitter_search.py (scripts/twitter_search.py)
+### Python 选项——twitter_search.py (scripts/twitter_search.py)
 
-Batch/scripted search using `twikit 2.x`.
+使用 `twikit 2.x` 进行批量/脚本化搜索。
 
-> **⚠ Requires a real X account.** Guest/anonymous mode is blocked by Cloudflare since 2023.
-> Tavily (`site:twitter.com OR site:x.com`) is the **zero-auth alternative** and works without any account.
+> **⚠ 需要真实的 X 账户。** 自 2023 年起，访客/匿名模式被 Cloudflare 拦截。
+> Tavily（`site:twitter.com OR site:x.com`）是**零认证替代方案**，无需任何账户即可使用。
 
 ```bash
 pip install twikit
@@ -365,28 +362,28 @@ python scripts/twitter_search.py "nmap red team" --cookies-file cookies.json \
 python scripts/twitter_search.py --user malwareunicorn --cookies-file cookies.json
 ```
 
-Key flags: `--auth-info-1`, `--auth-info-2`, `--password`, `--totp-secret`, `--cookies-file`, `--mode Latest|Top|Media`, `--count N` (max 20), `--pages N` (pagination), `--since/--until YYYY-MM-DD`, `--min-likes N`, `--from-user`, `--lang CODE`, `--json`, `-o FILE`.
+关键参数：`--auth-info-1`, `--auth-info-2`, `--password`, `--totp-secret`, `--cookies-file`, `--mode Latest|Top|Media`, `--count N`（最多 20）, `--pages N`（分页）, `--since/--until YYYY-MM-DD`, `--min-likes N`, `--from-user`, `--lang CODE`, `--json`, `-o FILE`。
 
-Output includes `fxtwitter_url` for each result — fetch it with Firecrawl extract to get the full thread.
+输出包含每条结果的 `fxtwitter_url`——用 Firecrawl extract 获取完整线程。
 
-**When to use twikit vs Tavily:**
-- **No account** → use Tavily with `site:twitter.com OR site:x.com`
-- **Account available + need volume/pagination/filters** → use `twitter_search.py`
+**何时使用 twikit vs Tavily：**
+- **无账户** → 使用 Tavily 加 `site:twitter.com OR site:x.com`
+- **有账户且需要数量/分页/过滤** → 使用 `twitter_search.py`
 
 ---
 
-## Telegram Intelligence
+## Telegram 情报
 
-Telegram is a primary distribution channel for:
-- CVE PoC drops (often before any public advisory)
-- Malware samples, stealer logs, ransomware source leaks
-- Red team tool releases (C2s, BOFs, loaders, evasion)
-- Threat actor chatter, initial access broker ads, data breach announcements
-- Content removed from GitHub or X within hours of publication
+Telegram 是以下内容的主要发布渠道：
+- CVE PoC 发布（通常早于任何公开公告）
+- 恶意软件样本、信息窃取日志、勒索软件源码泄露
+- 红队工具发布（C2、BOF、加载器、免杀）
+- 威胁行为者聊天、初始访问经纪人广告、数据泄露公告
+- 在 GitHub 或 X 上发布几小时内即被删除的内容
 
-### Zero-auth access methods (no account needed)
+### 零认证访问方法（无需账户）
 
-**Method 1 — tg.i-c-a.su (best):** Returns full JSON with messages, media URLs, views, reactions.
+**方法 1——tg.i-c-a.su（最佳）：** 返回包含消息、媒体 URL、浏览量、反应的完整 JSON。
 ```
 tool: mcp_firecrawl_fir_firecrawl_scrape
 url: https://tg.i-c-a.su/json/{channel}
@@ -399,7 +396,7 @@ https://tg.i-c-a.su/json/news4hack?before=500
 https://tg.i-c-a.su/rss/{channel}
 ```
 
-**Method 2 — t.me/s/ preview:** Last ~30 posts. Use Playwright (JS-rendered).
+**方法 2——t.me/s/ 预览：** 最近约 30 条帖子。使用 Playwright（JS 渲染）。
 ```javascript
 async (page) => {
   await page.goto('https://t.me/s/news4hack', { waitUntil: 'networkidle', timeout: 30000 });
@@ -409,42 +406,42 @@ async (page) => {
 }
 ```
 
-**Method 3 — Tavily search** (indexed snippets, no scraping):
+**方法 3——Tavily 搜索**（已索引的摘要，无需抓取）：
 ```
 query: CVE-2025 PoC exploit site:t.me
 search_depth: fast, max_results: 10
 ```
 
-### Curated offensive security channels
+### 精选攻击性安全频道
 
-**Tier S — use first**
+**S 级——优先使用**
 
-| Channel | Link | Members | Focus |
+| 频道 | 链接 | 成员数 | 专注方向 |
 |---|---|---|---|
-| @news4hack (Pentester) | `t.me/news4hack` | ~2.8K | CVE + PoC GitHub links daily, red team, AD attacks, web RCE/LPE |
-| @cveNotify | `t.me/cveNotify` | ~17.7K | Real-time CVE notifications — fastest CVE feed |
-| @learnexploit (0Day.Today) | `t.me/learnexploit` | ~21K | Public exploits, 0-day, PoC web/server, hacking tools — richest PoC source |
+| @news4hack (Pentester) | `t.me/news4hack` | ~2.8K | 每日 CVE + PoC GitHub 链接、红队、AD 攻击、Web RCE/LPE |
+| @cveNotify | `t.me/cveNotify` | ~17.7K | 实时 CVE 通知——最快的 CVE 动态 |
+| @learnexploit (0Day.Today) | `t.me/learnexploit` | ~21K | 公开漏洞利用、0day、PoC Web/服务器、黑客工具——最丰富的 PoC 来源 |
 
-**Tier A — strong signal**
+**A 级——强信号**
 
-| Channel | Link | Focus |
+| 频道 | 链接 | 专注方向 |
 |---|---|---|
-| @PentestingNews | `t.me/PentestingNews` | Pentesting, red team, OSINT, malware analysis, RE (~20K) |
-| @BlueRedTeam | `t.me/BlueRedTeam` | Red team tools, CVE PoC, intranet attacks (~5.2K) |
-| @androidMalware | `t.me/androidMalware` | Android/iOS exploits, mobile CVEs, spyware analysis (~43K) |
-| @bugbountyresources | `t.me/bugbountyresources` | Writeups, new vulns, bug bounty tips (~10K) |
-| @githubredteam | `t.me/githubredteam` | Chinese red team GitHub repos monitor — fresh PoCs, often before English coverage |
-| @sochub_ar | `t.me/sochub_ar` | SOCHUB CVE channel — advisory-level CVE feed, structured |
+| @PentestingNews | `t.me/PentestingNews` | 渗透测试、红队、OSINT、恶意软件分析、逆向工程（约 20K） |
+| @BlueRedTeam | `t.me/BlueRedTeam` | 红队工具、CVE PoC、内网攻击（约 5.2K） |
+| @androidMalware | `t.me/androidMalware` | Android/iOS 漏洞利用、移动 CVE、间谍软件分析（约 43K） |
+| @bugbountyresources | `t.me/bugbountyresources` | 漏洞报告、新漏洞、漏洞赏金技巧（约 10K） |
+| @githubredteam | `t.me/githubredteam` | 中文红队 GitHub 仓库监控——新鲜 PoC，常早于英文覆盖 |
+| @sochub_ar | `t.me/sochub_ar` | SOCHUB CVE 频道——公告级 CVE 动态，结构化 |
 
-**Tier B — niche / underground signal**
+**B 级——小众 / 地下信号**
 
-| Channel | Link | Focus | Notes |
+| 频道 | 链接 | 专注方向 | 备注 |
 |---|---|---|---|
-| @vxunderground | `t.me/vxunderground` | Malware samples, papers, ransomware source leaks, APT intel | Legitimate research; primary malware archive |
-| @ckearsenal (御魂军火库) | `t.me/ckearsenal` | Chinese underground: PoC, exploits, C2 templates, malware analysis | High noise, high signal — filter carefully |
-| @cybersecurityresources | `t.me/cybersecurityresources` | Web security, pentest notes, bug hunting (~7K) | Broad but active |
+| @vxunderground | `t.me/vxunderground` | 恶意软件样本、论文、勒索软件源码泄露、APT 情报 | 合法研究；主要恶意软件存档 |
+| @ckearsenal（御魂军火库） | `t.me/ckearsenal` | 中文地下：PoC、漏洞利用、C2 模板、恶意软件分析 | 高噪声、高信号——需仔细过滤 |
+| @cybersecurityresources | `t.me/cybersecurityresources` | Web 安全、渗透测试笔记、漏洞挖掘（约 7K） | 内容广泛但活跃 |
 
-### Telegram channel research workflow
+### Telegram 频道研究工作流
 
 ```
 # 1. Check a channel's recent content (zero-auth, instant JSON)
@@ -470,15 +467,15 @@ search_depth: fast, max_results: 10
 
 ---
 
-## Operational Notes
+## 操作注意事项
 
-- **Traffic**: Firecrawl and Playwright generate real HTTP traffic. On live engagements, use only Tavily (indexed/cached results) to avoid direct target contact.
-- **Rate limits**: Firecrawl crawl: `limit ≤ 10`, `maxDiscoveryDepth ≤ 2`.
-- **Recency**: Tavily results may be weeks old for fresh CVEs — always verify CVSS/KEV directly from NVD and CISA via Firecrawl extract.
-- **Score filtering**: Discard Tavily results with `score < 0.5` before fetching full content with Firecrawl.
+- **流量**：Firecrawl 和 Playwright 会产生真实 HTTP 流量。在实际渗透测试中，仅使用 Tavily（已索引/缓存的结果）以避免直接接触目标。
+- **速率限制**：Firecrawl crawl：`limit ≤ 10`、`maxDiscoveryDepth ≤ 2`。
+- **时效性**：对于新鲜 CVE，Tavily 结果可能已是数周前的——始终通过 Firecrawl extract 直接从 NVD 和 CISA 验证 CVSS/KEV。
+- **评分过滤**：在使用 Firecrawl 获取完整内容前，丢弃 `score < 0.5` 的 Tavily 结果。
 
-## References
+## 参考资源
 
-- [references/mcp-tools.md](references/mcp-tools.md) — full parameter reference for Tavily, Firecrawl, Playwright with verified recipes
-- [references/sources.md](references/sources.md) — curated security intelligence sources with domain lists ready for `include_domains`
-- [references/attack-chain-templates.md](references/attack-chain-templates.md) — ATT&CK-aligned attack chain templates
+- [references/mcp-tools.md](references/mcp-tools.md) — Tavily、Firecrawl、Playwright 的完整参数参考及已验证配方
+- [references/sources.md](references/sources.md) — 精选安全情报来源，包含可用于 `include_domains` 的域名列表
+- [references/attack-chain-templates.md](references/attack-chain-templates.md) — 与 ATT&CK 对齐的攻击链模板

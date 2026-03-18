@@ -1,18 +1,14 @@
 ---
 name: zap
 description: >
-  This skill should be used when the user asks about "zap", "performing
-  comprehensive web app tests, integrating security scanning into CI/CD
-  pipelines, scripting custom scan logic", "running headless API scans". OWASP
-  ZAP: open-source web application scanner and intercepting proxy for
-  automated active/passive vulnerability scanning.
+  此技能适用于用户询问关于 "zap"、"执行全面 Web 应用测试"、"将安全扫描集成到 CI/CD 流水线"、"编写自定义扫描逻辑"、"无头 API 扫描"。OWASP ZAP：开源 Web 应用扫描器和拦截代理，支持自动化主动/被动漏洞扫描。
 ---
 
 # OWASP ZAP
 
-Open-source web app scanner and intercepting proxy.
+开源 Web 应用扫描器与拦截代理。
 
-## Quick Start
+## 快速开始
 
 ```bash
 zap.sh
@@ -21,15 +17,15 @@ docker run -t owasp/zap2docker-stable zap-baseline.py -t http://target.com
 docker run -t owasp/zap2docker-stable zap-full-scan.py -t http://target.com
 ```
 
-## Scan Types
+## 扫描类型
 
-| Scan | Command | Notes |
+| 扫描类型 | 命令 | 说明 |
 |------|---------|-------|
-| Baseline | `zap-baseline.py` | Passive only, safe for prod |
-| Full scan | `zap-full-scan.py` | Active, potentially destructive |
-| API scan | `zap-api-scan.py` | OpenAPI / SOAP / GraphQL targets |
+| 基线扫描 | `zap-baseline.py` | 仅被动扫描，适合生产环境 |
+| 全量扫描 | `zap-full-scan.py` | 主动扫描，可能具有破坏性 |
+| API 扫描 | `zap-api-scan.py` | 针对 OpenAPI / SOAP / GraphQL 目标 |
 
-## REST API (daemon mode)
+## REST API（守护进程模式）
 
 ```bash
 curl "http://localhost:8090/JSON/spider/action/scan/?url=http://target.com"
@@ -37,8 +33,8 @@ curl "http://localhost:8090/JSON/ascan/action/scan/?url=http://target.com"
 curl "http://localhost:8090/JSON/core/view/alerts/"
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Authentication config, CI integration, scripting API |
+| `references/` | 认证配置、CI 集成、脚本 API |

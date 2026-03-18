@@ -1,65 +1,62 @@
 ---
 name: wifite
 description: >
-  This skill should be used when the user asks about "wifite", "automating
-  Wi-Fi attacks against multiple targets without manually orchestrating
-  aircrack-ng commands". Automated wireless auditing tool that attacks
-  WEP/WPA/WPA2/PMKID with minimal configuration.
+  此技能适用于用户询问关于 "wifite"、"自动化 Wi-Fi 攻击而无需手动编排 aircrack-ng 命令"。自动化无线审计工具，只需极少配置即可对 WEP/WPA/WPA2/PMKID 发起攻击。
 ---
 
 # Wifite
 
-Automated Wi-Fi cracker — attacks WEP/WPA/WPA2/PMKID with one command.
+自动化 Wi-Fi 破解工具 —— 一条命令即可攻击 WEP/WPA/WPA2/PMKID。
 
-## Quick Start
+## 快速开始
 
 ```bash
-pip install wifite   # or: apt install wifite
+pip install wifite   # 或使用：apt install wifite
 
-# Full auto (scan and attack all visible networks)
+# 全自动模式（扫描并攻击所有可见网络）
 sudo wifite
 
-# Target specific BSSID
+# 针对指定 BSSID
 sudo wifite --bssid AA:BB:CC:DD:EE:FF
 
-# WPA handshake only + crack with wordlist
+# 仅 WPA 握手包抓取 + 字典破解
 sudo wifite --wpa --dict /usr/share/wordlists/rockyou.txt
 
-# PMKID attack
+# PMKID 攻击
 sudo wifite --pmkid
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `--bssid MAC` | Target specific AP |
-| `--essid NAME` | Target by SSID name |
-| `--channel N` | Target channel |
-| `--wpa` | Only WPA targets |
-| `--wep` | Only WEP targets |
-| `--pmkid` | PMKID attack (clientless) |
-| `--dict FILE` | Wordlist for cracking |
-| `--no-deauth` | Skip deauth (stealth) |
-| `--timeout N` | Attack timeout (s) |
-| `--crack` | Auto-crack after capture |
+| `--bssid MAC` | 针对指定接入点 (AP) |
+| `--essid NAME` | 按 SSID 名称指定目标 |
+| `--channel N` | 指定目标信道 |
+| `--wpa` | 仅攻击 WPA 目标 |
+| `--wep` | 仅攻击 WEP 目标 |
+| `--pmkid` | PMKID 攻击（无需客户端） |
+| `--dict FILE` | 用于破解的字典文件 |
+| `--no-deauth` | 跳过去认证（更隐蔽） |
+| `--timeout N` | 攻击超时时间（秒） |
+| `--crack` | 捕获后自动破解 |
 
-## Common Workflows
+## 常用工作流
 
-**Automated PMKID + crack:**
+**自动化 PMKID + 破解：**
 ```bash
 sudo wifite --pmkid --dict rockyou.txt
 ```
 
-**WPA handshake capture only (no crack):**
+**仅抓取 WPA 握手包（不破解）：**
 ```bash
 sudo wifite --wpa --no-crack
-# Handshake saved to ~/hs/
-# Crack later: aircrack-ng ~/hs/*.cap -w rockyou.txt
+# 握手包保存到 ~/hs/
+# 稍后手动破解：aircrack-ng ~/hs/*.cap -w rockyou.txt
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Dependency checklist and troubleshooting |
+| `references/` | 依赖项检查清单及故障排查 |

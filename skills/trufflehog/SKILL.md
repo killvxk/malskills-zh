@@ -1,65 +1,62 @@
 ---
 name: trufflehog
 description: >
-  This skill should be used when the user asks about "trufflehog", "hunting
-  for secrets in large codebases", "cloud storage during recon". Find leaked
-  credentials and secrets in git repos, S3 buckets, filesystems, and CI
-  systems using entropy analysis and 700+ detectors.
+  此技能适用于用户询问关于 "trufflehog"、"在大型代码库中搜寻密钥"、"侦察阶段扫描云存储"。使用熵分析和 700+ 检测器在 git 仓库、S3 存储桶、文件系统及 CI 系统中查找泄露凭据和密钥。
 ---
 
 # TruffleHog
 
-Secret scanner with 700+ detectors — git history, S3, GCS, filesystem, and CI systems.
+拥有 700+ 检测器的密钥扫描工具 —— 支持 git 历史、S3、GCS、文件系统及 CI 系统。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Docker
+# Docker 方式
 docker run --rm trufflesecurity/trufflehog:latest git https://github.com/org/repo
 
-# Binary
+# 二进制方式
 trufflehog git https://github.com/org/repo --only-verified
 
-# Local repo
+# 本地仓库
 trufflehog git file:///path/to/repo --only-verified
 
-# S3 bucket
+# S3 存储桶
 trufflehog s3 --bucket=target-bucket
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `git <url>` | Scan git repo |
-| `s3` | Scan S3 bucket |
-| `filesystem` | Scan local files |
-| `--only-verified` | Show only verified secrets |
-| `--since-commit SHA` | Scan from commit |
-| `--branch NAME` | Scan specific branch |
-| `--json` | JSON output |
-| `--concurrency N` | Thread count |
-| `--include-detectors` | Limit detector types |
+| `git <url>` | 扫描 git 仓库 |
+| `s3` | 扫描 S3 存储桶 |
+| `filesystem` | 扫描本地文件 |
+| `--only-verified` | 仅显示已验证的密钥 |
+| `--since-commit SHA` | 从指定 commit 开始扫描 |
+| `--branch NAME` | 扫描指定分支 |
+| `--json` | JSON 格式输出 |
+| `--concurrency N` | 线程数 |
+| `--include-detectors` | 限制检测器类型 |
 
-## Common Workflows
+## 常用工作流
 
-**Verified secrets only (CI-safe):**
+**仅验证的密钥（适合 CI 集成）：**
 ```bash
 trufflehog git https://github.com/org/repo --only-verified --json > secrets.json
 ```
 
-**Full history of internal monorepo:**
+**扫描内部 Monorepo 完整历史：**
 ```bash
 trufflehog git file:///repos/monorepo --json --concurrency 8
 ```
 
-**S3 audit:**
+**S3 审计：**
 ```bash
 trufflehog s3 --bucket internal-assets --only-verified
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Detector list and custom detector config |
+| `references/` | 检测器列表及自定义检测器配置 |

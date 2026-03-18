@@ -1,18 +1,14 @@
 ---
 name: sqlmap
 description: >
-  This skill should be used when the user asks about "sqlmap", "testing web
-  parameters, cookies", "headers for SQLi", "extracting database contents",
-  "escalating to OS command execution via INTO OUTFILE", "xp_cmdshell".
-  Automatic SQL injection detection and exploitation tool supporting all major
-  database backends.
+  此技能适用于用户询问关于 "sqlmap"、"测试 web 参数、Cookie"、"请求头的 SQLi 检测"、"提取数据库内容"、"通过 INTO OUTFILE 升级为 OS 命令执行"、"xp_cmdshell"。自动化 SQL 注入检测与利用工具，支持所有主流数据库后端。
 ---
 
 # sqlmap
 
-Automated SQL injection detection and exploitation.
+自动化 SQL 注入 (SQL Injection) 检测与利用。
 
-## Quick Start
+## 快速开始
 
 ```bash
 sqlmap -u "http://target.com/search?id=1" --dbs
@@ -21,26 +17,26 @@ sqlmap -r request.txt --dbs
 sqlmap -u "http://target.com/?id=1" -D mydb -T users --dump
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
+| 参数 | 用途 |
 |------|---------|
-| `-u <url>` | Target URL with parameter |
-| `-r <file>` | Saved HTTP request (Burp format) |
-| `--data <data>` | POST body |
-| `--cookie <cookie>` | Session cookie |
-| `--dbs` | Enumerate databases |
-| `-D <db>` | Select database |
-| `-T <table>` | Select table |
-| `--dump` | Dump table data |
-| `--dump-all` | Dump all databases |
-| `--os-shell` | Get OS shell |
-| `--level <1-5>` | Test depth (default 1) |
-| `--risk <1-3>` | Risk level of tests (default 1) |
-| `--batch` | Non-interactive, use defaults |
-| `-p <param>` | Test specific parameter only |
-| `--threads <n>` | Parallelism |
-| `--proxy <proxy>` | Route through proxy |
+| `-u <url>` | 带参数的目标 URL |
+| `-r <file>` | 保存的 HTTP 请求文件（Burp 格式） |
+| `--data <data>` | POST 请求体 |
+| `--cookie <cookie>` | 会话 Cookie |
+| `--dbs` | 枚举数据库 |
+| `-D <db>` | 选择数据库 |
+| `-T <table>` | 选择数据表 |
+| `--dump` | 导出表数据 |
+| `--dump-all` | 导出所有数据库 |
+| `--os-shell` | 获取 OS Shell |
+| `--level <1-5>` | 测试深度（默认 1） |
+| `--risk <1-3>` | 测试风险等级（默认 1） |
+| `--batch` | 非交互模式，使用默认值 |
+| `-p <param>` | 仅测试指定参数 |
+| `--threads <n>` | 并发线程数 |
+| `--proxy <proxy>` | 通过代理路由流量 |
 
 ## OS Shell
 
@@ -48,8 +44,8 @@ sqlmap -u "http://target.com/?id=1" -D mydb -T users --dump
 sqlmap -u "http://target.com/?id=1" --os-shell --technique=U
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Auth bypass, WAF bypass, tamper scripts |
+| `references/` | 认证绕过、WAF 绕过、tamper 脚本 |

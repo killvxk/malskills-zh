@@ -1,18 +1,16 @@
 ---
 name: cupp
 description: >
-  This skill should be used when the user asks about "cupp", "generate a
-  targeted wordlist", "profile a specific person for password guessing",
-  "create a custom dictionary from OSINT data", "prepare a personalized
-  password list for brute-force attacks". Custom User Password Profiler that
-  generates targeted wordlists from personal information about a target.
+  此技能适用于用户询问关于"cupp"、"生成定向字典"、"针对特定人员进行密码猜测画像"、
+  "从 OSINT 数据创建自定义字典"、"为暴力破解攻击准备个性化密码列表"等问题。
+  自定义用户密码画像工具，根据目标的个人信息生成定向字典。
 ---
 
 # CUPP
 
-Custom User Password Profiler — generate targeted wordlists from personal OSINT data.
+自定义用户密码画像工具——从个人 OSINT 数据生成定向字典。
 
-## Quick Start
+## 快速开始
 
 ```bash
 # Interactive profile mode
@@ -25,19 +23,19 @@ python3 cupp.py -l
 python3 cupp.py -h
 ```
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 描述 |
 |------|-------------|
-| `-i` | Interactive — prompts for target info |
-| `-w <file>` | Improve existing wordlist with leet-speak + special chars |
-| `-l` | Download wordlists from repository |
-| `-a` | Parse default usernames from Alecto DB |
-| `-v` | Verbose |
+| `-i` | 交互模式——提示输入目标信息 |
+| `-w <file>` | 使用 leet-speak + 特殊字符增强现有字典 |
+| `-l` | 从仓库下载字典 |
+| `-a` | 从 Alecto DB 解析默认用户名 |
+| `-v` | 详细输出 |
 
-## Interactive Profile Fields
+## 交互式画像字段
 
-When running `-i`, CUPP asks for:
+运行 `-i` 时，CUPP 会询问：
 
 ```
 Name, surname, nickname
@@ -52,18 +50,18 @@ Random numbers to append? [y/N]
 Leet mode? [y/N]
 ```
 
-## What CUPP Generates
+## CUPP 生成内容
 
-From the provided data, CUPP creates permutations:
-- Name + birth year: `john1990`, `John1990!`
-- Reversed + numbers: `nhoj123`
-- Combined names: `johnjane`, `jane&john`
-- Leet substitutions: `j0hn`, `p@ssword`
-- Upper/lower variants: `JOHN`, `John`
-- Special char appends: `john!`, `john@`, `john#`
-- Date combinations: `01011990`, `john1990!`
+根据提供的数据，CUPP 创建以下排列组合：
+- 姓名 + 出生年份：`john1990`、`John1990!`
+- 反转 + 数字：`nhoj123`
+- 组合姓名：`johnjane`、`jane&john`
+- Leet 替换：`j0hn`、`p@ssword`
+- 大小写变体：`JOHN`、`John`
+- 附加特殊字符：`john!`、`john@`、`john#`
+- 日期组合：`01011990`、`john1990!`
 
-## Common Workflows
+## 常见工作流程
 
 ```bash
 # Build a targeted wordlist interactively
@@ -83,16 +81,16 @@ python3 cupp.py -w existing_list.txt
 hashcat -a 0 -m 0 hash.txt john.txt -r /usr/share/hashcat/rules/best64.rule
 ```
 
-## OSINT Sources for Profiling
+## 画像用 OSINT 来源
 
-- LinkedIn (name, company, job title, dates)
-- Facebook / Instagram (relationships, birthdays, pets)
-- Twitter/X (interests, nicknames, keywords)
-- Company website (employee names, products)
-- HaveIBeenPwned (leaked passwords as baseline)
+- LinkedIn（姓名、公司、职位、日期）
+- Facebook / Instagram（人际关系、生日、宠物）
+- Twitter/X（兴趣、昵称、关键词）
+- 公司网站（员工姓名、产品）
+- HaveIBeenPwned（泄露密码作为基准）
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/wordlist-strategy.md` | OSINT gathering workflow, combining with rules, wordlist expansion techniques |
+| `references/wordlist-strategy.md` | OSINT 收集工作流、结合规则使用、字典扩展技术 |

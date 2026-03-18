@@ -1,51 +1,48 @@
 ---
 name: shodan
 description: >
-  This skill should be used when the user asks about "shodan", "search
-  Shodan", "find internet-exposed services", "discover infrastructure
-  passively, look up an IP", "org, query specific banners", "CVEs". Shodan CLI
-  for passive internet-wide host and service discovery.
+  此技能适用于用户询问关于"shodan"、"搜索 Shodan"、"发现互联网暴露的服务"、"被动发现基础设施、查询 IP"、"组织、查询特定 banner"、"CVE"。Shodan CLI 用于被动的互联网范围主机和服务发现。
 ---
 
 # Shodan CLI
 
-Passive reconnaissance via Shodan — internet-wide host/service discovery without touching targets.
+通过 Shodan 进行被动侦察 — 无需接触目标即可发现互联网范围内的主机/服务。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Initialize with API key
+# 使用 API 密钥初始化
 shodan init YOUR_API_KEY
 
-# Search for a service/banner
+# 搜索服务/banner
 shodan search "apache 2.4.49"
 
-# Host lookup
+# 主机查询
 shodan host 203.0.113.10
 
-# Account info / credits
+# 账户信息/余量
 shodan info
 ```
 
-## Core Commands
+## 核心命令
 
-| Command | Description |
-|---------|-------------|
-| `shodan search <query>` | Search Shodan index |
-| `shodan host <ip>` | Detailed host info (open ports, banners, vulns) |
-| `shodan count <query>` | Count results (no credits consumed) |
-| `shodan download <file> <query>` | Download results to compressed JSON |
-| `shodan parse <file>` | Parse downloaded results |
-| `shodan domain <domain>` | Domain intelligence |
-| `shodan alert` | Manage monitoring alerts |
-| `shodan stats <query>` | Statistics for a query |
-| `shodan honeyscore <ip>` | Honeypot score (0-1) |
-| `shodan myip` | Your public IP |
+| 命令 | 说明 |
+|------|------|
+| `shodan search <query>` | 搜索 Shodan 索引 |
+| `shodan host <ip>` | 详细主机信息（开放端口、banner、漏洞） |
+| `shodan count <query>` | 统计结果数量（不消耗查询积分） |
+| `shodan download <file> <query>` | 下载结果为压缩 JSON |
+| `shodan parse <file>` | 解析已下载的结果 |
+| `shodan domain <domain>` | 域名情报 |
+| `shodan alert` | 管理监控告警 |
+| `shodan stats <query>` | 查询结果统计 |
+| `shodan honeyscore <ip>` | 蜜罐评分（0-1） |
+| `shodan myip` | 查看本机公网 IP |
 
-## Search Filters
+## 搜索过滤器
 
-| Filter | Example |
-|--------|---------|
+| 过滤器 | 示例 |
+|--------|------|
 | `hostname:` | `hostname:example.com` |
 | `ip:` | `ip:1.2.3.0/24` |
 | `org:` | `org:"Target Corp"` |
@@ -61,34 +58,34 @@ shodan info
 | `asn:` | `asn:AS12345` |
 | `net:` | `net:192.168.0.0/16` |
 
-## Common Workflows
+## 常用工作流
 
 ```bash
-# Find infrastructure for an org
+# 查找某组织的基础设施
 shodan search org:"Target Corp" --fields ip_str,port,product
 
-# Download and parse org results
+# 下载并解析组织结果
 shodan download results.json.gz org:"Target Corp"
 shodan parse --fields ip_str,port,product results.json.gz
 
-# Find exposed login panels
+# 查找暴露的登录面板
 shodan search http.title:"administration" org:"Target"
 
-# CVE-based research
+# 基于 CVE 的研究
 shodan search vuln:CVE-2021-44228
 
-# SSL cert pivot — find all hosts sharing a cert
+# SSL 证书横向关联 — 查找共享同一证书的所有主机
 shodan search ssl:"example.com"
 
-# Count without consuming query credits
+# 统计结果（不消耗查询积分）
 shodan count org:"Target Corp"
 
-# Reverse lookup / host details
+# 反向查询/主机详情
 shodan host 8.8.8.8
 ```
 
-## Resources
+## 资源文件
 
-| File | When to load |
-|------|--------------|
-| `references/search-filters.md` | Full filter reference, dork recipes, API integration examples |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/search-filters.md` | 完整过滤器参考、dork 配方及 API 集成示例 |

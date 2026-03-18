@@ -1,20 +1,19 @@
 ---
 name: crackmapexec
 description: >
-  This skill should be used when the user asks about "crackmapexec", "spray
-  credentials against AD", "enumerate SMB shares, execute commands remotely",
-  "dump SAM/LSA/NTDS", "map an Active Directory environment". Swiss-army knife
-  for Active Directory environments — SMB/WinRM/LDAP lateral movement,
-  credential spraying, share enumeration, and remote code execution.
+  此技能适用于用户询问关于"crackmapexec"、"在 AD 中喷射凭据"、"枚举 SMB 共享"、
+  "远程执行命令"、"转储 SAM/LSA/NTDS"、"映射 Active Directory 环境"等问题。
+  AD 环境的瑞士军刀——通过 SMB/WinRM/LDAP 进行横向移动 (Lateral Movement)、凭据喷射、
+  共享枚举和远程代码执行。
 ---
 
 # CrackMapExec / NetExec (nxc)
 
-AD post-exploitation multitool — spray, enumerate, execute, and dump across SMB/WinRM/LDAP.
+AD 后渗透多功能工具——通过 SMB/WinRM/LDAP 进行喷射、枚举、执行和转储。
 
-> **Note**: CrackMapExec (cme) is deprecated. Use **NetExec** (`nxc`) — same syntax, actively maintained.
+> **注意**：CrackMapExec (cme) 已停止维护。请使用 **NetExec** (`nxc`)——语法相同，仍在积极维护。
 
-## Quick Start
+## 快速开始
 
 ```bash
 # Check connectivity + SMB signing
@@ -27,38 +26,38 @@ nxc smb 192.168.1.10 -u admin -p Password123
 nxc smb 192.168.1.10 -u admin -p Password123 --shares
 ```
 
-## Protocols
+## 支持协议
 
 `smb`, `winrm`, `ldap`, `mssql`, `ssh`, `rdp`, `ftp`, `vnc`
 
-## Core Flags
+## 核心参数
 
-| Flag | Description |
+| 参数 | 描述 |
 |------|-------------|
-| `-u <user>` | Username or user list |
-| `-p <pass>` | Password or password list |
-| `-H <hash>` | NTLM hash (pass-the-hash) |
-| `--local-auth` | Authenticate with local account |
-| `-d <domain>` | Domain name |
-| `-k` | Use Kerberos authentication |
-| `--continue-on-success` | Don't stop on first valid cred |
-| `-x <cmd>` | Execute command (cmd.exe) |
-| `-X <cmd>` | Execute PowerShell command |
-| `--exec-method <m>` | Execution method: `wmiexec,smbexec,atexec,mmcexec` |
-| `--shares` | Enumerate shares |
-| `--users` | Enumerate domain users |
-| `--groups` | Enumerate domain groups |
-| `--computers` | Enumerate domain computers |
-| `--loggedon-users` | Show logged-on users |
-| `--sessions` | Show active sessions |
-| `--sam` | Dump SAM hashes |
-| `--lsa` | Dump LSA secrets |
-| `--ntds` | Dump NTDS.dit (DC only) |
-| `-M <module>` | Load a module |
-| `--pass-pol` | Get password policy |
-| `--rid-brute` | RID brute-force user enumeration |
+| `-u <user>` | 用户名或用户名列表 |
+| `-p <pass>` | 密码或密码列表 |
+| `-H <hash>` | NTLM 哈希（哈希传递） |
+| `--local-auth` | 使用本地账户认证 |
+| `-d <domain>` | 域名 |
+| `-k` | 使用 Kerberos 认证 |
+| `--continue-on-success` | 找到有效凭据后不停止 |
+| `-x <cmd>` | 执行命令（cmd.exe） |
+| `-X <cmd>` | 执行 PowerShell 命令 |
+| `--exec-method <m>` | 执行方法：`wmiexec,smbexec,atexec,mmcexec` |
+| `--shares` | 枚举共享 |
+| `--users` | 枚举域用户 |
+| `--groups` | 枚举域组 |
+| `--computers` | 枚举域计算机 |
+| `--loggedon-users` | 显示已登录用户 |
+| `--sessions` | 显示活动会话 |
+| `--sam` | 转储 SAM 哈希 |
+| `--lsa` | 转储 LSA 机密 |
+| `--ntds` | 转储 NTDS.dit（仅限 DC） |
+| `-M <module>` | 加载模块 |
+| `--pass-pol` | 获取密码策略 |
+| `--rid-brute` | RID 暴力枚举用户 |
 
-## Common Workflows
+## 常见工作流程
 
 ```bash
 # Password spray across subnet (continue on success)
@@ -86,7 +85,7 @@ nxc winrm 192.168.1.10 -u admin -p Password123 -x "ipconfig /all"
 nxc ldap 192.168.1.10 -u admin -p Password123 --users
 ```
 
-## Useful Modules
+## 常用模块
 
 ```bash
 # Mimikatz (requires admin)
@@ -105,8 +104,8 @@ nxc smb 192.168.1.0/24 -M printnightmare
 nxc smb 192.168.1.0/24 -u admin -p Password123 -M gpp_password
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/modules.md` | Full module list, module-specific flags, output parsing |
+| `references/modules.md` | 完整模块列表、模块专用参数、输出解析 |

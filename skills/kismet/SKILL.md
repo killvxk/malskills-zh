@@ -1,69 +1,66 @@
 ---
 name: kismet
 description: >
-  This skill should be used when the user asks about "kismet", "performing
-  passive wireless reconnaissance, device tracking", "capturing traffic
-  without active injection". Wireless network detector and sniffer supporting
-  Wi-Fi, Bluetooth, Zigbee, and SDR.
+  此技能适用于用户询问关于"kismet"、"执行被动无线侦察、设备追踪"、"在不主动注入的情况下捕获流量"。支持 Wi-Fi、Bluetooth、Zigbee 和 SDR 的无线网络探测器和嗅探器。
 ---
 
 # Kismet
 
-Wireless detector and sniffer — passive Wi-Fi, Bluetooth, Zigbee, SDR.
+无线探测器和嗅探器 — 被动 Wi-Fi、Bluetooth、Zigbee、SDR。
 
-## Quick Start
+## 快速开始
 
 ```bash
 apt install kismet
 
-# Start with web UI (port 2501)
+# 启动并开启 Web UI（端口 2501）
 kismet -c wlan0
 
-# Open web UI
+# 打开 Web UI
 open http://localhost:2501
-# Default creds: kismet/kismet
+# 默认凭证：kismet/kismet
 
-# Capture to pcap
+# 捕获到 pcap
 kismet -c wlan0 --log-types pcapppi
 ```
 
-## Key Features
+## 主要功能
 
-| Feature | Purpose |
-|---------|---------|
-| AP discovery | SSID, BSSID, channel, encryption, signal |
-| Client tracking | Devices associated to APs |
-| Bluetooth | BT classic + BLE scanning (with adapter) |
-| Zigbee | IoT/sensor network detection |
-| GPS integration | Map devices with gpsd |
-| Logging | Kismet DB, pcap, JSON, netxml |
+| 功能 | 用途 |
+|------|------|
+| AP 发现 | SSID、BSSID、信道、加密、信号强度 |
+| 客户端追踪 | 关联到 AP 的设备 |
+| Bluetooth | BT 经典 + BLE 扫描（需要适配器） |
+| Zigbee | IoT/传感器网络检测 |
+| GPS 集成 | 使用 gpsd 为设备标注地图位置 |
+| 日志记录 | Kismet DB、pcap、JSON、netxml |
 
-## Core Flags
+## 核心参数
 
-| Flag | Purpose |
-|------|---------|
-| `-c IFACE` | Capture interface |
-| `--no-logging` | Disable logging |
-| `--log-prefix DIR` | Log output directory |
-| `--log-types TYPE` | Log formats |
-| `--daemonize` | Run in background |
-| `--override wardriving` | Wardriving mode |
+| 参数 | 用途 |
+|------|------|
+| `-c IFACE` | 捕获接口 |
+| `--no-logging` | 禁用日志记录 |
+| `--log-prefix DIR` | 日志输出目录 |
+| `--log-types TYPE` | 日志格式 |
+| `--daemonize` | 在后台运行 |
+| `--override wardriving` | 战争驾驶模式 |
 
-## Common Workflows
+## 常用工作流
 
-**Passive wardriving:**
+**被动战争驾驶 (Wardriving)：**
 ```bash
 kismet -c wlan0 --override wardriving --log-prefix /tmp/wardriving
 ```
 
-**Capture all traffic for offline analysis:**
+**捕获所有流量以供离线分析：**
 ```bash
 kismet -c wlan0 --log-types pcapppi --log-prefix /tmp/capture
-# Analyze with wireshark
+# 使用 wireshark 分析
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | GPS setup, Bluetooth adapter config |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | GPS 配置、Bluetooth 适配器配置 |

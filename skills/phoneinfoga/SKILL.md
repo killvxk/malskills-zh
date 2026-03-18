@@ -1,67 +1,64 @@
 ---
 name: phoneinfoga
 description: >
-  This skill should be used when the user asks about "phoneinfoga", "pivoting
-  on phone numbers during target profiling", "social engineering preparation".
-  Phone number OSINT tool — gather carrier, location, and online presence data
-  for phone numbers.
+  此技能适用于用户询问关于 "phoneinfoga"、"在目标画像阶段以电话号码为支点进行信息枢纽"、"社会工程学前期准备" 等内容。电话号码 OSINT 工具，可收集运营商、位置及在线存在数据。
 ---
 
 # PhoneInfoga
 
-Phone number reconnaissance — carrier, country, online presence, breach data.
+电话号码侦察 —— 运营商、国家、在线存在、数据泄露记录。
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Download from GitHub releases
-# Or Docker
+# 从 GitHub Releases 下载
+# 或使用 Docker
 docker run --rm sundowndev/phoneinfoga scan -n +1234567890
 
-# Scan a number (international format)
+# 扫描号码（需使用国际格式）
 phoneinfoga scan -n +14151234567
 
-# Start web UI
+# 启动 Web 界面
 phoneinfoga serve
 # → http://localhost:5000
 ```
 
-## Core Commands
+## 核心命令
 
-| Command | Purpose |
-|---------|---------|
-| `scan -n NUMBER` | Full scan on number |
-| `serve` | Launch web dashboard |
-| `--output json` | JSON output |
+| 命令 | 用途 |
+|------|------|
+| `scan -n NUMBER` | 对号码执行完整扫描 |
+| `serve` | 启动 Web 控制台 |
+| `--output json` | 输出 JSON 格式 |
 
-## Information Retrieved
+## 可获取的信息
 
-- Country, carrier, line type (mobile/landline/VoIP)
-- Possible owner via reverse lookup
-- Google dork results (social media, directories)
-- NumVerify / Numinfo API data (if configured)
-- Breach lookups (HaveIBeenPwned linked accounts)
+- 国家、运营商、线路类型（移动 / 固话 / VoIP）
+- 通过反向查询获取可能的归属人
+- Google dork 结果（社交媒体、号码目录）
+- NumVerify / Numinfo API 数据（需配置）
+- 数据泄露查询（关联 HaveIBeenPwned 账号）
 
-## Common Workflows
+## 常用工作流程
 
-**Quick scan:**
+**快速扫描：**
 ```bash
 phoneinfoga scan -n +14151234567
 ```
 
-**Web dashboard for manual investigation:**
+**使用 Web 控制台进行手动调查：**
 ```bash
 phoneinfoga serve &
 open http://localhost:5000
 ```
 
-**JSON output for automation:**
+**JSON 输出用于自动化：**
 ```bash
 phoneinfoga scan -n +14151234567 --output json > phone.json
 ```
 
-## Resources
+## 资源
 
-| File | When to load |
-|------|--------------|
-| `references/` | API key setup and dork expansion |
+| 文件 | 加载时机 |
+|------|----------|
+| `references/` | API key 配置与 dork 扩展 |
